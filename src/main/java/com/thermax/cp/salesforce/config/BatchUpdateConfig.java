@@ -18,8 +18,10 @@ import com.thermax.cp.salesforce.dto.services.SFDCServicesDTO;
 import com.thermax.cp.salesforce.dto.spares.SFDCSparesDTO;
 import com.thermax.cp.salesforce.dto.users.SFDCUserDTOList;
 import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
+import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.itemprocessor.AccountsProcessor;
+import com.thermax.cp.salesforce.itemprocessor.AssetProcessor;
 import com.thermax.cp.salesforce.itemprocessor.ProductItemProcessor;
 import com.thermax.cp.salesforce.itemprocessor.RecommendationsProcessor;
 import com.thermax.cp.salesforce.itemreader.*;
@@ -31,10 +33,12 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -53,6 +57,11 @@ public class BatchUpdateConfig {
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
 
+    @Autowired
+    private AssetsConnector assetsConnector;
+
+    private String frequency;
+
 
     public JobParametersIncrementer jobParametersIncrementer() {
         return new RunIdIncrementer();
@@ -63,12 +72,13 @@ public class BatchUpdateConfig {
                 .incrementer(jobParametersIncrementer());
     }
 
+
         @Bean
     public Step loadProducts(
                       ) {
         return stepBuilderFactory.get("load-products")
                 .<SFDCProductInfoDTO, SFDCProductInfoDTO>chunk(100)
-                .reader(productItemReader(sfdcBatchDataDetailsRequest))
+                .reader(productItemReader(sfdcBatchDataDetailsRequest,frequency))
                 .processor(new ProductItemProcessor())
                 .writer(new ProductsDBWriter())
                 .build();
@@ -78,7 +88,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-accounts")
                 .<SFDCAccountInfoDTO, SFDCAccountInfoDTO>chunk(100)
-                .reader(accountsItemReader(sfdcBatchDataDetailsRequest))
+                .reader(accountsItemReader(sfdcBatchDataDetailsRequest,frequency))
                 .processor(new AccountsProcessor())
                 .writer(new AccountsDBWriter())
                 .build();
@@ -89,9 +99,9 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-recommendations")
                 .<SFDCRecommendationsDTO, SFDCRecommendationsDTO>chunk(100)
-                .reader(recommendationsReader(sfdcBatchDataDetailsRequest))
+                .reader(recommendationsReader(sfdcBatchDataDetailsRequest,frequency))
                 .processor(new RecommendationsProcessor())
-                .writer(new RecommendationsWriter(csvWrite))
+                .writer(new RecommendationsWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -100,7 +110,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-services")
                 .<SFDCServicesDTO, SFDCServicesDTO>chunk(100)
-                .reader(servicesReader(sfdcBatchDataDetailsRequest))
+                .reader(servicesReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new ServicesWriter())
                 .build();
     }
@@ -110,7 +120,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-spares")
                 .<SFDCSparesDTO, SFDCSparesDTO>chunk(100)
-                .reader(sparesReader(sfdcBatchDataDetailsRequest))
+                .reader(sparesReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new SparesWriter())
                 .build();
     }
@@ -120,8 +130,9 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-assets")
                 .<SFDCAssetDTO, SFDCAssetDTO>chunk(100)
-                .reader(assetsReader(sfdcBatchDataDetailsRequest))
-                .writer(new AssetWriter())
+                .reader(assetsReader(sfdcBatchDataDetailsRequest,frequency))
+                .processor(new AssetProcessor())
+                .writer(new AssetWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -130,7 +141,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-opportunities")
                 .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(100)
-                .reader(opportunityReader(sfdcBatchDataDetailsRequest))
+                .reader(opportunityReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new OpportunityWriter())
                 .build();
     }
@@ -140,7 +151,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-pricebooks")
                 .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(100)
-                .reader(pricebookReader(sfdcBatchDataDetailsRequest))
+                .reader(pricebookReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new PricebookWriter())
                 .build();
     }
@@ -150,7 +161,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-pricebookentries")
                 .<SFDCPricebookEntryDTO, SFDCPricebookEntryDTO>chunk(100)
-                .reader(pricebookEntryReader(sfdcBatchDataDetailsRequest))
+                .reader(pricebookEntryReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new PricebookEntryWriter())
                 .build();
     }
@@ -160,7 +171,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-users")
                 .<SFDCUsersDTO, SFDCUsersDTO>chunk(100)
-                .reader(usersReader(sfdcBatchDataDetailsRequest))
+                .reader(usersReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new UsersWriter())
                 .build();
     }
@@ -170,7 +181,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-complaints")
                 .<SFDCComplaintsDTO, SFDCComplaintsDTO>chunk(100)
-                .reader(complaintsReader(sfdcBatchDataDetailsRequest))
+                .reader(complaintsReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new ComplaintsWriter())
                 .build();
     }
@@ -180,8 +191,8 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-orders")
                 .<SFDCOrdersDTO, SFDCOrdersDTO>chunk(100)
-                .reader(ordersReader(sfdcBatchDataDetailsRequest))
-                .writer(new OrderWriter())
+                .reader(ordersReader(sfdcBatchDataDetailsRequest,frequency))
+                .writer(new OrderWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -190,8 +201,8 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-order-items")
                 .<SFDCOrderItemsDTO, SFDCOrderItemsDTO>chunk(100)
-                .reader(orderItemsReader(sfdcBatchDataDetailsRequest))
-                .writer(new OrderItemsWriter())
+                .reader(orderItemsReader(sfdcBatchDataDetailsRequest,frequency))
+                .writer(new OrderItemsWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -200,7 +211,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-order-items")
                 .<SFDCOpportunityLineItemsDTO, SFDCOpportunityLineItemsDTO>chunk(100)
-                .reader(opportunityLineItemsReader(sfdcBatchDataDetailsRequest))
+                .reader(opportunityLineItemsReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new OpportunityLineItemsWriter())
                 .build();
     }
@@ -210,7 +221,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-proposals")
                 .<SFDCProposalsDTO, SFDCProposalsDTO>chunk(100)
-                .reader(proposalsReader(sfdcBatchDataDetailsRequest))
+                .reader(proposalsReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new ProposalWriter())
                 .build();
     }
@@ -220,7 +231,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-eligible-spares-services")
                 .<SFDCEligibleSparesServicesDTO, SFDCEligibleSparesServicesDTO>chunk(100)
-                .reader(eligibleSpareServiceReader(sfdcBatchDataDetailsRequest))
+                .reader(eligibleSpareServiceReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new EligibleSpareServiceWriter())
                 .build();
     }
@@ -230,7 +241,7 @@ public class BatchUpdateConfig {
     ) {
         return stepBuilderFactory.get("load-asset-history")
                 .<SFDCAssetHistoryDTO, SFDCAssetHistoryDTO>chunk(100)
-                .reader(assetHistoryReader(sfdcBatchDataDetailsRequest))
+                .reader(assetHistoryReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new AssetHistoryWriter())
                 .build();
     }
@@ -393,102 +404,139 @@ public class BatchUpdateConfig {
 
 
     @Bean
-    public ItemReader<SFDCProductInfoDTO> productItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
+    @StepScope
+    public ItemReader<SFDCProductInfoDTO> productItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+     @Value("#{jobParameters[frequency]}") String frequency) {
 
-        return  new ProductItemReader(sfdcBatchDataDetailsRequest);
+        return  new ProductItemReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCAccountInfoDTO> accountsItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                             @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new AccountItemReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCRecommendationsDTO> recommendationsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                                    @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new RecommendationsReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+    @StepScope
+    @Bean
+    public ItemReader<SFDCServicesDTO> servicesReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                      @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new ServicesReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCSparesDTO> sparesReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                  @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new SparesReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCAssetDTO> assetsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                 @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new AssetReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCOpportunityDTO> opportunityReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                            @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new OpportunityReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCPricebookDTO> pricebookReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                        @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new PricebookReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCPricebookEntryDTO> pricebookEntryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                                  @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new PricebookEntryReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCUsersDTO> usersReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new UsersReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCComplaintsDTO> complaintsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                          @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new ComplaintsReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCOrdersDTO> ordersReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                  @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new OrderReader(sfdcBatchDataDetailsRequest,frequency);
     }
 
     @Bean
-    public ItemReader<SFDCAccountInfoDTO> accountsItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
+    @StepScope
+    public ItemReader<SFDCOrderItemsDTO> orderItemsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+    @Value("#{jobParameters[frequency]}") String frequency) {
 
-        return  new AccountItemReader(sfdcBatchDataDetailsRequest);
+        return  new OrderItemsReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCOpportunityLineItemsDTO> opportunityLineItemsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                                              @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return  new OpportunityLineItemsReader(sfdcBatchDataDetailsRequest,frequency);
     }
 
     @Bean
-    public ItemReader<SFDCRecommendationsDTO> recommendationsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
+    @StepScope
+    public ItemReader<SFDCProposalsDTO> proposalsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                        @Value("#{jobParameters[frequency]}") String frequency) {
 
-        return  new RecommendationsReader(sfdcBatchDataDetailsRequest);
+        return  new ProposalsReader(sfdcBatchDataDetailsRequest,frequency);
     }
+
+    @StepScope
     @Bean
-    public ItemReader<SFDCServicesDTO> servicesReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
+    public ItemReader<SFDCEligibleSparesServicesDTO> eligibleSpareServiceReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                                                @Value("#{jobParameters[frequency]}") String frequency) {
 
-        return  new ServicesReader(sfdcBatchDataDetailsRequest);
+        return  new EligibleSparesSerivcesReader(sfdcBatchDataDetailsRequest,frequency);
     }
 
+    @StepScope
     @Bean
-    public ItemReader<SFDCSparesDTO> sparesReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
+    public ItemReader<SFDCAssetHistoryDTO> assetHistoryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                              @Value("#{jobParameters[frequency]}") String frequency) {
 
-        return  new SparesReader(sfdcBatchDataDetailsRequest);
+        return  new AssetHistoryReader(sfdcBatchDataDetailsRequest,frequency);
     }
 
-    @Bean
-    public ItemReader<SFDCAssetDTO> assetsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
 
-        return  new AssetReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCOpportunityDTO> opportunityReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new OpportunityReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCPricebookDTO> pricebookReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new PricebookReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCPricebookEntryDTO> pricebookEntryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new PricebookEntryReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCUsersDTO> usersReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new UsersReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCComplaintsDTO> complaintsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new ComplaintsReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCOrdersDTO> ordersReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new OrderReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCOrderItemsDTO> orderItemsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new OrderItemsReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCOpportunityLineItemsDTO> opportunityLineItemsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new OpportunityLineItemsReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCProposalsDTO> proposalsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new ProposalsReader(sfdcBatchDataDetailsRequest);
-    }
-
-    @Bean
-    public ItemReader<SFDCEligibleSparesServicesDTO> eligibleSpareServiceReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new EligibleSparesSerivcesReader(sfdcBatchDataDetailsRequest);
-    }
-    @Bean
-    public ItemReader<SFDCAssetHistoryDTO> assetHistoryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest) {
-
-        return  new AssetHistoryReader(sfdcBatchDataDetailsRequest);
-    }
     }

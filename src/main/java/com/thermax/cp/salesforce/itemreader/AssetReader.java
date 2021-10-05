@@ -6,6 +6,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class AssetReader implements ItemReader<SFDCAssetDTO> {
     private   String query;
     @Autowired
@@ -21,19 +23,21 @@ public class AssetReader implements ItemReader<SFDCAssetDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCAssetDTO> sfdcAssetDTOList;
     private int nextProductIndex;
+    private String frequency;
 
-    public AssetReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public AssetReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.ASSET_DETAILS_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextProductIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCAssetDTO read() throws Exception {
 
         if(assetDataNotInitialized())
         {
-            sfdcAssetDTOList =getAssetDetails(query,"LAST_MONTH");
+            sfdcAssetDTOList =getAssetDetails(query,frequency);
         }
         SFDCAssetDTO nextAsset;
         if (nextProductIndex < sfdcAssetDTOList.size()) {

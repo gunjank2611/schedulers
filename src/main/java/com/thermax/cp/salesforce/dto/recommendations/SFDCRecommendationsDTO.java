@@ -16,18 +16,18 @@ public class SFDCRecommendationsDTO {
         private String asset;
         @JsonProperty("TH_Account_Name__c")
         private String accountName;
+        @JsonProperty("TH_Status__c")
+        private String status;
         @JsonProperty("CreatedDate")
-        private  String creationDate;
+        private  String createdDate;
         @JsonProperty("LastModifiedDate")
         private String lastModifiedDate;
         @JsonProperty("Name")
         private String name;
         @JsonProperty("OwnerId")
         private String ownerId;
-        @JsonProperty("Owner")
-        private OwnerDTO ownerDTO;
         @JsonProperty("TH_Description_for__c")
-        private String description;
+        private String plannedShutdownDescription;
         @JsonProperty("TH_Interaction_Planned_Date__c")
         private String interactionPlannedDate;
         @JsonProperty("TH_Opportunity__c")
@@ -36,28 +36,16 @@ public class SFDCRecommendationsDTO {
         private String plannedActivities;
         @JsonProperty("TH_Planned_Shutdown_date__c")
         private String plannedShutDownDate;
-        @JsonProperty("TH_Potential_Value__c")
-        private String potentialValue;
-        @JsonProperty("TH_Purpose__c")
-        private String purpose;
         @JsonProperty("TH_Recommendation_Close_Date__c")
         private String recommendationCloseDate;
-        @JsonProperty("TH_Reject_Reason__c")
-        private String rejectReason;
-        @JsonProperty("TH_Reminder_For_Next_Contact__c")
-        private String reminderForNextContact;
         @JsonProperty("TH_Selected_Services__c")
         private String selectedServices;
         @JsonProperty("TH_Selected_Spares__c")
         private String selectedSpares;
         @JsonProperty("TH_Service__c")
         private String service;
-        @JsonProperty("TH_Service__r")
-        private SFDCServiceDTO sfdcServiceDTO;
         @JsonProperty("TH_Spare__c")
         private String spare;
-        @JsonProperty("TH_Spare__r")
-        private SFDCSpareDTO sfdcSpareDTO;
         @JsonProperty("TH_SubType__c")
         private String recommendationSubType;
         @JsonProperty("TH_Type__c")

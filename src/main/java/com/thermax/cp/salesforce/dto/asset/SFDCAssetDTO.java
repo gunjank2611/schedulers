@@ -12,19 +12,22 @@ public class SFDCAssetDTO {
     @JsonProperty("Name")
     private String Name;
     @JsonProperty("InstallDate")
-    private String InstallDate;
+    private String installationDate;
     @JsonProperty("THSC_Warranty_Expiry_Date__c")
-    private String warrantyExpiryDate;
+    private String warrantyExpiredDate;
     @JsonProperty("THS_Asset_Service_By_From_ERP__c")
     private String assetServiceByFromERP;
     @JsonProperty("OwnerId")
     private String ownerId;
     @JsonProperty("Owner")
     private AssetOwnerDTO assetOwnerDTO;
+    private String ownerName;
+    private String ownerUserRoleName;
+    private String ownerPhoneNumber;
     @JsonProperty("AccountId")
     private String accountId;
     @JsonProperty("TH_IBG_Division__c")
-    private String ibgDivision;
+    private String division;
     @JsonProperty("THS_Division_Type__c")
     private String divisionType;
     @JsonProperty("THCH_Region__c")
@@ -34,7 +37,7 @@ public class SFDCAssetDTO {
     @JsonProperty("Asset_Make__c")
     private String assetMaker;
     @JsonProperty("THCH_Asset_Status__c")
-    private String assetStatus;
+    private String status;
     @JsonProperty("Calorie_Potential__c")
     private String caloriePotential;
     @JsonProperty("THS_I_C_Scope__c")
@@ -71,7 +74,8 @@ public class SFDCAssetDTO {
     private String createdDate;
     @JsonProperty("LastModifiedDate")
     private String lastModifiedDate;
-
+    @JsonProperty("ContactId")
+    private String contactId;
 
 
 }

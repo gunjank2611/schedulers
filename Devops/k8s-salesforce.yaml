@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tcpsalesforce
+  name: tcpschedulers
   labels:
-    app: tcpsalesforce
+    app: tcpschedulers
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: tcpsalesforce
+      app: tcpschedulers
   template:
     metadata:
       labels:
-        app: tcpsalesforce
+        app: tcpschedulers
     spec:
       containers:
-      - name: tcpsalesforce
+      - name: tcpschedulers
         image: #{imagepath}#:#{imagetag}
 
         env:
@@ -23,14 +23,14 @@ spec:
           value: #{springProfilesActive}#
           
         ports:
-        - containerPort: 7071
+        - containerPort: 7072
      # imagePullSecrets:
      #   - name: dockersecret
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: tcpsalesforce
+  name: tcpschedulers
   annotations:
   ##   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
    #  service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "aks-subnet2"
@@ -38,9 +38,9 @@ spec:
   type: LoadBalancer
   ports:
     - port: 80
-      targetPort: 7071
+      targetPort: 7072
   selector:
-    app: tcpsalesforce
+    app: tcpschedulers
     
     
     
