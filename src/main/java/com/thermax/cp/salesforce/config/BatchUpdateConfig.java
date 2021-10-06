@@ -111,7 +111,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-services")
                 .<SFDCServicesDTO, SFDCServicesDTO>chunk(100)
                 .reader(servicesReader(sfdcBatchDataDetailsRequest,frequency))
-                .writer(new ServicesWriter())
+                .writer(new ServicesWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -121,7 +121,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-spares")
                 .<SFDCSparesDTO, SFDCSparesDTO>chunk(100)
                 .reader(sparesReader(sfdcBatchDataDetailsRequest,frequency))
-                .writer(new SparesWriter())
+                .writer(new SparesWriter(csvWrite,assetsConnector))
                 .build();
     }
 
