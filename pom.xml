@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thermax.cp</groupId>
-	<artifactId>tcp-salesforce-mngmt</artifactId>
+	<artifactId>tcp-schedulers</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tcp-salesforce-mngmt</name>
-	<description>Thermax Salesforce Management Application</description>
+	<name>tcp-schedulers</name>
+	<description>Thermax Schedulers Application</description>
 
 	<!-- Properties Configuration -->
 	<properties>
