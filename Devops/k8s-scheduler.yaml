@@ -25,10 +25,6 @@ spec:
         ports:
         - containerPort: 7072
 
-      storage:
-        type: persistent-claim
-        size: 2Gi
-        deleteClaim: false
 ---
 apiVersion: v1
 kind: Service
@@ -42,3 +38,15 @@ spec:
       targetPort: 7072
   selector:
     app: tcpschedulers
+
+--- 
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+  name: tcpschedulers
+spec:
+  resources:
+    requests:
+      storage: 2G	
+  accessModes:
+    - ReadWriteOnce
