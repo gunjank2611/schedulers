@@ -6,6 +6,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class ComplaintsReader implements ItemReader<SFDCComplaintsDTO> {
     private   String query;
     @Autowired
@@ -21,19 +23,21 @@ public class ComplaintsReader implements ItemReader<SFDCComplaintsDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCComplaintsDTO> sfdcComplaintsDTOList;
     private int nextComplaintIndex;
+    private String frequency;
 
-    public ComplaintsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public ComplaintsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.COMPLAINTS_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextComplaintIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCComplaintsDTO read() throws Exception {
 
         if(complaintsDataNotInitialized())
         {
-            sfdcComplaintsDTOList=getComplaintDetails(query,"LAST_MONTH");
+            sfdcComplaintsDTOList=getComplaintDetails(query,frequency);
         }
         SFDCComplaintsDTO nextComplaint;
         if (nextComplaintIndex < sfdcComplaintsDTOList.size()) {

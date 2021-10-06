@@ -8,6 +8,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class PricebookReader implements ItemReader<SFDCPricebookDTO> {
     private   String query;
     @Autowired
@@ -23,19 +25,21 @@ public class PricebookReader implements ItemReader<SFDCPricebookDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCPricebookDTO> sfdcPricebookDTOList;
     private int nextPricebookIndex;
+    private String frequency;
 
-    public PricebookReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public PricebookReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.PRICEBOOKS_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextPricebookIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCPricebookDTO read() throws Exception {
 
         if(pricebookDataNotInitialized())
         {
-            sfdcPricebookDTOList=getPricebookDetails(query,"LAST_MONTH");
+            sfdcPricebookDTOList=getPricebookDetails(query,frequency);
         }
         SFDCPricebookDTO nextPricebook;
         if (nextPricebookIndex < sfdcPricebookDTOList.size()) {

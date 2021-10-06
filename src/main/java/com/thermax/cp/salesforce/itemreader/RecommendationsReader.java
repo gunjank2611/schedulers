@@ -6,6 +6,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class RecommendationsReader implements ItemReader<SFDCRecommendationsDTO> {
     private   String query;
     @Autowired
@@ -21,19 +23,21 @@ public class RecommendationsReader implements ItemReader<SFDCRecommendationsDTO>
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCRecommendationsDTO> sfdcRecommendationsDTOList;
     private int nextProductIndex;
+    private String frequency;
 
-    public RecommendationsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public RecommendationsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.RECOMMENDATIONS_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextProductIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCRecommendationsDTO read() throws Exception {
 
         if(recommendationDataNotInitialized())
         {
-            sfdcRecommendationsDTOList =getRecommendationDetails(query,"THIS_WEEK");
+            sfdcRecommendationsDTOList =getRecommendationDetails(query,frequency);
         }
         SFDCRecommendationsDTO sfdcRecommendationsDTO;
         if (nextProductIndex < sfdcRecommendationsDTOList.size()) {

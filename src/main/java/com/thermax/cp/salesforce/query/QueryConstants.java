@@ -33,7 +33,7 @@ public interface QueryConstants {
     String ASSET_DETAILS_QUERY=  "SELECT+Id,Name,InstallDate,THSC_Warranty_Expiry_Date__c,THS_Asset_Service_By_From_ERP__c,OwnerId,Owner.Name,Owner.UserRole.Name," +
             "Owner.MobilePhone,Owner.Email,AccountId,TH_IBG_Division__c,THS_Division_Type__c,THCH_Region__c," +
             "THCH_Sales_Order_Number__c,Asset_Make__c,THCH_Asset_Status__c," +
-            "Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c," +
+            "Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c,ContactId," +
             "THS_I_C_Scope__c,THS_Service_Sales_Engineer__c,TPF_User__c," +
             "THS_WARRANTY_DUR_FR_COMM_DT__c,THS_WARRANTY_DUR_FR_DISP_DT__c," +
             "THSC_First_Date_of_Dispatch__c,TH_Shipment_received_date__c," +

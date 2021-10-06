@@ -2,10 +2,7 @@ package com.thermax.cp.salesforce.dto.recommendations;
 
 import lombok.*;
 
-@ToString
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TCPRecommendationsDTO {
@@ -24,4 +21,5 @@ public class TCPRecommendationsDTO {
     private String recommendationSubType;
     private String createdDate;
     private String lastModifiedDate;
+    private String lifeCycleDays;
 }

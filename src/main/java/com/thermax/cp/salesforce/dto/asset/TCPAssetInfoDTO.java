@@ -40,11 +40,6 @@ public class TCPAssetInfoDTO implements Serializable, Comparable<TCPAssetInfoDTO
     private ZonedDateTime createdDate;
     @CreationTimestamp
     private ZonedDateTime lastModifiedDate;
-   /* @OneToMany(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
-            mappedBy = "assetTh")
-    private List<SFDCRecommendationsDTO> recommendationsTh;*/
     @Transient
     @JsonIgnore
     private String statusOB;

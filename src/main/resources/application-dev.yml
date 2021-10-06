@@ -53,6 +53,16 @@ resilience4j:
   circuitbreaker:
     circuitBreakerAspectOrder : 2
     instances:
+      commonClientRateLimit:
+        limit-for-period: 2
+        limit-refresh-period: 5s
+        timeout-duration: 1s
+      commonClientCB:
+        failure-rate-threshold: 80
+        sliding-window-size: 10
+        sliding-window-type: COUNT_BASED
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 1s
       updateAccountCB:
         failure-rate-threshold: 80
         sliding-window-size: 10
@@ -76,6 +86,13 @@ resilience4j:
 
 feign:
   client:
+    assets:
+      base:
+        Url: http://localhost:8087
+      recommendations-url:
+        url: /assetsApi/recommendations/recommendationFromSdfc
+      assets-url:
+        url: /assetsApi/recommendations/assetFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: https://apim-cin-thermax-dev.azure-api.net/fileuploadapi
 
