@@ -1,5 +1,4 @@
-trigger: 
-  - development 
+trigger: none
 pr: none
 
 pool:
@@ -22,18 +21,18 @@ stages:
       parameters:
         useSonar: false
         sonarOrganization: NA
-        appname: Salesforce
+        appname: Scheduler 
         sonarKey: ThermaxCP
         containerRegistry: acrcinthermaxdev.azurecr.io
         environmentBranch: development
         environmentName: Dev
         dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: dev/SalesforceManagement
+        imageRepository: dev/Scheduler
         MAVEN_OPTS: '-Dmaven.test.skip=true'
 
     - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
       parameters:
-          appName: tcpsalesforce
+          appName: tcpscheduler
           environmentName: Dev
           environmentBranch: Development
           filepath: 'Devops/k8s-salesforce.yaml'
