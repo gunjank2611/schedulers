@@ -37,3 +37,7 @@ stages:
           imagerepo: dev/scheduler
           k8ssvcconn: Thermaxk8sdev 
           springProfilesActive: dev
+          dbHost: ""
+          dbUser: ""
+          dbPassword: ""
+          dbName: ""
