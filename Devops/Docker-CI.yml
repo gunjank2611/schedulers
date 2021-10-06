@@ -1,4 +1,5 @@
-trigger: none
+trigger: 
+  - development 
 pr: none
 
 pool:
@@ -37,3 +38,7 @@ stages:
           imagerepo: dev/Scheduler
           k8ssvcconn: Thermaxk8sdev 
           springProfilesActive: dev
+          dbHost: ""
+          dbUser: ""
+          dbPassword: ""
+          dbName: ""
