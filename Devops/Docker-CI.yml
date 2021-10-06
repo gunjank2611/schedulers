@@ -18,48 +18,22 @@ stages:
       parameters:
         useSonar: false
         sonarOrganization: NA
-        appname: Salesforce
+        appname: tcpScheduler
         sonarKey: ThermaxCP
         containerRegistry: acrcinthermaxdev.azurecr.io
         environmentBranch: development
         environmentName: Dev
         dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: dev/SalesforceManagement
+        imageRepository: dev/Scheduler
         MAVEN_OPTS: '-Dmaven.test.skip=true'
 
     - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
       parameters:
-          appName: tcpsalesforce
+          appName: tcpScheduler
           environmentName: Dev
           environmentBranch: Development
-          filepath: 'Devops/k8s-salesforce.yaml'
+          filepath: 'Devops/k8s-Scheduler.yaml'
           containerreg: acrcinthermaxdev.azurecr.io
-          imagerepo: dev/salesforcemanagement
+          imagerepo: dev/Scheduler
           k8ssvcconn: Thermaxk8sdev 
           springProfilesActive: dev
- 
- - stage: "QA"
-   jobs:
-    - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
-      parameters:
-        useSonar: false
-        sonarOrganization: NA
-        appname: Salesforce
-        sonarKey: ThermaxCP
-        containerRegistry: acrcinthermaxdev.azurecr.io
-        environmentBranch: development
-        environmentName: QA
-        dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: qa/SalesforceManagement
-        MAVEN_OPTS: '-Dmaven.test.skip=true'
-
-    - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
-      parameters:
-          appName: tcpsalesforce
-          environmentName: QA
-          environmentBranch: Development
-          filepath: 'Devops/k8s-salesforce.yaml'
-          containerreg: acrcinthermaxdev.azurecr.io
-          imagerepo: qa/salesforcemanagement
-          k8ssvcconn: Thermaxk8sqa
-          springProfilesActive: qa
