@@ -13,7 +13,7 @@ resources:
 
 stages: 
  - stage: "DEV"
-   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/development') }}
+   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
    variables:
    - group: DB-Dev
    jobs:
