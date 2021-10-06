@@ -21,19 +21,20 @@ spec:
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: #{springProfilesActive}#
-          
+
         ports:
         - containerPort: 7072
-     # imagePullSecrets:
-     #   - name: dockersecret
+
+      storage:
+        type: persistent-claim
+        size: 2Gi
+        deleteClaim: false
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: tcpschedulers
   annotations:
-  ##   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-   #  service.beta.kubernetes.io/azure-load-balancer-internal-subnet: "aks-subnet2"
 spec:
   type: LoadBalancer
   ports:
@@ -41,6 +42,3 @@ spec:
       targetPort: 7072
   selector:
     app: tcpschedulers
-    
-    
-    
