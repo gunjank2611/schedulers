@@ -8,6 +8,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class EligibleSparesSerivcesReader implements ItemReader<SFDCEligibleSparesServicesDTO> {
     private   String query;
     @Autowired
@@ -23,19 +25,21 @@ public class EligibleSparesSerivcesReader implements ItemReader<SFDCEligibleSpar
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCEligibleSparesServicesDTO> sfdcEligibleSparesServicesDTOList;
     private int nextSpareServiceIndex;
+    private String frequency;
 
-    public EligibleSparesSerivcesReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public EligibleSparesSerivcesReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.ELIGIBLE_SPARE_SERVICE_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextSpareServiceIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCEligibleSparesServicesDTO read() throws Exception {
 
         if(spareServiceDataNotInitialized())
         {
-            sfdcEligibleSparesServicesDTOList=getEligibleSpareServicesDetails(query,"LAST_MONTH");
+            sfdcEligibleSparesServicesDTOList=getEligibleSpareServicesDetails(query,frequency);
         }
         SFDCEligibleSparesServicesDTO nextSpareService;
         if (nextSpareServiceIndex < sfdcEligibleSparesServicesDTOList.size()) {

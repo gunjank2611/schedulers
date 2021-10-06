@@ -23,19 +23,21 @@ public class AssetHistoryReader implements ItemReader<SFDCAssetHistoryDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCAssetHistoryDTO> sfdcAssetHistoryDTOList;
     private int nextAssetHistoryIndex;
+    private String frequency;
 
-    public AssetHistoryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public AssetHistoryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.ASSET_HISTORY_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextAssetHistoryIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCAssetHistoryDTO read() throws Exception {
 
         if(assetDataNotInitialized())
         {
-            sfdcAssetHistoryDTOList =getAssetHistoryDetails(query,"LAST_MONTH");
+            sfdcAssetHistoryDTOList =getAssetHistoryDetails(query,frequency);
         }
         SFDCAssetHistoryDTO nextAssetHistory;
         if (nextAssetHistoryIndex < sfdcAssetHistoryDTOList.size()) {

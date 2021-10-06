@@ -8,6 +8,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class OrderReader implements ItemReader<SFDCOrdersDTO> {
     private   String query;
     @Autowired
@@ -23,19 +25,21 @@ public class OrderReader implements ItemReader<SFDCOrdersDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCOrdersDTO> sfdcOrdersDTOSList;
     private int nextOrderIndex;
+    private String frequency;
 
-    public OrderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public OrderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.ORDERS_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextOrderIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCOrdersDTO read() throws Exception {
 
         if(ordersDataNotInitialized())
         {
-            sfdcOrdersDTOSList=getOrderDetails(query,"THIS_WEEK");
+            sfdcOrdersDTOSList=getOrderDetails(query,frequency);
         }
         SFDCOrdersDTO nextOrder;
         if (nextOrderIndex < sfdcOrdersDTOSList.size()) {

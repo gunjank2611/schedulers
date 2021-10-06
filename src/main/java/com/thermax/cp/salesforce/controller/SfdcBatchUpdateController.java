@@ -100,15 +100,15 @@ public class SfdcBatchUpdateController {
     JobExplorer jobExplorer;
 
 
-    @GetMapping("/loadProducts")
+    @GetMapping("/loadProducts/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Products loaded successfully")
-    public void loadProducts() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadProducts(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(productsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", productsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(productsJob, parameters);
@@ -122,15 +122,15 @@ public class SfdcBatchUpdateController {
     }
 
 
-    @GetMapping("/loadAccounts")
+    @GetMapping("/loadAccounts/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Accounts loaded successfully")
-    public void loadAccounts() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadAccounts(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(accountsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", accountsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(accountsJob, parameters);
@@ -143,15 +143,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadRecommendations")
+    @GetMapping("/loadRecommendations/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Recommendations loaded successfully")
-    public void loadRecommendations() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadRecommendations(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(recommendationsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", recommendationsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(recommendationsJob, parameters);
@@ -164,15 +164,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadServices")
+    @GetMapping("/loadServices/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Spares loaded successfully")
-    public void loadServices() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadServices(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(servicesJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", servicesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(servicesJob, parameters);
@@ -185,15 +185,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadSpares")
+    @GetMapping("/loadSpares/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Spares loaded successfully")
-    public void loadSpares() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadSpares(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(sparesJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", sparesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(sparesJob, parameters);
@@ -206,15 +206,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadAssets")
+    @GetMapping("/loadAssets/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Assets loaded successfully")
-    public void loadAssets() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadAssets(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(assetsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", assetsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(assetsJob, parameters);
@@ -227,15 +227,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadOpportunities")
+    @GetMapping("/loadOpportunities/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Opportunities loaded successfully")
-    public void loadOpportunities() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadOpportunities(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(opportunitiesJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", opportunitiesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(opportunitiesJob, parameters);
@@ -248,15 +248,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadPricebooks")
+    @GetMapping("/loadPricebooks/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "pricebooks loaded successfully")
-    public void loadPriceBooks() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadPriceBooks(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(pricebooksJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", pricebooksJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(pricebooksJob, parameters);
@@ -269,15 +269,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadPricebookEntries")
+    @GetMapping("/loadPricebookEntries/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Pricebook entries loaded successfully")
-    public void loadPricebookEntries() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadPricebookEntries(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(pricebookEntriesJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", pricebookEntriesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(pricebookEntriesJob, parameters);
@@ -290,15 +290,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadUsers")
+    @GetMapping("/loadUsers/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Users loaded successfully")
-    public void loadUsers() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadUsers(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(usersJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", usersJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(usersJob, parameters);
@@ -311,15 +311,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadComplaints")
+    @GetMapping("/loadComplaints/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "complaints loaded successfully")
-    public void loadComplaints() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadComplaints(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(complaintsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", complaintsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(complaintsJob, parameters);
@@ -332,15 +332,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadOrders")
+    @GetMapping("/loadOrders/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "orders loaded successfully")
-    public void loadOrders() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadOrders(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(ordersJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", ordersJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(ordersJob, parameters);
@@ -354,17 +354,19 @@ public class SfdcBatchUpdateController {
     }
 
 
-    @GetMapping("/loadOrderItems")
+    @GetMapping("/loadOrderItems/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "order items loaded successfully")
-    public void loadOrderItems() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadOrderItems(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(orderItemsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
+
             log.info("Trying to restart task \"{}\" with the parameters [{}]", orderItemsJob, parameters);
         }
+
         JobExecution jobExecution = jobLauncher.run(orderItemsJob, parameters);
         log.info("JobExecution  {} " , jobExecution.getStatus());
 
@@ -375,15 +377,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadOpportunityLineItems")
+    @GetMapping("/loadOpportunityLineItems/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "order items loaded successfully")
-    public void loadOpportunityLineItems() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadOpportunityLineItems(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(opportunityLineItemsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", opportunityLineItemsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(opportunityLineItemsJob, parameters);
@@ -396,15 +398,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadProposals")
+    @GetMapping("/loadProposals/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "proposals loaded successfully")
-    public void loadProposals() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadProposals(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(proposalsJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", proposalsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(proposalsJob, parameters);
@@ -417,15 +419,15 @@ public class SfdcBatchUpdateController {
 
     }
 
-    @GetMapping("/loadEligibleSparesServices")
+    @GetMapping("/loadEligibleSparesServices/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "proposals loaded successfully")
-    public void loadEligibleSparesServices() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadEligibleSparesServices(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(eligibleSpareServicesJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", eligibleSpareServicesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(eligibleSpareServicesJob, parameters);
@@ -438,14 +440,15 @@ public class SfdcBatchUpdateController {
 
     }
 
+    @GetMapping("/loadAssetHistory/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "asset history loaded successfully")
-    public void loadAssetHistory() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+    public void loadAssetHistory(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(assetHistoryJob.getName());
         if (existingInstance!=null)
         {
-            parameters = getNext();
+            parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", assetHistoryJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(assetHistoryJob, parameters);
@@ -457,10 +460,11 @@ public class SfdcBatchUpdateController {
         }
 
     }
-    public JobParameters getNext() {
+    public JobParameters getNext(String frequency) {
         long id = new Date().getTime();
         JobParameters jobParameters = new JobParametersBuilder()
-                .addLong("run.id", id).toJobParameters();
+                .addLong("run.id", id)
+                .addString("frequency", frequency).toJobParameters();
         return jobParameters;
     }
 

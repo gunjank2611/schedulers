@@ -6,6 +6,7 @@ import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+@StepScope
 public class AccountItemReader implements ItemReader<SFDCAccountInfoDTO> {
     private   String query;
     @Autowired
@@ -21,19 +23,21 @@ public class AccountItemReader implements ItemReader<SFDCAccountInfoDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCAccountInfoDTO> sfdcAccountInfoDTOList;
     private int nextProductIndex;
+    private String frequency;
 
-    public AccountItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest)
+    public AccountItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
     {
         this.query= QueryConstants.ACCOUNT_DETAILS_QUERY;
         this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
         this.nextProductIndex=0;
+        this.frequency=frequency;
     }
     @Override
     public SFDCAccountInfoDTO read() throws Exception {
 
         if(productDataNotInitialized())
         {
-            sfdcAccountInfoDTOList =getAccountDetails(query,"LAST_MONTH");
+            sfdcAccountInfoDTOList =getAccountDetails(query,frequency);
         }
         SFDCAccountInfoDTO nextAccount;
         if (nextProductIndex < sfdcAccountInfoDTOList.size()) {
