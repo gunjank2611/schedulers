@@ -2,6 +2,7 @@ package com.thermax.cp.salesforce.feign.config;
 
 import com.thermax.cp.salesforce.config.SfdcClientConfiguration;
 import com.thermax.cp.salesforce.config.SfdcOAuthConnectorRequest;
+import com.thermax.cp.salesforce.config.SfdcOrdersConfiguration;
 import feign.RequestInterceptor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.ObjectFactory;
@@ -21,6 +22,9 @@ public class FeignRequestConfiguration {
     private SfdcClientConfiguration sfdcClientConfiguration;
 
     @Autowired
+    private SfdcOrdersConfiguration sfdcOrdersConfiguration;
+
+    @Autowired
     private ObjectFactory<HttpMessageConverters> messageConverters;
 
 
@@ -35,7 +39,13 @@ public class FeignRequestConfiguration {
                 return;
             } else if (requestUrl.contains("/api/v1/upload/")) {
                 log.info("keeping default multipart header for the file upload url : " + requestUrl);
-            } else {
+            } if (requestUrl.contains("/api/v1/sfdc/schedulers")) {
+                requestTemplate.header("USERNAME", sfdcOrdersConfiguration.getUsername());
+                requestTemplate.header("PASSWORD", sfdcOrdersConfiguration.getPassword());
+                requestTemplate.header("INSTANCE", sfdcOrdersConfiguration.getInstance());
+                return;
+            }
+            else {
                 requestTemplate.header("Content-Type", "application/json");
                 requestTemplate.header("Accept", "application/json");
             }

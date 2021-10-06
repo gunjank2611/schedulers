@@ -102,5 +102,10 @@ sfdc:
   client-secret: 7785F6398BBDF7F4691ECC097992FF832595A2B55BFC8A877F82A69CE3A39682
   username: cp.integration.user@nagarro.com
   password: Salesforce@123
+sfdcorders:
+  grant-type: password
+  username: Thermax.CPIntegrationTestUser
+  password: SaENw#@2MCJd
+  INSTANCE: TMXTESTINST
 
 
