@@ -7,6 +7,7 @@ import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesDTO;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintsDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsDTO;
+import com.thermax.cp.salesforce.dto.orders.OrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderItemsDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookDTO;
@@ -16,10 +17,10 @@ import com.thermax.cp.salesforce.dto.proposals.SFDCProposalsDTO;
 import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
 import com.thermax.cp.salesforce.dto.services.SFDCServicesDTO;
 import com.thermax.cp.salesforce.dto.spares.SFDCSparesDTO;
-import com.thermax.cp.salesforce.dto.users.SFDCUserDTOList;
 import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
 import com.thermax.cp.salesforce.itemprocessor.AccountsProcessor;
 import com.thermax.cp.salesforce.itemprocessor.AssetProcessor;
 import com.thermax.cp.salesforce.itemprocessor.ProductItemProcessor;
@@ -52,6 +53,9 @@ public class BatchUpdateConfig {
     private StepBuilderFactory stepBuilderFactory;
 
     @Autowired
+    private SfdcOrdersRequest sfdOrdersRequest;
+
+    @Autowired
     private CSVWrite csvWrite;
 
     @Autowired
@@ -61,6 +65,8 @@ public class BatchUpdateConfig {
     private AssetsConnector assetsConnector;
 
     private String frequency;
+
+    private String url;
 
 
     public JobParametersIncrementer jobParametersIncrementer() {
@@ -112,6 +118,16 @@ public class BatchUpdateConfig {
                 .<SFDCServicesDTO, SFDCServicesDTO>chunk(100)
                 .reader(servicesReader(sfdcBatchDataDetailsRequest,frequency))
                 .writer(new ServicesWriter(csvWrite,assetsConnector))
+                .build();
+    }
+
+    @Bean
+    public Step loadOrderStatus(
+    ) {
+        return stepBuilderFactory.get("load-orderstatus")
+                .<OrderHeadersDTO, OrderHeadersDTO>chunk(100)
+                .reader(orderHeaderReader(sfdcBatchDataDetailsRequest,url))
+                .writer(new OrderHeaderWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -360,6 +376,15 @@ public class BatchUpdateConfig {
     public Job ordersJob(JobBuilderFactory jobBuilderFactory
     ) {
 
+        return getJobBuilder("load-orderstatus")
+                .start(loadOrderStatus())
+                .build();
+    }
+
+    @Bean
+    public Job orderStatusJob(JobBuilderFactory jobBuilderFactory
+    ) {
+
         return getJobBuilder("load-orders")
                 .start(loadOrders())
                 .build();
@@ -409,6 +434,14 @@ public class BatchUpdateConfig {
      @Value("#{jobParameters[frequency]}") String frequency) {
 
         return  new ProductItemReader(sfdcBatchDataDetailsRequest,frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<OrderHeadersDTO> orderHeaderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                         @Value("#{jobParameters[url]}") String url) {
+
+        return  new OrderHeaderReader(sfdcBatchDataDetailsRequest,url);
     }
 
     @StepScope

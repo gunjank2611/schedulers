@@ -87,6 +87,9 @@ public class SfdcBatchUpdateController {
     Job proposalsJob;
 
     @Autowired
+    Job orderStatusJob;
+
+    @Autowired
     Job eligibleSpareServicesJob;
 
     @Autowired
@@ -119,6 +122,26 @@ public class SfdcBatchUpdateController {
             System.out.println("...");
         }
 
+    }
+
+    @GetMapping("/loadOrderStatus")
+    @ResponseStatus(value = HttpStatus.OK, reason = "OrderStatus loaded successfully")
+    public void loadOrderStatus(@RequestParam String url) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobInstance existingInstance = jobExplorer.getLastJobInstance(orderStatusJob.getName());
+        if (existingInstance!=null)
+        {
+            parameters = getNextStatus(url);
+            log.info("Trying to restart task \"{}\" with the parameters [{}]", orderStatusJob, parameters);
+        }
+        JobExecution jobExecution = jobLauncher.run(orderStatusJob, parameters);
+        log.info("JobExecution  {} " , jobExecution.getStatus());
+
+        log.info("Batch is Running...");
+        while (jobExecution.isRunning()) {
+            System.out.println("...");
+        }
     }
 
 
@@ -465,6 +488,12 @@ public class SfdcBatchUpdateController {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("run.id", id)
                 .addString("frequency", frequency).toJobParameters();
+        return jobParameters;
+    }
+    public JobParameters getNextStatus(String url) {
+        long id = new Date().getTime();
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("url", url).toJobParameters();
         return jobParameters;
     }
 
