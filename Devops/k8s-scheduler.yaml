@@ -27,7 +27,7 @@ spec:
               name: tcpschedulers
               subPath: tcpschedulers
 
-      volume:
+      volumes:
         - name: tcpschedulers
           persistentVolumeClaim:
             claimName: tcpschedulers
