@@ -20,9 +20,9 @@ public class SfdcOrderController {
     @Autowired
     private SfdcOrdersRequest sfdcOrdersRequest;
 
-    @PostMapping(value = "/getOrderHeaders" , consumes = "application/json")
+    @PostMapping(value = "/getOrderHeaders", consumes = "application/json")
     @ResponseStatus(value = HttpStatus.OK, reason = "Products loaded successfully")
-    public ResponseEntity<OrderHeadersListDTO> getOrders(@RequestBody List<OrderIdDTO> orderIdsList)  {
+    public ResponseEntity<OrderHeadersListDTO> getOrders(@RequestBody List<OrderIdDTO> orderIdsList) {
         return sfdcOrdersRequest.getOrders(orderIdsList);
 
     }

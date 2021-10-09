@@ -3,7 +3,7 @@ spring:
     name: THERMAX-SFDC-INTERFACE
 
   datasource:
-    url: jdbc:postgresql://azpgsql-cin-thermax-dev.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&sslmode=require
+    url: jdbc:postgresql://localhost:6432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&prepareThreshold=0
   jpa:
     show-sql: true
     hibernate:
@@ -24,34 +24,34 @@ spring:
 
 
 management:
-    endpoint:
-        health:
-            group:
-                liveliness:
-                    include: livenessProbe,cacheCheck
-            show-details: always
-        loggers:
-            enabled: true
-        metrics:
-            enabled: true
-    endpoints:
-        web:
-            exposure:
-                include: '*'
+  endpoint:
+    health:
+      group:
+        liveliness:
+          include: livenessProbe,cacheCheck
+      show-details: always
+    loggers:
+      enabled: true
+    metrics:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 server:
-    port: 7071
-    shutdown: graceful
+  port: 7071
+  shutdown: graceful
 
 resilience4j:
   ratelimiter:
-    rateLimiterAspectOrder : 1
+    rateLimiterAspectOrder: 1
     instances:
       getAccountsRateLimit:
-         limit-for-period : 2
-         limit-refresh-period : 5s
-         timeout-duration : 1s
+        limit-for-period: 2
+        limit-refresh-period: 5s
+        timeout-duration: 1s
   circuitbreaker:
-    circuitBreakerAspectOrder : 2
+    circuitBreakerAspectOrder: 2
     instances:
       commonClientRateLimit:
         limit-for-period: 2
@@ -77,10 +77,10 @@ resilience4j:
         wait-duration-in-open-state: 1s
 
   retry:
-    retryAspectOrder : 3
+    retryAspectOrder: 3
     instances:
-      updateAccountRetry :
-        max-attempts : 5
+      updateAccountRetry:
+        max-attempts: 5
         wait-duration: 2s
         retry-exceptions: org.springframework.web.client.ResourceAccessException
 
@@ -88,13 +88,14 @@ feign:
   client:
     assets:
       base:
-        Url: http://localhost:8087
+        Url: tcpassets
       recommendations-url:
         url: /assetsApi/recommendations/recommendationFromSdfc
       assets-url:
         url: /assetsApi/recommendations/assetFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
-    fileUploadUrl: https://apim-cin-thermax-dev.azure-api.net/fileuploadapi
+    fileUploadUrl: tcp-fileuploader
+    orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
 
 sfdc:
   grant-type: password
