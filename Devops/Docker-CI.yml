@@ -13,6 +13,9 @@ resources:
 
 stages: 
  - stage: "DEV"
+   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/development') }}
+   variables:
+   - group: DB-Dev
    jobs:
     - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
       parameters:
@@ -37,7 +40,7 @@ stages:
           imagerepo: dev/scheduler
           k8ssvcconn: Thermaxk8sdev 
           springProfilesActive: dev
-          dbHost: ""
-          dbUser: ""
-          dbPassword: ""
-          dbName: ""
+          dbHost: $(dbHost)
+          dbUser: $(dbUsername)
+          dbPassword: $(dbPassword)
+          dbName: $(dbName)
