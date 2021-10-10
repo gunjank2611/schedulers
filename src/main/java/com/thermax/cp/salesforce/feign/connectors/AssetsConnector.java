@@ -15,12 +15,12 @@ import java.util.List;
 public interface AssetsConnector {
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
-    @PostMapping(value = "${feign.client.assets.recommendations-url.url}")
+    @PostMapping(value = "${feign.client.assets.recommendations-url}")
     ResponseEntity<Void> sendRecommendationBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
-    @PostMapping(value = "${feign.client.assets.assets-url.url}")
+    @PostMapping(value = "${feign.client.assets.assets-url}")
     ResponseEntity<Void> sendAssetsBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
 
