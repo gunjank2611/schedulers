@@ -1,7 +1,7 @@
 package com.thermax.cp.salesforce.controller;
 
-import com.thermax.cp.salesforce.dto.orders.OrderHeadersListDTO;
 import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersListDTO;
 import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/sfdc/schedulers")
 
-public class SfdcOrderController {
+public class SfdcOrderStatusController {
     @Autowired
     private SfdcOrdersRequest sfdcOrdersRequest;
 
     @PostMapping(value = "/getOrderHeaders", consumes = "application/json")
     @ResponseStatus(value = HttpStatus.OK, reason = "Products loaded successfully")
-    public ResponseEntity<OrderHeadersListDTO> getOrders(@RequestBody List<OrderIdDTO> orderIdsList) {
+    public ResponseEntity<SFDCOrderHeadersListDTO> getOrderStatus(@RequestBody List<OrderIdDTO> orderIdsList) {
         return sfdcOrdersRequest.getOrders(orderIdsList);
 
     }

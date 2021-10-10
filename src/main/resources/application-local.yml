@@ -86,6 +86,11 @@ resilience4j:
 feign:
   client:
     assets:
+    enquiry:
+      base-url: https://apim-cin-thermax-dev.azure-api.net
+      orders-url: /enquiryapi/api/v1/scheduler/orders
+      order-items-url: /enquiryapi/api/v1/scheduler/orderItems
+      order-status-url: /enquiryapi/api/v1/scheduler/orderStatus
       base:
         Url: http://localhost:8087
       recommendations-url:
@@ -109,3 +114,8 @@ sfdcorders:
   INSTANCE: TMXTESTINST
 
 
+logging:
+  level:
+    com.thermax.cp.salesforce: TRACE
+    org.springframework: TRACE
+    org.springframework.web.servlet: TRACE

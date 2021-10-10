@@ -7,7 +7,7 @@ import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesDTO;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintsDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsDTO;
-import com.thermax.cp.salesforce.dto.orders.OrderHeadersDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderItemsDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookDTO;
@@ -125,7 +125,7 @@ public class BatchUpdateConfig {
     public Step loadOrderStatus(
     ) {
         return stepBuilderFactory.get("load-orderstatus")
-                .<OrderHeadersDTO, OrderHeadersDTO>chunk(100)
+                .<SFDCOrderHeadersDTO, SFDCOrderHeadersDTO>chunk(100)
                 .reader(orderHeaderReader(sfdcBatchDataDetailsRequest,url))
                 .writer(new OrderHeaderWriter(csvWrite,assetsConnector))
                 .build();
@@ -373,7 +373,7 @@ public class BatchUpdateConfig {
     }
 
     @Bean
-    public Job ordersJob(JobBuilderFactory jobBuilderFactory
+    public Job orderStatusJob(JobBuilderFactory jobBuilderFactory
     ) {
 
         return getJobBuilder("load-orderstatus")
@@ -382,7 +382,7 @@ public class BatchUpdateConfig {
     }
 
     @Bean
-    public Job orderStatusJob(JobBuilderFactory jobBuilderFactory
+    public Job ordersJob(JobBuilderFactory jobBuilderFactory
     ) {
 
         return getJobBuilder("load-orders")
@@ -438,8 +438,8 @@ public class BatchUpdateConfig {
 
     @StepScope
     @Bean
-    public ItemReader<OrderHeadersDTO> orderHeaderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
-                                                         @Value("#{jobParameters[url]}") String url) {
+    public ItemReader<SFDCOrderHeadersDTO> orderHeaderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                             @Value("#{jobParameters[url]}") String url) {
 
         return  new OrderHeaderReader(sfdcBatchDataDetailsRequest,url);
     }

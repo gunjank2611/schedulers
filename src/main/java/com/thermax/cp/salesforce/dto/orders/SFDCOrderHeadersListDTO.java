@@ -6,8 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class OrderHeadersListDTO {
+public class SFDCOrderHeadersListDTO {
 
     @JsonProperty("Return")
-    private List<OrderHeadersDTO> ordersList;
+    private List<SFDCOrderHeadersDTO> ordersList;
 }

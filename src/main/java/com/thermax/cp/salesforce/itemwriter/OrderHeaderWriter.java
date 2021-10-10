@@ -1,6 +1,6 @@
 package com.thermax.cp.salesforce.itemwriter;
 
-import com.thermax.cp.salesforce.dto.orders.OrderHeadersDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.utils.CSVWrite;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Log4j2
-public class OrderHeaderWriter implements ItemWriter<OrderHeadersDTO>{
+public class OrderHeaderWriter implements ItemWriter<SFDCOrderHeadersDTO>{
     final private CSVWrite csvWrite;
     final private AssetsConnector assetsConnector;
 
@@ -23,7 +23,7 @@ public class OrderHeaderWriter implements ItemWriter<OrderHeadersDTO>{
     }
 
     @Override
-    public void write(List<? extends OrderHeadersDTO> orderHeaderDTOS) throws Exception {
+    public void write(List<? extends SFDCOrderHeadersDTO> orderHeaderDTOS) throws Exception {
         log.info("Received assets from SFDC : {}", orderHeaderDTOS.size());
         log.info("Written assets size : {}", orderHeaderDTOS.size());
         final String[] headers = new String[]{"headerStatus", "expectedDeliveryDate"};
