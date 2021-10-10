@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(value = "AssetsConnector", url = "${feign.client.assets.base.url}")
+@FeignClient(value = "AssetsConnector", url = "${feign.client.assets.base-url}")
 public interface AssetsConnector {
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")

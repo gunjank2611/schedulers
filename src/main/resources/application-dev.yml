@@ -92,12 +92,9 @@ feign:
       order-items-url: /enquiryApi/api/v1/scheduler/orderItems
       order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
     assets:
-      base:
-        Url: tcpassets
-      recommendations-url:
-        url: /assetsApi/recommendations/recommendationFromSdfc
-      assets-url:
-        url: /assetsApi/recommendations/assetFromSdfc
+      base-Url: tcpassets
+      recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
+      assets-url: /assetsApi/recommendations/assetFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
     orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
