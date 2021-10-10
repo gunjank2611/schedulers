@@ -14,7 +14,7 @@ public interface EnquiryConnector {
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
     @PostMapping(value = "${feign.client.enquiry.orders-url}")
-    ResponseEntity<Void> sendROrdersBlobUrl(@RequestBody FileURLDTO fileURLDTO);
+    ResponseEntity<Void> sendOrdersBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")

@@ -72,4 +72,6 @@ public class SFDCOrdersDTO {
     private String ownerId;
     @JsonProperty("Owner")
     private SFDCOrdersOwnerDTO owner;
+    @JsonProperty("Opportunity")
+    private SFDCOrderOpportunityDTO opportunity;
 }
