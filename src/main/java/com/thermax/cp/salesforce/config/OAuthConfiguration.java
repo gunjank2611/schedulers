@@ -1,6 +1,7 @@
 package com.thermax.cp.salesforce.config;
 
 import feign.Client;
+import feign.Logger;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.ssl.TrustStrategy;
@@ -40,4 +41,10 @@ public class OAuthConfiguration {
         SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
         return sslContext.getSocketFactory();
     }
+
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+
 }

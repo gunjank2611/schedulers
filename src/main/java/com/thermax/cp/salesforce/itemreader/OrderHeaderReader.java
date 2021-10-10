@@ -1,8 +1,8 @@
 package com.thermax.cp.salesforce.itemreader;
 
 
-import com.thermax.cp.salesforce.dto.orders.OrderHeadersDTO;
-import com.thermax.cp.salesforce.dto.orders.OrderHeadersListDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersListDTO;
 import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
 import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @StepScope
-public class OrderHeaderReader implements ItemReader<OrderHeadersDTO> {
+public class OrderHeaderReader implements ItemReader<SFDCOrderHeadersDTO> {
     private String query;
     @Autowired
     private SfdcOrdersRequest sfdOrdersRequest;
@@ -26,7 +26,7 @@ public class OrderHeaderReader implements ItemReader<OrderHeadersDTO> {
     private SfdcServiceUtils sfdcServiceUtils;
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
-    private List<OrderHeadersDTO> orderHeadersDTOList;
+    private List<SFDCOrderHeadersDTO> SFDCOrderHeadersDTOList;
     private int nextProductIndex;
     private String url;
 
@@ -39,15 +39,15 @@ public class OrderHeaderReader implements ItemReader<OrderHeadersDTO> {
     }
 
     @Override
-    public OrderHeadersDTO read() throws Exception {
+    public SFDCOrderHeadersDTO read() throws Exception {
 
         if(productDataNotInitialized())
         {
-            orderHeadersDTOList =getOrderStatusDetails();
+            SFDCOrderHeadersDTOList =getOrderStatusDetails();
         }
-        OrderHeadersDTO nextOrderHeaderDTO;
-        if (nextProductIndex < orderHeadersDTOList.size()) {
-            nextOrderHeaderDTO = orderHeadersDTOList.get(nextProductIndex);
+        SFDCOrderHeadersDTO nextOrderHeaderDTO;
+        if (nextProductIndex < SFDCOrderHeadersDTOList.size()) {
+            nextOrderHeaderDTO = SFDCOrderHeadersDTOList.get(nextProductIndex);
             nextProductIndex++;
         }
         else {
@@ -60,12 +60,12 @@ public class OrderHeaderReader implements ItemReader<OrderHeadersDTO> {
 
     private boolean productDataNotInitialized()
     {
-        return this.orderHeadersDTOList ==null;
+        return this.SFDCOrderHeadersDTOList ==null;
     }
 
-    private List<OrderHeadersDTO> getOrderStatusDetails() throws IOException {
+    private List<SFDCOrderHeadersDTO> getOrderStatusDetails() throws IOException {
         List<OrderIdDTO> orderIds = (List<OrderIdDTO>) CSVRead.readDump(url, "", OrderIdDTO.class);
-        ResponseEntity<OrderHeadersListDTO> orderHeadersDTOList = sfdOrdersRequest.getOrders(orderIds);
+        ResponseEntity<SFDCOrderHeadersListDTO> orderHeadersDTOList = sfdOrdersRequest.getOrders(orderIds);
         if (orderHeadersDTOList != null) {
             return orderHeadersDTOList.getBody().getOrdersList();
         } else {

@@ -9,27 +9,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(value = "AssetsConnector", url = "${feign.client.assets.base-url}")
-public interface AssetsConnector {
+@FeignClient(value = "EnquiryConnector", url = "${feign.client.enquiry.base-url}")
+public interface EnquiryConnector {
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
-    @PostMapping(value = "${feign.client.assets.recommendations-url}")
-    ResponseEntity<Void> sendRecommendationBlobUrl(@RequestBody FileURLDTO fileURLDTO);
+    @PostMapping(value = "${feign.client.enquiry.orders-url}")
+    ResponseEntity<Void> sendOrdersBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
-    @PostMapping(value = "${feign.client.assets.assets-url}")
-    ResponseEntity<Void> sendAssetsBlobUrl(@RequestBody FileURLDTO fileURLDTO);
+    @PostMapping(value = "${feign.client.enquiry.order-items-url}")
+    ResponseEntity<Void> sendOrderItemsBlobUrl(@RequestBody FileURLDTO fileURLDTO);
+
+
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.enquiry.order-status-url}")
+    ResponseEntity<Void> sendOrderStatusBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
 
     default ResponseEntity<String> circuitBreakerFallback(Exception e) {
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
-                .body("Assets service is currently unavailable, please try again after sometime!");
+                .body("Enquiry service is currently unavailable, please try again after sometime: " + e.getMessage());
 
     }
 
     default ResponseEntity<String> rateLimitFallBack(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                .body("Too many requests for retrieving asset list: Please try again after sometime");
+                .body("Too many requests for sending orders data: Please try again after sometime: " + throwable.getMessage());
     }
 }
