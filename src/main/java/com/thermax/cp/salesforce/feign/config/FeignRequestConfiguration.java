@@ -39,20 +39,16 @@ public class FeignRequestConfiguration {
                 return;
             } else if (requestUrl.contains("/api/v1/upload/")) {
                 log.info("keeping default multipart header for the file upload url : " + requestUrl);
-            } if (requestUrl.contains("/api/cp/get_order_status")) {
+            } else if (requestUrl.contains("/api/cp/get_order_status")) {
                 requestTemplate.header("USERNAME", sfdcOrdersConfiguration.getUsername());
                 requestTemplate.header("PASSWORD", sfdcOrdersConfiguration.getPassword());
                 requestTemplate.header("INSTANCE", sfdcOrdersConfiguration.getInstance());
                 return;
-            }
-            else {
+            } else {
                 requestTemplate.header("Content-Type", "application/json");
                 requestTemplate.header("Accept", "application/json");
             }
-
-            requestTemplate.header("Authorization", "Bearer " +
-                    getBearerAccessTokenFromSfdc(sfdcClientConfiguration.getGrantType(), sfdcClientConfiguration.getClientId(),
-                            sfdcClientConfiguration.getClientSecret(), sfdcClientConfiguration.getUsername(), sfdcClientConfiguration.getPassword()));
+            requestTemplate.header("Authorization", "Bearer " + getBearerAccessTokenFromSfdc());
         };
     }
 
@@ -61,8 +57,15 @@ public class FeignRequestConfiguration {
      *
      * @return
      */
-    private String getBearerAccessTokenFromSfdc(String grantType, String clientId, String clientSecret, String username, String password) {
-        return sfdcOAuthConnectorRequest.getAuthentication(grantType, clientId, clientSecret, username, password).getAccess_token();
+    private String getBearerAccessTokenFromSfdc() {
+        return sfdcOAuthConnectorRequest.getAuthentication(sfdcClientConfiguration.getGrantType(),
+                        sfdcClientConfiguration.getClientId(),
+                        sfdcClientConfiguration.getClientSecret(),
+                        sfdcClientConfiguration.getUsername(),
+                        sfdcClientConfiguration.getPassword())
+                .getAccess_token();
+
+
     }
 
 }
