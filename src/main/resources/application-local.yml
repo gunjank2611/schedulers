@@ -113,6 +113,6 @@ sfdcorders:
 
 logging:
   level:
-    com.thermax.cp.salesforce: TRACE
-    org.springframework: TRACE
-    org.springframework.web.servlet: TRACE
+    com.thermax.cp.salesforce: DEBUG
+    org.springframework: DEBUG
+    org.springframework.web.servlet: DEBUG

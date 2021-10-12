@@ -5,9 +5,7 @@ import com.thermax.cp.salesforce.config.SfdcOAuthConnectorRequest;
 import com.thermax.cp.salesforce.config.SfdcOrdersConfiguration;
 import feign.RequestInterceptor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,10 +21,6 @@ public class FeignRequestConfiguration {
 
     @Autowired
     private SfdcOrdersConfiguration sfdcOrdersConfiguration;
-
-    @Autowired
-    private ObjectFactory<HttpMessageConverters> messageConverters;
-
 
     @Bean
     RequestInterceptor buildRequestInterceptor() {
@@ -58,14 +52,13 @@ public class FeignRequestConfiguration {
      * @return
      */
     private String getBearerAccessTokenFromSfdc() {
-        return sfdcOAuthConnectorRequest.getAuthentication(sfdcClientConfiguration.getGrantType(),
+        return sfdcOAuthConnectorRequest.getAuthentication(
+                        sfdcClientConfiguration.getGrantType(),
                         sfdcClientConfiguration.getClientId(),
                         sfdcClientConfiguration.getClientSecret(),
                         sfdcClientConfiguration.getUsername(),
                         sfdcClientConfiguration.getPassword())
                 .getAccess_token();
-
-
     }
 
 }
