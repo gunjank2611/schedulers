@@ -4,6 +4,7 @@ import com.thermax.cp.salesforce.dto.account.AccountDetailsListDTO;
 import com.thermax.cp.salesforce.dto.asset.SFDCAssetDTOList;
 import com.thermax.cp.salesforce.dto.asset.SFDCAssetHistoryListDTO;
 import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesListDTO;
+import com.thermax.cp.salesforce.dto.asset.SFDCOpportunityContactRoleDTOList;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintListDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTOList;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsListDTO;
@@ -70,6 +71,9 @@ public interface SfdcBatchDataDetailsRequest {
     ResponseEntity<SFDCOrdersItemsListDTO> loadOrderItems(@RequestParam("q") String query);
 
     @GetMapping("/data/v52.0/query/?q={query}")
+    ResponseEntity<SFDCOpportunityContactRoleDTOList> loadOpportunityContactRole(@RequestParam("q") String query);
+
+    @GetMapping("/data/v52.0/query/?q={query}")
     ResponseEntity<SFDCOpportunityLineItemsListDTO> loadOpportunityLineItems(@RequestParam("q") String query);
 
     @GetMapping("/data/v52.0/query/?q={query}")
@@ -77,4 +81,4 @@ public interface SfdcBatchDataDetailsRequest {
 
     @GetMapping("/data/v52.0/query/?q={query}")
     ResponseEntity<SFDCEligibleSparesServicesListDTO> loadEligibleSparesServices(@RequestParam("q") String query);
-    }
+}

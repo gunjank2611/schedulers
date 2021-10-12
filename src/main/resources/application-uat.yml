@@ -60,6 +60,7 @@ feign:
       orders-url: /enquiryApi/api/v1/scheduler/orders
       order-items-url: /enquiryApi/api/v1/scheduler/orderItems
       order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
+      opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
     assets:
       base-Url: tcpassets
       recommendations-url: /assetsApi/recommendations/recommendationFromSdfc

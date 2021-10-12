@@ -34,6 +34,8 @@ public class OrderItemsWriter implements ItemWriter<SFDCOrderItemsDTO> {
         log.info("Written orders Items to the file : {}", url.get());
         FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        log.info("Pushing orders Items data to DB : {}", fileURLDTO);
         enquiryConnector.sendOrderItemsBlobUrl(fileURLDTO);
+        log.info("Pushed orders Items data to DB !");
     }
 }

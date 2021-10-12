@@ -8,6 +8,7 @@ import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesDTO;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintsDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOpportunityContactRoleDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderItemsDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookDTO;
@@ -221,6 +222,16 @@ public class BatchUpdateConfig {
     }
 
     @Bean
+    public Step loadOpportunityContactRole(
+    ) {
+        return stepBuilderFactory.get("load-opportunity-contact-role")
+                .<SFDCOpportunityContactRoleDTO, SFDCOpportunityContactRoleDTO>chunk(100)
+                .reader(opportunityContactRoleReader(sfdcBatchDataDetailsRequest, frequency))
+                .writer(new OpportunityContactRoleWriter(csvWrite, enquiryConnector))
+                .build();
+    }
+
+    @Bean
     public Step loadOpportunityLineItems(
     ) {
         return stepBuilderFactory.get("load-order-items")
@@ -389,6 +400,15 @@ public class BatchUpdateConfig {
     }
 
     @Bean
+    public Job opportunityContactRoleJob(JobBuilderFactory jobBuilderFactory
+    ) {
+
+        return getJobBuilder("load-opportunity-contact-role")
+                .start(loadOpportunityContactRole())
+                .build();
+    }
+
+    @Bean
     public Job proposalsJob(JobBuilderFactory jobBuilderFactory
     ) {
 
@@ -518,6 +538,14 @@ public class BatchUpdateConfig {
                                                           @Value("#{jobParameters[frequency]}") String frequency) {
 
         return new OrderItemsReader(sfdcBatchDataDetailsRequest, frequency);
+    }
+
+    @Bean
+    @StepScope
+    public ItemReader<SFDCOpportunityContactRoleDTO> opportunityContactRoleReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                                                  @Value("#{jobParameters[frequency]}") String frequency) {
+
+        return new OpportunityContactRoleReader(sfdcBatchDataDetailsRequest, frequency);
     }
 
     @StepScope
