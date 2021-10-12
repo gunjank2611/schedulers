@@ -40,20 +40,22 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
                 "tHCMG_Freight_Terms__c", "status", "opportunityId", "eRP_Order_Number__c", "tH_Opportunity_Number__c", "asset__c", "ownerId", "ownerName", "ownerEmail", "ownerContact", "ownerRole", "opportunityType"};
         final String fileName = "Orders.csv";
         final String apiName = "Orders";
-        log.info("Mapping response for writing...");
-        List<OrdersDTO> orders = ordersMapper.convertToOrdersFromSFDCOrdersList((List<SFDCOrdersDTO>) ordersDTOS);
-        log.info("Writing response to CSV...");
-        CompletableFuture<String> url = csvWrite.writeToCSV(orders, headers, fileName, apiName);
-        log.info("Written orders to the file : {}", url.get());
-        FileURLDTO fileURLDTO = new FileURLDTO();
-        fileURLDTO.setFileUrl(url.get());
-        log.info("Pushing data to respective microservice for consumption and DB persisting...");
-        enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
-        log.info("Pushing data process completed!");
-        List<OrderIdDTO> orderIdDTOS = orders.stream().map(ordersDTO -> new OrderIdDTO(ordersDTO.getOrderNumber())).collect(Collectors.toList());
-        log.info("Fetching order status and edd for orders: {}", orderIdDTOS);
-        asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS);
-        log.info("Order status fetch completed successfully!");
+        if (ordersDTOS != null && !ordersDTOS.isEmpty()) {
+            log.info("Mapping response for writing...");
+            List<OrdersDTO> orders = ordersMapper.convertToOrdersFromSFDCOrdersList((List<SFDCOrdersDTO>) ordersDTOS);
+            log.info("Writing response to CSV...");
+            CompletableFuture<String> url = csvWrite.writeToCSV(orders, headers, fileName, apiName);
+            log.info("Written orders to the file : {}", url.get());
+            FileURLDTO fileURLDTO = new FileURLDTO();
+            fileURLDTO.setFileUrl(url.get());
+            log.info("Pushing data to respective microservice for consumption and DB persisting...");
+            enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
+            log.info("Pushing data process completed!");
+            List<OrderIdDTO> orderIdDTOS = orders.stream().map(ordersDTO -> new OrderIdDTO(ordersDTO.getOrderNumber())).collect(Collectors.toList());
+            log.info("Fetching order status and edd for orders: {}", orderIdDTOS);
+            asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS);
+            log.info("Order status fetch completed successfully!");
+        }
 
     }
 }

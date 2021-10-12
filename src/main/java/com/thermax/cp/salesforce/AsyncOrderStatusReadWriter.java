@@ -36,7 +36,11 @@ public class AsyncOrderStatusReadWriter {
             List<SFDCOrderHeadersDTO> orderStatusList = orderHeadersDTOList.getBody().getOrdersList();
             log.info("Requested order status response...");
             log.info("Found order status for {} items and writing them for DB!", orderStatusList.size());
-            processHeaderResponse(orderStatusList);
+            if (!orderStatusList.isEmpty()) {
+                log.info("No status found to be updated!");
+            } else {
+                processHeaderResponse(orderStatusList);
+            }
             log.info("Header response processed!!");
         } else {
             throw new AssetDetailsNotFoundException("Unable to find Order Details from SFDC");
