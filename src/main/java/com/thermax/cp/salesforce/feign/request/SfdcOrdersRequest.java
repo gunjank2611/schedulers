@@ -15,5 +15,5 @@ import java.util.List;
 public interface SfdcOrdersRequest {
 
     @PostMapping(value = "api/cp/get_order_status/")
-    ResponseEntity<SFDCOrderHeadersListDTO> getOrders(@RequestBody List<OrderIdDTO> ordersDTO);
+    ResponseEntity<SFDCOrderHeadersListDTO> fetchOrderStatus(@RequestBody List<OrderIdDTO> ordersDTO);
 }

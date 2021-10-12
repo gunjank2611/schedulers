@@ -5,20 +5,19 @@ import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.service.BatchDataServiceImpl;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.batch.core.*;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Log4j2
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -81,13 +80,13 @@ public class SfdcBatchUpdateController {
     Job orderItemsJob;
 
     @Autowired
+    Job opportunityContactRoleJob;
+
+    @Autowired
     Job opportunityLineItemsJob;
 
     @Autowired
     Job proposalsJob;
-
-    @Autowired
-    Job orderStatusJob;
 
     @Autowired
     Job eligibleSpareServicesJob;
@@ -109,13 +108,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(productsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", productsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(productsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -123,27 +121,6 @@ public class SfdcBatchUpdateController {
         }
 
     }
-
-    @GetMapping("/loadOrderStatus")
-    @ResponseStatus(value = HttpStatus.OK, reason = "OrderStatus loaded successfully")
-    public void loadOrderStatus(@RequestParam String url) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-
-        maps.put("time", new JobParameter(System.currentTimeMillis()));
-        JobInstance existingInstance = jobExplorer.getLastJobInstance(orderStatusJob.getName());
-        if (existingInstance!=null)
-        {
-            parameters = getNextStatus(url);
-            log.info("Trying to restart task \"{}\" with the parameters [{}]", orderStatusJob, parameters);
-        }
-        JobExecution jobExecution = jobLauncher.run(orderStatusJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
-
-        log.info("Batch is Running...");
-        while (jobExecution.isRunning()) {
-            System.out.println("...");
-        }
-    }
-
 
     @GetMapping("/loadAccounts/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "Accounts loaded successfully")
@@ -151,13 +128,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(accountsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", accountsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(accountsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -172,13 +148,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(recommendationsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", recommendationsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(recommendationsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -193,13 +168,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(servicesJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", servicesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(servicesJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -214,13 +188,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(sparesJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", sparesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(sparesJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -235,13 +208,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(assetsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", assetsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(assetsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -256,13 +228,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(opportunitiesJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", opportunitiesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(opportunitiesJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -277,13 +248,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(pricebooksJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", pricebooksJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(pricebooksJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -298,13 +268,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(pricebookEntriesJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", pricebookEntriesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(pricebookEntriesJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -319,13 +288,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(usersJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", usersJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(usersJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -340,13 +308,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(complaintsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", complaintsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(complaintsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -361,13 +328,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(ordersJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", ordersJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(ordersJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -383,15 +349,14 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(orderItemsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
 
             log.info("Trying to restart task \"{}\" with the parameters [{}]", orderItemsJob, parameters);
         }
 
         JobExecution jobExecution = jobLauncher.run(orderItemsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -400,19 +365,41 @@ public class SfdcBatchUpdateController {
 
     }
 
+    @GetMapping("/opportunityContactRole/{frequency}")
+    @ResponseStatus(value = HttpStatus.OK, reason = "Opportunity contact role loaded successfully")
+    public void loadOpportunityContactRole(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobInstance existingInstance = jobExplorer.getLastJobInstance(opportunityContactRoleJob.getName());
+        if (existingInstance != null) {
+            parameters = getNext(frequency);
+
+            log.info("Trying to restart task \"{}\" with the parameters [{}]", opportunityContactRoleJob, parameters);
+        }
+
+        JobExecution jobExecution = jobLauncher.run(opportunityContactRoleJob, parameters);
+        log.info("JobExecution  {} ", jobExecution.getStatus());
+
+        log.info("Batch is Running...");
+        while (jobExecution.isRunning()) {
+            System.out.println("...");
+        }
+
+    }
+
+
     @GetMapping("/loadOpportunityLineItems/{frequency}")
     @ResponseStatus(value = HttpStatus.OK, reason = "order items loaded successfully")
     public void loadOpportunityLineItems(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(opportunityLineItemsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", opportunityLineItemsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(opportunityLineItemsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -427,13 +414,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(proposalsJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", proposalsJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(proposalsJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -448,13 +434,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(eligibleSpareServicesJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", eligibleSpareServicesJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(eligibleSpareServicesJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -469,13 +454,12 @@ public class SfdcBatchUpdateController {
 
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobInstance existingInstance = jobExplorer.getLastJobInstance(assetHistoryJob.getName());
-        if (existingInstance!=null)
-        {
+        if (existingInstance != null) {
             parameters = getNext(frequency);
             log.info("Trying to restart task \"{}\" with the parameters [{}]", assetHistoryJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(assetHistoryJob, parameters);
-        log.info("JobExecution  {} " , jobExecution.getStatus());
+        log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
         while (jobExecution.isRunning()) {
@@ -483,6 +467,7 @@ public class SfdcBatchUpdateController {
         }
 
     }
+
     public JobParameters getNext(String frequency) {
         long id = new Date().getTime();
         JobParameters jobParameters = new JobParametersBuilder()
@@ -490,13 +475,13 @@ public class SfdcBatchUpdateController {
                 .addString("frequency", frequency).toJobParameters();
         return jobParameters;
     }
+
     public JobParameters getNextStatus(String url) {
         long id = new Date().getTime();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addString("url", url).toJobParameters();
         return jobParameters;
     }
-
 
 
 }

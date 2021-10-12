@@ -27,6 +27,10 @@ public interface EnquiryConnector {
     @PostMapping(value = "${feign.client.enquiry.order-status-url}")
     ResponseEntity<Void> sendOrderStatusBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.enquiry.opportunity-contact-role-url}")
+    ResponseEntity<Void> sendOpportunityContactRoleBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
     default ResponseEntity<String> circuitBreakerFallback(Exception e) {
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
