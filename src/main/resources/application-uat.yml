@@ -23,14 +23,14 @@ server:
 
 resilience4j:
   ratelimiter:
-    rateLimiterAspectOrder : 1
+    rateLimiterAspectOrder: 1
     instances:
       getAccountsRateLimit:
-        limit-for-period : 2
-        limit-refresh-period : 5s
-        timeout-duration : 1s
+        limit-for-period: 2
+        limit-refresh-period: 5s
+        timeout-duration: 1s
   circuitbreaker:
-    circuitBreakerAspectOrder : 2
+    circuitBreakerAspectOrder: 2
     instances:
       updateAccountCB:
         failure-rate-threshold: 80
@@ -46,16 +46,28 @@ resilience4j:
         wait-duration-in-open-state: 1s
 
   retry:
-    retryAspectOrder : 3
+    retryAspectOrder: 3
     instances:
-      updateAccountRetry :
-        max-attempts : 5
+      updateAccountRetry:
+        max-attempts: 5
         wait-duration: 2s
         retry-exceptions: org.springframework.web.client.ResourceAccessException
 
 feign:
   client:
+    enquiry:
+      base-url: tcpenquirymanagement
+      orders-url: /enquiryApi/api/v1/scheduler/orders
+      order-items-url: /enquiryApi/api/v1/scheduler/orderItems
+      order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
+      opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
+    assets:
+      base-Url: tcpassets
+      recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
+      assets-url: /assetsApi/recommendations/assetFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
+    fileUploadUrl: tcp-fileuploader
+    orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
 
 sfdc:
   grant-type: password

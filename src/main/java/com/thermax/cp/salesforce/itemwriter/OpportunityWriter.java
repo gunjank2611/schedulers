@@ -1,6 +1,5 @@
 package com.thermax.cp.salesforce.itemwriter;
 
-import com.thermax.cp.salesforce.dto.asset.SFDCAssetDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;

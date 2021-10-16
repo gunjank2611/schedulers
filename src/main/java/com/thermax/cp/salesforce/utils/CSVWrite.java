@@ -1,24 +1,22 @@
 package com.thermax.cp.salesforce.utils;
 
-import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
 import com.thermax.cp.salesforce.dto.utils.UploadResponseDTO;
-import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.request.FileUploadFeignClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import java.io.*;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.springframework.stereotype.Component;
-import org.supercsv.io.CsvBeanWriter;
-import org.supercsv.io.ICsvBeanWriter;
-import org.supercsv.prefs.CsvPreference;
 @Component
 public class CSVWrite {
 
@@ -28,10 +26,10 @@ public class CSVWrite {
 
     private static final Logger LOGGER = LogManager.getLogger(CSVWrite.class);
 
-    public CompletableFuture<String> writeToCSV(List<? extends Object> dtoList,String[] headers,String fileName,String apiName) throws IOException {
+    public CompletableFuture<String> writeToCSV(List<? extends Object> dtoList, String[] headers, String fileName, String apiName) throws IOException {
         String csvOutput = null;
         ICsvBeanWriter beanWriter = null;
-        File output  = new File(fileName);
+        File output = new File(fileName);
         if (output.exists()) {
             output.delete();
         }
@@ -50,18 +48,16 @@ public class CSVWrite {
             outputStream.write(bytes);*/
             beanWriter.flush();
 
-            ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure( apiName+"_"+ String.valueOf(Instant.now().toEpochMilli()),output);
-            if (responseDTO.getStatusCode() == HttpStatus.OK && responseDTO.getBody()!=null) {
+            ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure(apiName + "_" + String.valueOf(Instant.now().toEpochMilli()), output);
+            if (responseDTO.getStatusCode() == HttpStatus.OK && responseDTO.getBody() != null) {
                 csvOutput = responseDTO.getBody().getAzureBlobUrl();
-                                LOGGER.info("Output file is saved at azure blob location" + csvOutput);
+                LOGGER.info("Output file is saved at azure blob location" + csvOutput);
 
             }
 
         } catch (Exception e) {
             LOGGER.error("Getting exception while executing batchOperationForStagingData method .", e);
-        }
-        finally
-        {
+        } finally {
             beanWriter.close();
             outputStream.close();
         }
