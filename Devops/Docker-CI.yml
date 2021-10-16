@@ -73,7 +73,7 @@ stages:
           filepath: 'Devops/k8s-scheduler.yaml'
           containerreg: acrcinthermaxdev.azurecr.io
           imagerepo: qa/scheduler
-          k8ssvcconn: Thermaxk8sdev 
+          k8ssvcconn: Thermaxk8sqa
           springProfilesActive: qa
           dbHost: $(dbHost)
           dbUser: $(dbUsername)
