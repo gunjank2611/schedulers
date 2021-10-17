@@ -25,9 +25,9 @@ public class SFDCProposalsDTO {
     @JsonProperty("Id")
     private String id;
     @JsonProperty("IsLatestVersion__c")
-    private boolean latestVersion__c;
+    private boolean isLatestVersion__c;
     @JsonProperty("IsRevisedAfterClosure__c")
-    private boolean revisedAfterClosure__c;
+    private boolean isRevisedAfterClosure__c;
     @JsonProperty("LastModifiedDate")
     private String lastModifiedDate;
     @JsonProperty("Name")

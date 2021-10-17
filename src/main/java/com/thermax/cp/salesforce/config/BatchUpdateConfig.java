@@ -142,7 +142,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-opportunities")
                 .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(100)
                 .reader(opportunityReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new OpportunityWriter(csvWrite))
+                .writer(new OpportunityWriter())
                 .build();
     }
 
@@ -151,7 +151,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebooks")
                 .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(100)
                 .reader(pricebookReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookWriter(csvWrite))
+                .writer(new PricebookWriter())
                 .build();
     }
 
@@ -160,7 +160,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebookentries")
                 .<SFDCPricebookEntryDTO, SFDCPricebookEntryDTO>chunk(100)
                 .reader(pricebookEntryReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookEntryWriter(csvWrite))
+                .writer(new PricebookEntryWriter())
                 .build();
     }
 
@@ -223,7 +223,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-proposals")
                 .<SFDCProposalsDTO, SFDCProposalsDTO>chunk(100)
                 .reader(proposalsReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ProposalWriter(csvWrite))
+                .writer(new ProposalWriter())
                 .build();
     }
 
