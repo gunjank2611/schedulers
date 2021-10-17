@@ -94,6 +94,15 @@ public class SfdcBatchUpdateController {
     @Autowired
     Job assetHistoryJob;
 
+    @Autowired
+    Job contactsJob;
+
+    @Autowired
+    Job serviceLogJob;
+
+    @Autowired
+    Job thermaxUsersJob;
+
     Map<String, JobParameter> maps = new HashMap<>();
 
     JobParameters parameters = new JobParameters(maps);
@@ -459,6 +468,66 @@ public class SfdcBatchUpdateController {
             log.info("Trying to restart task \"{}\" with the parameters [{}]", assetHistoryJob, parameters);
         }
         JobExecution jobExecution = jobLauncher.run(assetHistoryJob, parameters);
+        log.info("JobExecution  {} ", jobExecution.getStatus());
+
+        log.info("Batch is Running...");
+        while (jobExecution.isRunning()) {
+            System.out.println("...");
+        }
+
+    }
+
+    @GetMapping("/loadContacts/{frequency}")
+    @ResponseStatus(value = HttpStatus.OK, reason = "contacts loaded successfully")
+    public void loadContacts(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobInstance existingInstance = jobExplorer.getLastJobInstance(contactsJob.getName());
+        if (existingInstance != null) {
+            parameters = getNext(frequency);
+            log.info("Trying to restart task \"{}\" with the parameters [{}]", contactsJob, parameters);
+        }
+        JobExecution jobExecution = jobLauncher.run(contactsJob, parameters);
+        log.info("JobExecution  {} ", jobExecution.getStatus());
+
+        log.info("Batch is Running...");
+        while (jobExecution.isRunning()) {
+            System.out.println("...");
+        }
+
+    }
+
+    @GetMapping("/loadServiceLog/{frequency}")
+    @ResponseStatus(value = HttpStatus.OK, reason = "service logs loaded successfully")
+    public void loadServiceLog(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobInstance existingInstance = jobExplorer.getLastJobInstance(serviceLogJob.getName());
+        if (existingInstance != null) {
+            parameters = getNext(frequency);
+            log.info("Trying to restart task \"{}\" with the parameters [{}]", serviceLogJob, parameters);
+        }
+        JobExecution jobExecution = jobLauncher.run(serviceLogJob, parameters);
+        log.info("JobExecution  {} ", jobExecution.getStatus());
+
+        log.info("Batch is Running...");
+        while (jobExecution.isRunning()) {
+            System.out.println("...");
+        }
+
+    }
+
+    @GetMapping("/loadThermaxUsers/{frequency}")
+    @ResponseStatus(value = HttpStatus.OK, reason = "thermax users loaded successfully")
+    public void loadThermaxUsers(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobInstance existingInstance = jobExplorer.getLastJobInstance(thermaxUsersJob.getName());
+        if (existingInstance != null) {
+            parameters = getNext(frequency);
+            log.info("Trying to restart task \"{}\" with the parameters [{}]", thermaxUsersJob, parameters);
+        }
+        JobExecution jobExecution = jobLauncher.run(thermaxUsersJob, parameters);
         log.info("JobExecution  {} ", jobExecution.getStatus());
 
         log.info("Batch is Running...");
