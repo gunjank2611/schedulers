@@ -1,6 +1,6 @@
-trigger: 
-  - development 
-  - main 
+trigger:
+  - development
+  - main
 pr: none
 
 pool:
@@ -67,7 +67,7 @@ stages:
 
     - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
       parameters:
-          appName: tcpscheduler 
+          appName: tcpscheduler
           environmentName: uat
           environmentBranch: main
           filepath: 'Devops/k8s-scheduler.yaml'

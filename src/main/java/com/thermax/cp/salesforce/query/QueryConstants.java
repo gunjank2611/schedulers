@@ -30,16 +30,13 @@ public interface QueryConstants {
     String SPARES_DETAILS_QUERY = "SELECT+Id,Name ,TH_ORDER_LINE_ID__c,Th_Asset__c,THSC_Division__c,TH_LINE_STATUS__c,TH_DESCRIPTION__c,TH_SALES_ORDER_NUMBER__c,TH_LINE_TOTAL__c,THSC_Region__c,TH_QTY__c,TH_ORDERED_ITEM__c,TH_UNIT_SELLING_PRICE__c," +
             "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
 
-    String ASSET_DETAILS_QUERY = "SELECT+Id,Name,InstallDate,THSC_Warranty_Expiry_Date__c,THS_Asset_Service_By_From_ERP__c,OwnerId,Owner.Name,Owner.UserRole.Name," +
-            "Owner.MobilePhone,Owner.Email,AccountId,TH_IBG_Division__c,THS_Division_Type__c,THCH_Region__c," +
-            "THCH_Sales_Order_Number__c,Asset_Make__c,THCH_Asset_Status__c," +
-            "Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c,ContactId," +
-            "THS_I_C_Scope__c,THS_Service_Sales_Engineer__c,TPF_User__c," +
-            "THS_WARRANTY_DUR_FR_COMM_DT__c,THS_WARRANTY_DUR_FR_DISP_DT__c," +
-            "THSC_First_Date_of_Dispatch__c,TH_Shipment_received_date__c," +
-            "TH_IBG_Commissioning_Date__c," +
-            "Revised_warranty_expiry_date__c,Warranty_Revision_Status__c," +
-            "Reason_for_extended_warranty__c,THSC_Country__c,THS_Order__r.THCMG_Date_Ordered__c,TH_When_to_Engage_Customer_days__c,createdDate,LastmodifiedDate+from+asset+where+lastmodifiedDate+=+";
+    String ASSET_DETAILS_QUERY = "SELECT+Id,Name,InstallDate,THSC_Warranty_Expiry_Date__c,THS_Asset_Service_By_From_ERP__c,OwnerId,Owner.Name,Owner.UserRole.Name,Owner.MobilePhone,Owner.Email,AccountId,TH_IBG_Division__c,THS_Division_Type__c,THCH_Region__c," +
+            "THCH_Sales_Order_Number__c,Asset_Make__c,THCH_Asset_Status__c,Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c,THS_I_C_Scope__c,THS_Service_Sales_Engineer__c,TPF_User__c,THS_WARRANTY_DUR_FR_COMM_DT__c,THS_WARRANTY_DUR_FR_DISP_DT__c," +
+            "THSC_First_Date_of_Dispatch__c,TH_Shipment_received_date__c,TH_IBG_Commissioning_Date__c,Revised_warranty_expiry_date__c,Warranty_Revision_Status__c,Reason_for_extended_warranty__c," +
+            "THSC_Country__c,THS_Order__r.THCMG_Date_Ordered__c,TH_When_to_Engage_Customer_days__c,createdDate,LastmodifiedDate,TMAX_TCA_User__c,TMAX_TCA_User__r.Name," +
+            "TMAX_TCA_User__r.UserRole.Name,TMAX_TCA_User__r.MobilePhone,TMAX_TCA_User__r.Email,TMAX_Service_SPOC_CP__c,TMAX_Service_SPOC_CP__r.Name,TMAX_Service_SPOC_CP__r.UserRole.Name,TMAX_Service_SPOC_CP__r.MobilePhone," +
+            "TMAX_Service_SPOC_CP__r.Email,TMAX_Spares_Sales_SPOC_CP__c,TMAX_Spares_Sales_SPOC_CP__r.Name,TMAX_Spares_Sales_SPOC_CP__r.UserRole.Name,TMAX_Spares_Sales_SPOC_CP__r.MobilePhone,TMAX_Spares_Sales_SPOC_CP__r.Email,TMAX_Service_Sales_SPOC_CP__c," +
+            "TMAX_Service_Sales_SPOC_CP__r.Name,TMAX_Service_Sales_SPOC_CP__r.UserRole.Name,TMAX_Service_Sales_SPOC_CP__r.MobilePhone,TMAX_Service_Sales_SPOC_CP__r.Email,ContactId,Contact.Name,TMAX_Product_Family_CP__c+from+asset+where+TH_IBG_Division__c+in+('Heating','Cooling','Enviro','Water')+and lastmodifiedDate+=+";
 
     String OPPORTUNITIES_QUERY = "SELECT+Id,Name,AccountId,CloseDate,StageName,Amount,TH_Opportunity_Type__c,TH_Customer_Type__c,TH_Region__c,THCH_Zone__c,THCH_Territory__c," +
             "Probability,TH_Product_Family__c,THCH_Techno_Commercial_Acceptance_Date__c,TH_RFQ_Completed__c,TH_Reason_for_Closed_Lost_Won_Drop__c,CMG_Won_against_Whom__c,TH_Lost_to_Whom__c," +
@@ -76,4 +73,12 @@ public interface QueryConstants {
     String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account_Id__c,LASTMODIFIEDDATE+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=";
+
+    String CONTACTS_QUERY="select+id,firstName,middleName,lastName ,accountId ,department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,\n" +
+            "MailingCountry,TH_IBG_International_Calling_Code__c,TH_IsActive__c+from+Contact+where+lastmodifiedDate+=+";
+
+    String SERVICE_LOG_QUERY="SELECT+Branded_services_sales__c,Comments__c,CreatedDate,Id,Name,Visit_Date__c+FROM+Branded_Service_Visit_Log__c+where+lastmodifiedDate+=+";
+
+    String THERMAX_USERS_QUERY="SELECT+Id,Name,UserRole.Name,Email,Title,Address,CurrencyISOCode,ManagerId,Manager.Name," +
+            "THCMG_ERP_USER_ID__c,EmployeeNumber,THCH_Services__c,TH_IBG_Regions__c,THCS_Division__c+from+User+where+isActive+=true+and+lastmodifiedDate+=+";
 }

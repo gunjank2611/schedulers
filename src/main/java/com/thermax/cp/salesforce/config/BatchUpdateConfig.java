@@ -6,6 +6,7 @@ import com.thermax.cp.salesforce.dto.asset.SFDCAssetDTO;
 import com.thermax.cp.salesforce.dto.asset.SFDCAssetHistoryDTO;
 import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesDTO;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintsDTO;
+import com.thermax.cp.salesforce.dto.contacts.SFDCContactsDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOpportunityContactRoleDTO;
@@ -16,9 +17,11 @@ import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookEntryDTO;
 import com.thermax.cp.salesforce.dto.product.SFDCProductInfoDTO;
 import com.thermax.cp.salesforce.dto.proposals.SFDCProposalsDTO;
 import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
+import com.thermax.cp.salesforce.dto.services.SFDCServiceLogDTO;
 import com.thermax.cp.salesforce.dto.services.SFDCServicesDTO;
 import com.thermax.cp.salesforce.dto.spares.SFDCSparesDTO;
 import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
+import com.thermax.cp.salesforce.dto.users.ThermaxUsersDTO;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
@@ -139,7 +142,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-opportunities")
                 .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(100)
                 .reader(opportunityReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new OpportunityWriter())
+                .writer(new OpportunityWriter(csvWrite))
                 .build();
     }
 
@@ -148,7 +151,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebooks")
                 .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(100)
                 .reader(pricebookReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookWriter())
+                .writer(new PricebookWriter(csvWrite))
                 .build();
     }
 
@@ -157,7 +160,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebookentries")
                 .<SFDCPricebookEntryDTO, SFDCPricebookEntryDTO>chunk(100)
                 .reader(pricebookEntryReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookEntryWriter())
+                .writer(new PricebookEntryWriter(csvWrite))
                 .build();
     }
 
@@ -220,7 +223,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-proposals")
                 .<SFDCProposalsDTO, SFDCProposalsDTO>chunk(100)
                 .reader(proposalsReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ProposalWriter())
+                .writer(new ProposalWriter(csvWrite))
                 .build();
     }
 
@@ -241,6 +244,34 @@ public class BatchUpdateConfig {
                 .writer(new AssetHistoryWriter())
                 .build();
     }
+
+    @Bean
+    public Step loadContacts() {
+        return stepBuilderFactory.get("load-contacts")
+                .<SFDCContactsDTO, SFDCContactsDTO>chunk(100)
+                .reader(contactsReader(sfdcBatchDataDetailsRequest, frequency))
+                .writer(new ContactsWriter())
+                .build();
+    }
+
+    @Bean
+    public Step loadServiceLog() {
+        return stepBuilderFactory.get("load-service-log")
+                .<SFDCServiceLogDTO, SFDCServiceLogDTO>chunk(100)
+                .reader(serviceLogReader(sfdcBatchDataDetailsRequest, frequency))
+                .writer(new ServiceLogWriter())
+                .build();
+    }
+
+    @Bean
+    public Step loadThermaxUsers() {
+        return stepBuilderFactory.get("load-thermax-users")
+                .<ThermaxUsersDTO, ThermaxUsersDTO>chunk(100)
+                .reader(thermaxUsersReader(sfdcBatchDataDetailsRequest, frequency))
+                .writer(new ThermaxUsersWriter())
+                .build();
+    }
+
 
     @Bean
     public Job productsJob(JobBuilderFactory jobBuilderFactory) {
@@ -369,6 +400,28 @@ public class BatchUpdateConfig {
     }
 
     @Bean
+    public Job contactsJob(JobBuilderFactory jobBuilderFactory) {
+        return getJobBuilder("load-contacts")
+                .start(loadContacts())
+                .build();
+    }
+
+    @Bean
+    public Job serviceLogJob(JobBuilderFactory jobBuilderFactory) {
+        return getJobBuilder("load-service-log")
+                .start(loadServiceLog())
+                .build();
+    }
+
+
+    @Bean
+    public Job thermaxUsersJob(JobBuilderFactory jobBuilderFactory) {
+        return getJobBuilder("load-service-log")
+                .start(loadThermaxUsers())
+                .build();
+    }
+
+    @Bean
     @StepScope
     public ItemReader<SFDCProductInfoDTO> productItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
                                                             @Value("#{jobParameters[frequency]}") String frequency) {
@@ -492,5 +545,26 @@ public class BatchUpdateConfig {
     public ItemReader<SFDCAssetHistoryDTO> assetHistoryReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
                                                               @Value("#{jobParameters[frequency]}") String frequency) {
         return new AssetHistoryReader(sfdcBatchDataDetailsRequest, frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCContactsDTO> contactsReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                      @Value("#{jobParameters[frequency]}") String frequency) {
+        return new ContactsReader(sfdcBatchDataDetailsRequest, frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCServiceLogDTO> serviceLogReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                          @Value("#{jobParameters[frequency]}") String frequency) {
+        return new ServiceLogReader(sfdcBatchDataDetailsRequest, frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<ThermaxUsersDTO> thermaxUsersReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
+                                                          @Value("#{jobParameters[frequency]}") String frequency) {
+        return new ThermaxUsersReader(sfdcBatchDataDetailsRequest, frequency);
     }
 }
