@@ -21,8 +21,10 @@ public class SFDCAccountInfoDTO {
     private String website;
     @JsonProperty("AccountSource")
     private String accountSource;
+    @JsonProperty("TH_Existing_Customer_for_Water_Division__c")
+    private String customerForWaterDivision;
     @JsonProperty("TH_Existing_Customer_forHeating_Division__c")
-    private String customerForHaetingDivision;
+    private String customerForHeatingDivision;
     @JsonProperty("THCMG_ERP_Operating_Unit__c")
     private String erpOperatingUnit;
     @JsonProperty("Rating")
@@ -44,6 +46,6 @@ public class SFDCAccountInfoDTO {
     @JsonProperty("THCH_Email__c")
     private String emailAddress;
     @JsonProperty("TH_IsActive__c")
-    private boolean isActive;
+    private boolean active;
 
 }

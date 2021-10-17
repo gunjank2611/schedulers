@@ -95,6 +95,9 @@ feign:
       base-Url: https://apim-cin-thermax-dev.azure-api.net
       recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
       assets-url: /assetsApi/recommendations/assetFromSdfc
+    accounts:
+      base-Url: https://apim-cin-thermax-dev.azure-api.net
+      accounts-url: /accountsApi/accounts/accountsFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: https://apim-cin-thermax-dev.azure-api.net/fileuploadapi
     orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/

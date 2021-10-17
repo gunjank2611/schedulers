@@ -17,7 +17,7 @@ public interface QueryConstants {
     String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,ProductCode+FROM+Product2+ where + lastmodifiedDate + = +";
 
     String ACCOUNT_DETAILS_QUERY = "select+id,name,Type,website,AccountSource,TH_Existing_Customer_for_Water_Division__c,TH_Existing_Customer_forHeating_Division__c,Account_Number__c," +
-            "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,AccountNumber ,THCH_Email__c,TH_IsActive__c+from account where + lastmodifiedDate + = +";
+            "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,THCH_Email__c,TH_IsActive__c+from account where + lastmodifiedDate + = +";
 
     String RECOMMENDATIONS_QUERY = "SELECT+Id,LastModifiedDate,CreatedDate,Name,OwnerId,Owner.Name,TH_Account_Name__c,TH_Additional_Information__c,TH_Asset__c,TH_City__c,TH_Closure_Notes__c,TH_Description_for__c,TH_Description__c,TH_Interaction_Planned_Date__c,TH_Opportunity__c," +
             "TH_Planned_Activities__c,TH_Planned_Shutdown_date__c,TH_Potential_Value__c,TH_Purpose__c,TH_Recommendation_Close_Date__c,TH_Reject_Reason__c,TH_Reminder_For_Next_Contact__c,TH_Service__c,TH_Service__r.THSC_Contract_Start_Date__c,TH_Service__r.THSC_Contract_End_Date__c," +

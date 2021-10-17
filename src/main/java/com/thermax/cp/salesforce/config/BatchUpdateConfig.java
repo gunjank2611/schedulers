@@ -19,6 +19,7 @@ import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
 import com.thermax.cp.salesforce.dto.services.SFDCServicesDTO;
 import com.thermax.cp.salesforce.dto.spares.SFDCSparesDTO;
 import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
+import com.thermax.cp.salesforce.feign.connectors.AccountsConnector;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
@@ -62,6 +63,9 @@ public class BatchUpdateConfig {
     private AssetsConnector assetsConnector;
     @Autowired
     private EnquiryConnector enquiryConnector;
+    @Autowired
+    private AccountsConnector accountsConnector;
+
     private String frequency;
     private String url;
     @Autowired
@@ -92,7 +96,7 @@ public class BatchUpdateConfig {
                 .<SFDCAccountInfoDTO, SFDCAccountInfoDTO>chunk(100)
                 .reader(accountsItemReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new AccountsProcessor())
-                .writer(new AccountsDBWriter())
+                .writer(new AccountsDBWriter(csvWrite, accountsConnector))
                 .build();
     }
 

@@ -65,6 +65,9 @@ feign:
       base-Url: tcpassets
       recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
       assets-url: /assetsApi/recommendations/assetFromSdfc
+    accounts:
+      base-Url: tcpaccountmanagement
+      accounts-url: /accountsApi/accounts/accountsFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
     orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
