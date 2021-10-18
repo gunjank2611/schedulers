@@ -38,9 +38,9 @@ public class SFDCSparesDTO {
     @JsonProperty("TH_DESCRIPTION__c")
     private String description;
     @JsonProperty("TH_Thermax_Spare__c")
-    private boolean isThermaxSpare;
+    private boolean thermaxSpare;
     @JsonProperty("TH_LifeCycle_days__c")
-    private String lifeCycleDay;
+    private String lifecycleDays;
     @JsonProperty("TH_Account_Id__c")
     private String account;
 
