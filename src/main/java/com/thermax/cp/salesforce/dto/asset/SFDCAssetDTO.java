@@ -4,78 +4,112 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thermax.cp.salesforce.dto.commons.AttributesDTO;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class SFDCAssetDTO {
+public class SFDCAssetDTO{
     private AttributesDTO attributes;
     @JsonProperty("Id")
     private String id;
     @JsonProperty("Name")
-    private String Name;
+    private String name;
     @JsonProperty("InstallDate")
-    private String installationDate;
+    private Object installDate;
     @JsonProperty("THSC_Warranty_Expiry_Date__c")
-    private String warrantyExpiredDate;
+    private Object tHSC_Warranty_Expiry_Date__c;
     @JsonProperty("THS_Asset_Service_By_From_ERP__c")
-    private String assetServiceByFromERP;
+    private Object tHS_Asset_Service_By_From_ERP__c;
     @JsonProperty("OwnerId")
     private String ownerId;
     @JsonProperty("Owner")
     private AssetOwnerDTO assetOwnerDTO;
     private String ownerName;
+    private String ownerMobile;
     private String ownerUserRoleName;
-    private String ownerPhoneNumber;
     @JsonProperty("AccountId")
     private String accountId;
     @JsonProperty("TH_IBG_Division__c")
-    private String division;
+    private String tH_IBG_Division__c;
     @JsonProperty("THS_Division_Type__c")
-    private String divisionType;
+    private Object tHS_Division_Type__c;
     @JsonProperty("THCH_Region__c")
-    private String region;
+    private String tHCH_Region__c;
     @JsonProperty("THCH_Sales_Order_Number__c")
-    private String salesOrderNumber;
+    private String tHCH_Sales_Order_Number__c;
     @JsonProperty("Asset_Make__c")
-    private String assetMaker;
+    private String asset_Make__c;
     @JsonProperty("THCH_Asset_Status__c")
-    private String status;
+    private String tHCH_Asset_Status__c;
     @JsonProperty("Calorie_Potential__c")
-    private String caloriePotential;
-    @JsonProperty("THS_I_C_Scope__c")
-    private String icScope;
+    private Object calorie_Potential__c;
+    @JsonProperty("THSC_I_C_Scope__c")
+    private Object tHSC_I_C_Scope__c;
     @JsonProperty("THSC_Number_of_days_included_in_PO__c")
-    private String numberOfDaysIncludedInPO;
+    private Object tHSC_Number_of_days_included_in_PO__c;
+    @JsonProperty("THS_I_C_Scope__c")
+    private Object tHS_I_C_Scope__c;
     @JsonProperty("THS_Service_Sales_Engineer__c")
-    private String serviceSalesEngineer;
+    private Object tHS_Service_Sales_Engineer__c;
     @JsonProperty("TPF_User__c")
-    private String user;
+    private Object tPF_User__c;
     @JsonProperty("THS_WARRANTY_DUR_FR_COMM_DT__c")
-    private String warrantyDurationForCommDate;
+    private Object tHS_WARRANTY_DUR_FR_COMM_DT__c;
     @JsonProperty("THS_WARRANTY_DUR_FR_DISP_DT__c")
-    private String warrantyDurationForDispDate;
+    private Object tHS_WARRANTY_DUR_FR_DISP_DT__c;
     @JsonProperty("THSC_First_Date_of_Dispatch__c")
-    private String firstDateOfDispatch;
+    private Object tHSC_First_Date_of_Dispatch__c;
     @JsonProperty("TH_Shipment_received_date__c")
-    private String shipmentReceivedDate;
+    private Object tH_Shipment_received_date__c;
     @JsonProperty("TH_IBG_Commissioning_Date__c")
-    private String ibgCommissioningDate;
+    private Object tH_IBG_Commissioning_Date__c;
     @JsonProperty("Revised_warranty_expiry_date__c")
-    private String revisedWarrantyExpiryDate;
+    private Object revised_warranty_expiry_date__c;
     @JsonProperty("Warranty_Revision_Status__c")
-    private String warrantyRevisionStatus;
+    private Object warranty_Revision_Status__c;
     @JsonProperty("Reason_for_extended_warranty__c")
     private String reasonForExtendedWarranty;
     @JsonProperty("THSC_Country__c")
-    private String country;
+    private Object tHSC_Country__c;
     @JsonProperty("THS_Order__r")
-    private SFDCOrderDTO orderDTO;
+    private Object tHS_Order__r;
     @JsonProperty("TH_When_to_Engage_Customer_days__c")
-    private String whenToEngageCustomerDays;
+    private Object tH_When_to_Engage_Customer_days__c;
     @JsonProperty("CreatedDate")
-    private String createdDate;
+    private Date createdDate;
     @JsonProperty("LastModifiedDate")
-    private String lastModifiedDate;
+    private Date lastModifiedDate;
+    @JsonProperty("TMAX_TCA_User__c")
+    private String tMAX_TCA_User__c;
+    @JsonProperty("TMAX_TCA_User__r")
+    private TMAXTCAUserRDTO tMAX_TCA_User__r;
+    private String caUsername;
+    private String caUserMobile;
+    private String caUserRoleName;
+    @JsonProperty("TMAX_Service_SPOC_CP__c")
+    private String tMAX_Service_SPOC_CP__c;
+    @JsonProperty("TMAX_Service_SPOC_CP__r")
+    private TMAXServiceSPOCCPRDTO tMAX_Service_SPOC_CP__r;
+    private String serviceSpocName;
+    private String serviceSpocMobile;
+    private String serviceSpocUserRoleName;
+    @JsonProperty("TMAX_Spares_Sales_SPOC_CP__c")
+    private String tMAX_Spares_Sales_SPOC_CP__c;
+    @JsonProperty("TMAX_Spares_Sales_SPOC_CP__r")
+    private TMAXSparesSalesSPOCCPRDTO tMAX_Spares_Sales_SPOC_CP__r;
+    private String spareSalesSpocName;
+    private String spareSalesSpocMobile;
+    private String spareSalesSpocUserRoleName;
+    @JsonProperty("TMAX_Service_Sales_SPOC_CP__c")
+    private String tMAX_Service_Sales_SPOC_CP__c;
+    @JsonProperty("TMAX_Service_Sales_SPOC_CP__r")
+    private TMAXServiceSalesSPOCCPRDTO tMAX_Service_Sales_SPOC_CP__r;
+    private String servicesSalesSpocName;
+    private String serviceSalesSpocUserRoleName;
+    private String serviceSalesSpocMobile;
     @JsonProperty("ContactId")
-    private String contactId;
-
-
+    private Object contactId;
+    @JsonProperty("Contact")
+    private Object contact;
+    @JsonProperty("TMAX_Product_Family_CP__c")
+    private String tMAX_Product_Family_CP__c;
 }
