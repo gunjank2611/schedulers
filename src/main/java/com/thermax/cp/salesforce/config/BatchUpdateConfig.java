@@ -27,10 +27,7 @@ import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
-import com.thermax.cp.salesforce.itemprocessor.AccountsProcessor;
-import com.thermax.cp.salesforce.itemprocessor.AssetProcessor;
-import com.thermax.cp.salesforce.itemprocessor.ProductItemProcessor;
-import com.thermax.cp.salesforce.itemprocessor.RecommendationsProcessor;
+import com.thermax.cp.salesforce.itemprocessor.*;
 import com.thermax.cp.salesforce.itemreader.*;
 import com.thermax.cp.salesforce.itemwriter.*;
 import com.thermax.cp.salesforce.utils.CSVWrite;
@@ -244,7 +241,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-asset-history")
                 .<SFDCAssetHistoryDTO, SFDCAssetHistoryDTO>chunk(100)
                 .reader(assetHistoryReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new AssetHistoryWriter())
+                .writer(new AssetHistoryWriter(csvWrite,assetsConnector))
                 .build();
     }
 
@@ -271,7 +268,8 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-thermax-users")
                 .<ThermaxUsersDTO, ThermaxUsersDTO>chunk(100)
                 .reader(thermaxUsersReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ThermaxUsersWriter())
+                .processor(new ThermaxUserProcessor())
+                .writer(new ThermaxUsersWriter(csvWrite,enquiryConnector))
                 .build();
     }
 
