@@ -3,7 +3,7 @@ spring:
     name: THERMAX-SFDC-INTERFACE
 
   datasource:
-    url: jdbc:postgresql://localhost:6432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&prepareThreshold=0
+    url: jdbc:postgresql://azpgsql-cin-thermax-dev.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&prepareThreshold=0
   jpa:
     show-sql: true
     hibernate:
@@ -92,10 +92,14 @@ feign:
       order-items-url: /enquiryApi/api/v1/scheduler/orderItems
       order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
       opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
+      thermax-users-url: /enquiryApi/api/v1/scheduler/thermaxUsers
     assets:
       base-Url: tcpassets
       recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
       assets-url: /assetsApi/recommendations/assetFromSdfc
+    accounts:
+      base-Url: tcpaccountmanagement
+      accounts-url: /accountsApi/accounts/accountsFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
     orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/

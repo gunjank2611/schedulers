@@ -14,7 +14,7 @@ public class SFDCServicesDTO {
     @JsonProperty("Name")
     private String name;
     @JsonProperty("TH_Count_of_Visit_Log__c")
-    private String countOfVisitsLog;
+    private String countOfVisitLog;
     @JsonProperty("THSC_No_of_Visits__c")
     private String noOfVisits;
     @JsonProperty("THSC_Contract_Start_Date__c")
@@ -22,7 +22,7 @@ public class SFDCServicesDTO {
     @JsonProperty("THSC_Contract_End_Date__c")
     private String contractEndDate;
     @JsonProperty("THSC_Asset__c")
-    private String asset;
+    private String assetId;
     @JsonProperty("THSC_Region__c")
     private String region;
     @JsonProperty("THSC_Division__c")

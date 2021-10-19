@@ -95,8 +95,11 @@ feign:
       base-Url: https://apim-cin-thermax-dev.azure-api.net
       recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
       assets-url: /assetsApi/recommendations/assetFromSdfc
+    accounts:
+      base-Url: http://localhost:7075
+      accounts-url: /accountsApi/accounts/accountsFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
-    fileUploadUrl: https://apim-cin-thermax-dev.azure-api.net/fileuploadapi
+    fileUploadUrl: http://localhost:9191
     orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
 
 sfdc:
@@ -114,6 +117,6 @@ sfdcorders:
 
 logging:
   level:
-    com.thermax.cp.salesforce: DEBUG
-    org.springframework: DEBUG
-    org.springframework.web.servlet: DEBUG
+    com.thermax.cp.salesforce: INFO
+    org.springframework: INFO
+    org.springframework.web.servlet: INFO
