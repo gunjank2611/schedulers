@@ -211,7 +211,7 @@ public class BatchUpdateConfig {
 
     @Bean
     public Step loadOpportunityLineItems() {
-        return stepBuilderFactory.get("load-order-items")
+        return stepBuilderFactory.get("load-opportunity-line-items")
                 .<SFDCOpportunityLineItemsDTO, SFDCOpportunityLineItemsDTO>chunk(100)
                 .reader(opportunityLineItemsReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new OpportunityLineItemsWriter(csvWrite,enquiryConnector))
