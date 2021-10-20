@@ -5,91 +5,6 @@ import lombok.Data;
 
 import java.util.List;
 
-@Data
-class THCMGBillToLocationR{
-    private Attributes attributes;
-    @JsonProperty("THCMG_Country__c")
-    private String tHCMG_Country__c;
-    @JsonProperty("THCMG_State__c")
-    private String tHCMG_State__c;
-    @JsonProperty("THCMG_City__c")
-    private String tHCMG_City__c;
-    @JsonProperty("THCMG_Pin_Code__c")
-    private String tHCMG_Pin_Code__c;
-    @JsonProperty("THCMG_Address1__c")
-    private String tHCMG_Address1__c;
-    @JsonProperty("THCMG_Address2__c")
-    private Object tHCMG_Address2__c;
-    @JsonProperty("THCMG_Address3__c")
-    private Object tHCMG_Address3__c;
-}
-
-@Data
- class THCMGShipToLocationR{
-    private Attributes attributes;
-    @JsonProperty("THCMG_Country__c")
-    private String tHCMG_Country__c;
-    @JsonProperty("THCMG_State__c")
-    private String tHCMG_State__c;
-    @JsonProperty("THCMG_City__c")
-    private String tHCMG_City__c;
-    @JsonProperty("THCMG_Pin_Code__c")
-    private String tHCMG_Pin_Code__c;
-    @JsonProperty("THCMG_Address1__c")
-    private String tHCMG_Address1__c;
-    @JsonProperty("THCMG_Address2__c")
-    private Object tHCMG_Address2__c;
-    @JsonProperty("THCMG_Address3__c")
-    private Object tHCMG_Address3__c;
-}
-
-@Data
- class THCMGERPDivisionR{
-    private Attributes attributes;
-    @JsonProperty("Name")
-    private String name;
-}
-
-@Data
- class THCMGPaymentTermR{
-    private Attributes attributes;
-    @JsonProperty("Name")
-    private String name;
-}
-
-@Data
- class THCMGWarehouseR{
-    private Attributes attributes;
-    @JsonProperty("Name")
-    private String name;
-}
-
-@Data
- class THCMGTransactionTypeR{
-    private Attributes attributes;
-    @JsonProperty("Name")
-    private String name;
-}
-
-@Data
- class Owner{
-    private Attributes attributes;
-    @JsonProperty("Name")
-    private String name;
-    @JsonProperty("Email")
-    private String email;
-    @JsonProperty("MobilePhone")
-    private Object mobilePhone;
-}
-
-
-
-@Data
- class SFDCOpportunityLineItems{
-    private int totalSize;
-    private boolean done;
-    private List<SFDCOpportunityLineItemsDTO> records;
-}
 
 @Data
 public class SFDCOpportunityDTO{
@@ -100,6 +15,10 @@ public class SFDCOpportunityDTO{
     private String name;
     @JsonProperty("AccountId")
     private String accountId;
+    @JsonProperty("TH_Opportunity_Number__c")
+    private String opportunityNumber;
+    @JsonProperty("THSC_Opportunity_Asset_Id__c")
+    private String opportunityAssetId;
     @JsonProperty("CloseDate")
     private String closeDate;
     @JsonProperty("StageName")
@@ -138,39 +57,23 @@ public class SFDCOpportunityDTO{
     private String tHCMG_Bill_To_Location__c;
     @JsonProperty("THCMG_Ship_To_Location__c")
     private String tHCMG_Ship_To_Location__c;
-    @JsonProperty("THCMG_Bill_To_Location__r")
-    private THCMGBillToLocationR tHCMG_Bill_To_Location__r;
-    @JsonProperty("THCMG_Ship_To_Location__r")
-    private THCMGShipToLocationR tHCMG_Ship_To_Location__r;
     @JsonProperty("THCMG_Cheque_Number__c")
     private String tHCMG_Cheque_Number__c;
     @JsonProperty("THCMG_Customer_PO__c")
     private String tHCMG_Customer_PO__c;
     @JsonProperty("THCMG_ERP_Division__c")
     private String tHCMG_ERP_Division__c;
-    @JsonProperty("THCMG_ERP_Division__r")
-    private THCMGERPDivisionR tHCMG_ERP_Division__r;
     @JsonProperty("THCMG_Payment_Term__c")
     private String tHCMG_Payment_Term__c;
-    @JsonProperty("THCMG_Payment_Term__r")
-    private THCMGPaymentTermR tHCMG_Payment_Term__r;
     @JsonProperty("THCMG_Warehouse__c")
     private String tHCMG_Warehouse__c;
-    @JsonProperty("THCMG_Warehouse__r")
-    private THCMGWarehouseR tHCMG_Warehouse__r;
     @JsonProperty("THCMG_Transaction_Type__c")
     private String tHCMG_Transaction_Type__c;
-    @JsonProperty("THCMG_Transaction_Type__r")
-    private THCMGTransactionTypeR tHCMG_Transaction_Type__r;
     @JsonProperty("THCMG_FOB__c")
     private String tHCMG_FOB__c;
     @JsonProperty("THCMG_Freight_Terms__c")
     private String tHCMG_Freight_Terms__c;
     @JsonProperty("OwnerId")
     private String ownerId;
-    @JsonProperty("Owner")
-    private Owner owner;
-    @JsonProperty("OpportunityLineItems")
-    private SFDCOpportunityLineItemsDTO opportunityLineItems;
 }
 

@@ -22,7 +22,8 @@ public class PricebookEntryWriter implements ItemWriter<SFDCPricebookEntryDTO> {
     @Override
     public void write(List<? extends SFDCPricebookEntryDTO> pricebookEntryDTOS) throws Exception {
         log.info("Saving data for pricebook entrirs of size: {} ", pricebookEntryDTOS.size());
-        final String[] headers = new String[]{"id", "name", "currencyIsoCode", "lastModifiedDate", "pricebook2Id", "product2Id", "productCode", "systemModstamp", "unitPrice", "useStandardPrice", "active"};
+        final String[] headers = new String[]{"id", "name", "currencyIsoCode", "lastModifiedDate", "pricebook2Id", "product2Id", "productCode",
+                "systemModstamp", "unitPrice", "useStandardPrice", "active"};
         final String fileName = "price_book_entry.csv";
         final String apiName = "PriceBookEntry";
         CompletableFuture<String> url = csvWrite.writeToCSV(pricebookEntryDTOS, headers, fileName, apiName);

@@ -151,7 +151,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebooks")
                 .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(100)
                 .reader(pricebookReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookWriter(csvWrite))
+                .writer(new PricebookWriter(csvWrite,enquiryConnector))
                 .build();
     }
 
@@ -178,7 +178,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-complaints")
                 .<SFDCComplaintsDTO, SFDCComplaintsDTO>chunk(100)
                 .reader(complaintsReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ComplaintsWriter())
+                .writer(new ComplaintsWriter(csvWrite,enquiryConnector))
                 .build();
     }
 
@@ -211,10 +211,10 @@ public class BatchUpdateConfig {
 
     @Bean
     public Step loadOpportunityLineItems() {
-        return stepBuilderFactory.get("load-order-items")
+        return stepBuilderFactory.get("load-opportunity-line-items")
                 .<SFDCOpportunityLineItemsDTO, SFDCOpportunityLineItemsDTO>chunk(100)
                 .reader(opportunityLineItemsReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new OpportunityLineItemsWriter())
+                .writer(new OpportunityLineItemsWriter(csvWrite,enquiryConnector))
                 .build();
     }
 
