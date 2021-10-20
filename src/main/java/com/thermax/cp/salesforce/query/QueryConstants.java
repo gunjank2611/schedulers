@@ -38,7 +38,7 @@ public interface QueryConstants {
             "TMAX_Service_SPOC_CP__r.Email,TMAX_Spares_Sales_SPOC_CP__c,TMAX_Spares_Sales_SPOC_CP__r.Name,TMAX_Spares_Sales_SPOC_CP__r.UserRole.Name,TMAX_Spares_Sales_SPOC_CP__r.MobilePhone,TMAX_Spares_Sales_SPOC_CP__r.Email,TMAX_Service_Sales_SPOC_CP__c," +
             "TMAX_Service_Sales_SPOC_CP__r.Name,TMAX_Service_Sales_SPOC_CP__r.UserRole.Name,TMAX_Service_Sales_SPOC_CP__r.MobilePhone,TMAX_Service_Sales_SPOC_CP__r.Email,ContactId,Contact.Name,TMAX_Product_Family_CP__c+from+asset+where+TH_IBG_Division__c+in+('Heating','Cooling','Enviro','Water')+and lastmodifiedDate+=+";
 
-    String OPPORTUNITIES_QUERY = "SELECT+Id,Name,AccountId,CloseDate,StageName,Amount,TH_Opportunity_Type__c,TH_Customer_Type__c,TH_Region__c,THCH_Zone__c,THCH_Territory__c," +
+    String OPPORTUNITIES_QUERY = "SELECT+Id,Name,AccountId,CloseDate,StageName,Amount,TH_Opportunity_Type__c,TH_Customer_Type__c,TH_Region__c,THCH_Zone__c,THCH_Territory__c,TH_Opportunity_Number__c,THSC_Opportunity_Asset_Id__c," +
             "Probability,TH_Product_Family__c,THCH_Techno_Commercial_Acceptance_Date__c,TH_RFQ_Completed__c,TH_Reason_for_Closed_Lost_Won_Drop__c,CMG_Won_against_Whom__c,TH_Lost_to_Whom__c," +
             "TH_Closing_Summary__c,THCMG_Date_Ordered__c,THCMG_Bill_To_Location__c,THCMG_Ship_To_Location__c,THCMG_Bill_To_Location__r.THCMG_Country__c,THCMG_Bill_To_Location__r.THCMG_State__c,THCMG_Bill_To_Location__r.THCMG_City__c," +
             "THCMG_Bill_To_Location__r.THCMG_Pin_Code__c,THCMG_Bill_To_Location__r.THCMG_Address1__c,THCMG_Bill_To_Location__r.THCMG_Address2__c,THCMG_Bill_To_Location__r.THCMG_Address3__c,THCMG_Ship_To_Location__r.THCMG_Country__c," +

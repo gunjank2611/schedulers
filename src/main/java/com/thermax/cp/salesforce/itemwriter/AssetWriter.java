@@ -35,7 +35,7 @@ public class AssetWriter implements ItemWriter<SFDCAssetDTO> {
                 "accountId", "tH_IBG_Division__c", "tHCH_Region__c", "ownerId","ownerName","ownerUserRoleName","tHCH_Sales_Order_Number__c","asset_Make__c",
         "tHCH_Asset_Status__c","calorie_Potential__c","tHSC_I_C_Scope__c","tHS_Service_Sales_Engineer__c","tPF_User__c","tHS_WARRANTY_DUR_FR_COMM_DT__c",
         "tHS_WARRANTY_DUR_FR_DISP_DT__c","tHSC_First_Date_of_Dispatch__c","tH_Shipment_received_date__c","tH_IBG_Commissioning_Date__c",
-        "revised_warranty_expiry_date__c","warranty_Revision_Status__c","reason_for_extended_warranty__c","tHSC_Country__c","tHS_Order__r",
+        "revised_warranty_expiry_date__c","warranty_Revision_Status__c","reasonForExtendedWarranty","tHSC_Country__c","tHS_Order__r",
         "tH_When_to_Engage_Customer_days__c","createdDate","lastModifiedDate","tMAX_TCA_User__c","caUsername","caUserMobile","caUserRoleName",
         "serviceSpocName","serviceSpocMobile","serviceSpocUserRoleName","tMAX_TCA_User__c","tMAX_Service_SPOC_CP__c","tMAX_Spares_Sales_SPOC_CP__c",
         "spareSalesSpocName","spareSalesSpocMobile","spareSalesSpocUserRoleName","tMAX_Service_Sales_SPOC_CP__c","servicesSalesSpocName","serviceSalesSpocUserRoleName",
