@@ -34,5 +34,4 @@ public class EligibleSpareServiceWriter implements ItemWriter<SFDCEligibleSpares
         fileURLDTO.setFileUrl(url.get());
         enquiryConnector.sendEligibleSparesServiceUrl(fileURLDTO);
         log.info("Pushed Eligible Spares Service data to DB !");
-    }
 }
