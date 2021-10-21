@@ -7,6 +7,9 @@ import lombok.Data;
 @Data
 public class SFDCEligibleSparesServicesDTO {
     public AttributesDTO attributes;
+
+    @JsonProperty("Id")
+    public String id;
     @JsonProperty("Asset__c")
     public String asset__c;
     @JsonProperty("CurrencyIsoCode")
