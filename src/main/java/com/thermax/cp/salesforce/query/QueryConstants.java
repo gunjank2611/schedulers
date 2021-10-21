@@ -70,7 +70,7 @@ public interface QueryConstants {
     String PROPOSALS_QUERY = "SELECT Account__c,Additional_Input_By_Proposer__c,Additional_Input_By_Requester__c,Asset__c,Committed_Date__c,CreatedDate,Department__c,Id,IsLatestVersion__c,IsRevisedAfterClosure__c,LastModifiedDate,Name,Opportunity__c,Original_Proposal__c,Proposal_Number__c,Proposer_User__c,Reason__c," +
             "Status__c FROM Tmax_Proposal__c where Opportunity__r.recordtype.name='Spare+%26+Services'+and+lastmodifiedDate+=";
 
-    String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
+    String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Id,Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account_Id__c,LASTMODIFIEDDATE+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=";
 
