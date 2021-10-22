@@ -1,3 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim 
+metadata:
+  name: tcpschedulers
+spec:
+  resources:
+    requests:
+      storage: 2G	
+  accessModes:
+    - ReadWriteMany
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -53,7 +65,7 @@ spec:
         - name: tcpschedulers
           persistentVolumeClaim:
             claimName: tcpschedulers
-            
+
 ---
 apiVersion: v1
 kind: Service
@@ -67,15 +79,3 @@ spec:
       targetPort: 7072
   selector:
     app: tcpschedulers
-
---- 
-apiVersion: v1
-kind: PersistentVolumeClaim 
-metadata:
-  name: tcpschedulers
-spec:
-  resources:
-    requests:
-      storage: 2G	
-  accessModes:
-    - ReadWriteMany
