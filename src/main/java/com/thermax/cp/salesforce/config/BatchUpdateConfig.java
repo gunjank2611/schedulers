@@ -232,7 +232,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-eligible-spares-services")
                 .<SFDCEligibleSparesServicesDTO, SFDCEligibleSparesServicesDTO>chunk(100)
                 .reader(eligibleSpareServiceReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new EligibleSpareServiceWriter(csvWrite,enquiryConnector))
+                .writer(new EligibleSpareServiceWriter(csvWrite, enquiryConnector))
                 .build();
     }
 

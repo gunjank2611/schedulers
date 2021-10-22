@@ -28,8 +28,8 @@ public class ServicesWriter implements ItemWriter<SFDCServicesDTO> {
     public void write(List<? extends SFDCServicesDTO> servicesDTOS) throws Exception {
         log.info("Received assets from SFDC : {}", servicesDTOS.size());
         log.info("Written assets size : {}", servicesDTOS.size());
-        final String[] headers = new String[]{"id", "name", "countOfVisitsLog", "noOfVisits","contractStartDate","contractEndDate",
-                "asset", "region", "division", "executor","salesOrderNumber","quantity","unitSellingPrice","uom","orderedItem","lineTotal",
+        final String[] headers = new String[]{"id", "name", "countOfVisitLog", "noOfVisits","contractStartDate","contractEndDate",
+                "assetId", "region", "division", "executor","salesOrderNumber","quantity","unitSellingPrice","uom","orderedItem","lineTotal",
                 "orderLineId","lineStatus","description"};
         final String fileName="services.csv";
         final String apiName="Services";
