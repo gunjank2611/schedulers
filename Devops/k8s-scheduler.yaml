@@ -7,7 +7,7 @@ spec:
     requests:
       storage: 2G	
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   storageClassName: storageclassshared
 ---
 apiVersion: apps/v1
