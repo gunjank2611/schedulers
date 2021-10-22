@@ -21,6 +21,25 @@ public interface AssetsConnector {
     @PostMapping(value = "${feign.client.assets.assets-url}")
     ResponseEntity<Void> sendAssetsBlobUrl(@RequestBody FileURLDTO fileURLDTO);
 
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.assets.spares-url}")
+    ResponseEntity<Void> sendSparesUrl(@RequestBody FileURLDTO fileURLDTO);
+
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.assets.services-url}")
+    ResponseEntity<Void> sendServiceUrl(@RequestBody FileURLDTO fileURLDTO);
+
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.assets.asset-history-url}")
+    ResponseEntity<Void> sendAssetHistoryUrl(@RequestBody FileURLDTO fileURLDTO);
+
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.assets.service-log-url}")
+    ResponseEntity<Void> sendServiceLogUrl(@RequestBody FileURLDTO fileURLDTO);
 
     default ResponseEntity<String> circuitBreakerFallback(Exception e) {
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
