@@ -5,7 +5,7 @@ metadata:
   labels:
     app: tcpschedulers
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: tcpschedulers
@@ -53,6 +53,7 @@ spec:
         - name: tcpschedulers
           persistentVolumeClaim:
             claimName: tcpschedulers
+            
 ---
 apiVersion: v1
 kind: Service
@@ -77,4 +78,4 @@ spec:
     requests:
       storage: 2G	
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
