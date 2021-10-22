@@ -24,14 +24,16 @@ public class EligibleSpareServiceWriter implements ItemWriter<SFDCEligibleSpares
     @Override
     public void write(List<? extends SFDCEligibleSparesServicesDTO> eligibleSparesServicesDTOS) throws Exception {
         log.info("Saving data for eligible spares and services of size: {} ", eligibleSparesServicesDTOS.size());
-         String[] headers = new String[]{"id", "asset__c", "currencyIsoCode", "life_Cycle_Date__c", "name", "part_Number__c","tH_Thermax_Spare__c",
+        String[] headers = new String[]{"id", "asset__c", "currencyIsoCode", "life_Cycle_Date__c", "name", "part_Number__c", "tH_Thermax_Spare__c",
                 "type__c", "when_to_Engage_Customer__c"};
-        final String fileName="eligibleSparesServices.csv";
-        final String apiName="EligibleSparesServices";
-        CompletableFuture<String> url = csvWrite.writeToCSV(eligibleSparesServicesDTOS,headers,fileName,apiName);
+        final String fileName = "eligibleSparesServices.csv";
+        final String apiName = "EligibleSparesServices";
+        CompletableFuture<String> url = csvWrite.writeToCSV(eligibleSparesServicesDTOS, headers, fileName, apiName);
         log.info("Written Eligible Spares Services to the file : {}", url.get());
-        FileURLDTO fileURLDTO=new FileURLDTO();
+        FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
         enquiryConnector.sendEligibleSparesServiceUrl(fileURLDTO);
         log.info("Pushed Eligible Spares Service data to DB !");
+    }
+
 }
