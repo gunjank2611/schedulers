@@ -14,7 +14,7 @@ public interface QueryConstants {
 
     String FETCH_CONTENT_DOCUMENT_QUERY = "SELECT+ContentDocumentId+from+ContentVersion+ where + Id+ = +";
 
-    String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,ProductCode+FROM+Product2+ where + lastmodifiedDate + = +";
+    String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,TH_UOM__c,ProductCode+FROM+Product2+ where + lastmodifiedDate + = + ";
 
     String ACCOUNT_DETAILS_QUERY = "select+id,name,Type,website,AccountSource,TH_Existing_Customer_for_Water_Division__c,TH_Existing_Customer_forHeating_Division__c,Account_Number__c," +
             "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,AccountNumber ,THCH_Email__c,TH_IsActive__c+from account where + lastmodifiedDate + = +";

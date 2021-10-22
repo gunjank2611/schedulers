@@ -15,11 +15,12 @@ public class SFDCProductInfoDTO {
     @JsonProperty("Id")
     private String id;
 
+    @JsonProperty("TH_UOM__c")
+    private boolean uom;
+
     @JsonProperty("Description")
     private String description;
 
-    @JsonProperty("Family")
-    private String family;
 
     @JsonProperty("IsActive")
     private boolean isActive;

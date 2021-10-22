@@ -10,15 +10,15 @@ import java.util.Date;
 public class SFDCServiceLogDTO {
     public AttributesDTO attributes;
     @JsonProperty("Branded_services_sales__c")
-    public String branded_services_sales__c;
+    private String brandedServiceSales;
     @JsonProperty("Comments__c")
-    public String comments__c;
+    private String comments;
     @JsonProperty("CreatedDate")
-    public Date createdDate;
+    private Date createdDate;
     @JsonProperty("Id")
-    public String id;
+    private String id;
     @JsonProperty("Name")
-    public String name;
+    private String name;
     @JsonProperty("Visit_Date__c")
-    public String visit_Date__c;
+    private String visitDate;
 }
