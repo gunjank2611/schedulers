@@ -55,6 +55,15 @@ spec:
           value: #{springProfilesActive}#
         ports:
         - containerPort: 7072
+        volumeMounts:
+            - mountPath: /opt/scripts 
+              name: tcpschedulers
+              subPath: tcpschedulers
+
+      volumes:
+        - name: tcpschedulers
+          persistentVolumeClaim:
+            claimName: tcpschedulers
 ---
 apiVersion: v1
 kind: Service
