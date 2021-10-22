@@ -63,6 +63,7 @@ feign:
       opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
       thermax-users-url: /enquiryApi/api/v1/scheduler/thermaxUsers
       eligible-spares-service-url: /enquiryApi/api/v1/eligibleSparesServices/scheduler
+      pricebook-url: /enquiryApi/api/v1/pricebook/scheduler
     assets:
       base-Url: tcpassets
       recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
