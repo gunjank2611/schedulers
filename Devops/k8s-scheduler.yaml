@@ -8,3 +8,63 @@ spec:
       storage: 2G	
   accessModes:
     - ReadWriteMany
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tcpschedulers
+  labels:
+    app: tcpschedulers
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tcpschedulers
+  template:
+    metadata:
+      labels:
+        app: tcpschedulers
+    spec:
+      containers:
+      - name: pgbouncer
+        image: acrcinthermaxdev.azurecr.io/pgbouncer
+        env:
+          - name: DATABASES_HOST
+            value: #{DATABASE_HOST}#
+          - name: DATABASES_PORT
+            value: "5432"
+          - name: DATABASES_USER
+            value: #{DATABASE_USER}#
+          - name: DATABASES_PASSWORD
+            value: #{DATABASE_PASSWORD}#
+          - name: DATABASES_DBNAME
+            value: #{DATABASE_DBNAME}#
+          - name: DATABASES_POOL_MODE
+            value: TRANSACTION
+          - name: PGBOUNCER_MAX_CLIENT_CONN
+            value: "500"
+          - name: PGBOUNCER_SERVER_TLS_SSLMODE
+            value: require
+          - name: PGBOUNCER_DEFAULT_POOL_SIZE
+            value: "5"
+            
+      - name: tcpschedulers
+        image: #{imagepath}#:#{imagetag}
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: #{springProfilesActive}#
+        ports:
+        - containerPort: 7072
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tcpschedulers
+  annotations:
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 7072
+  selector:
+    app: tcpschedulers
