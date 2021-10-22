@@ -47,6 +47,11 @@ public interface EnquiryConnector {
     @PostMapping(value = "${feign.client.enquiry.eligible-spares-service-url}")
     ResponseEntity<Void> sendEligibleSparesServiceUrl(@RequestBody FileURLDTO fileURLDTO);
 
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.enquiry.pricebook-url}")
+    ResponseEntity<Void> sendPricebookUrl(@RequestBody FileURLDTO fileURLDTO);
+
 
     default ResponseEntity<String> circuitBreakerFallback(Exception e) {
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
