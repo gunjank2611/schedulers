@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 @Log4j2
-public class ProductsDBWriter implements ItemWriter<SFDCProductInfoDTO> {
+public class ProductWriter implements ItemWriter<SFDCProductInfoDTO> {
 
 
 
