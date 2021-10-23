@@ -14,6 +14,11 @@ import java.util.List;
 public interface OrdersMapper {
     List<OrderHeadersDTO> convertToTOrderHeadersDTOList(final List<SFDCOrderHeadersDTO> orderHeadersDTOS);
 
+    @Mapping(source = "headerStatus", target = "erpStatus")
+    @Mapping(source = "orderNumber", target = "orderNumber")
+    @Mapping(source = "expectedDeliveryDate", target = "edd")
+    OrderHeadersDTO convertToTOrderHeadersDTO(final SFDCOrderHeadersDTO orderHeadersDTO);
+
     @Mapping(source = "id", target = "id")
     @Mapping(source = "orderNumber", target = "orderNumber")
     @Mapping(source = "THCMG_Customer_PO__c", target = "THCMG_Customer_PO__c")

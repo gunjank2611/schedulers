@@ -33,7 +33,7 @@ public class FeignRequestConfiguration {
                 return;
             } else if (requestUrl.contains("/api/v1/upload/")) {
                 log.info("keeping default multipart header for the file upload url : " + requestUrl);
-            } else if (requestUrl.contains("/api/cp/get_order_status")) {
+            } else if (requestUrl.contains("/api/cp/get_order_status") || requestUrl.contains("/api/cp/tmx_erp/get_order_status/")) {
                 requestTemplate.header("USERNAME", sfdcOrdersConfiguration.getUsername());
                 requestTemplate.header("PASSWORD", sfdcOrdersConfiguration.getPassword());
                 requestTemplate.header("INSTANCE", sfdcOrdersConfiguration.getInstance());
