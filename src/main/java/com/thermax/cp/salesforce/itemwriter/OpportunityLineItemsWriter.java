@@ -33,5 +33,7 @@ public class OpportunityLineItemsWriter implements ItemWriter<SFDCOpportunityLin
         log.info("Written opportunity line items to the file : {}", url.get());
         FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        enquiryConnector.sendOpportunityLineItems(fileURLDTO);
+        log.info("Pushed opportunity line items data to DB !");
     }
 }
