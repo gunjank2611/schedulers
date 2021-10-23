@@ -97,7 +97,7 @@ feign:
     accounts:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc
-    url: https://thermax--tmxdev.my.salesforce.com/services
+    url: https://thermax.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
 
 sfdc:
