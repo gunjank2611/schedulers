@@ -2,7 +2,7 @@ spring:
   application:
     name: THERMAX-SFDC-INTERFACE
   datasource:
-    url: jdbc:postgresql://azpgsql-cin-thermax-dev.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345
+    url: jdbc:postgresql://azpgsql-cin-thermax-qa.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-qa&password=Password@12345
   jpa:
     show-sql: true
     hibernate:
@@ -20,7 +20,6 @@ spring:
     job:
       enabled: false
     initialize-schema: always
-
 
 management:
   endpoint:
