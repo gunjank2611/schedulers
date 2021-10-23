@@ -1,14 +1,8 @@
 spring:
   application:
     name: THERMAX-SFDC-INTERFACE
-  batch:
-    job:
-      enabled: false
-    initialize-schema: always
-
   datasource:
     url: jdbc:postgresql://localhost:6432/thermaxcp?user=thermax@azpgsql-cin-thermax-qa&password=Password@12345&prepareThreshold=0
-
   jpa:
     show-sql: true
     hibernate:
@@ -18,9 +12,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: public
         jdbc:
           lob:
             non_contextual_creation: true
+  batch:
+    job:
+      enabled: false
+    initialize-schema: always
 management:
   endpoint:
     health:
