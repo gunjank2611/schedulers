@@ -2,6 +2,7 @@ package com.thermax.cp.salesforce.itemwriter;
 
 import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookEntryDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
+import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
@@ -14,9 +15,11 @@ public class PricebookEntryWriter implements ItemWriter<SFDCPricebookEntryDTO> {
 
 
     final private CSVWrite csvWrite;
+    final private EnquiryConnector enquiryConnector;
 
-    public PricebookEntryWriter(CSVWrite csvWrite) {
+    public PricebookEntryWriter(CSVWrite csvWrite,EnquiryConnector enquiryConnector) {
         this.csvWrite = csvWrite;
+        this.enquiryConnector=enquiryConnector;
     }
 
     @Override
@@ -30,5 +33,7 @@ public class PricebookEntryWriter implements ItemWriter<SFDCPricebookEntryDTO> {
         log.info("Written pricebook entry to the file : {}", url.get());
         FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        enquiryConnector.sendPricebookEntry(fileURLDTO);
+        log.info("Pushed pricebook data to DB !");
     }
 }
