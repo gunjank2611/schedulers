@@ -6,6 +6,7 @@ import com.thermax.cp.salesforce.config.SfdcOrdersConfiguration;
 import feign.RequestInterceptor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,6 +23,9 @@ public class FeignRequestConfiguration {
     @Autowired
     private SfdcOrdersConfiguration sfdcOrdersConfiguration;
 
+    @Value("${feign.client.order-status.get-status}")
+    private String erpOrderStatusUrl;
+
     @Bean
     RequestInterceptor buildRequestInterceptor() {
         log.info("Inside buildRequest Interceptor()..");
@@ -33,7 +37,7 @@ public class FeignRequestConfiguration {
                 return;
             } else if (requestUrl.contains("/api/v1/upload/")) {
                 log.info("keeping default multipart header for the file upload url : " + requestUrl);
-            } else if (requestUrl.contains("/api/cp/get_order_status") || requestUrl.contains("/api/cp/tmx_erp/get_order_status/")) {
+            } else if (requestUrl.contains(erpOrderStatusUrl)) {
                 requestTemplate.header("USERNAME", sfdcOrdersConfiguration.getUsername());
                 requestTemplate.header("PASSWORD", sfdcOrdersConfiguration.getPassword());
                 requestTemplate.header("INSTANCE", sfdcOrdersConfiguration.getInstance());
