@@ -1,9 +1,8 @@
 spring:
   application:
     name: THERMAX-SFDC-INTERFACE
-
   datasource:
-    url: jdbc:postgresql://azpgsql-cin-thermax-dev.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&prepareThreshold=0
+    url: jdbc:postgresql://localhost:6432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&prepareThreshold=0
   jpa:
     show-sql: true
     hibernate:
@@ -103,12 +102,14 @@ feign:
       services-url: /assetsApi/fileReader/servicesFromSfdc
       spares-url: /assetsApi/fileReader/sparesFromSfdc
       service-log-url: /assetsApi/fileReader/serviceLogFromSfdc
+    order-status:
+      base-url: https://mobility.thermaxglobal.com/tmx_intg
+      get-status: /api/cp/get_order_status/
     accounts:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
-    orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
 
 sfdc:
   grant-type: password

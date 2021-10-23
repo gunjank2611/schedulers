@@ -32,8 +32,7 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
 
     @Override
     public void write(List<? extends SFDCOrdersDTO> ordersDTOS) throws Exception {
-        log.info("Received Orders from SFDC : {}", ordersDTOS.size());
-        log.info("Writing orders of size : {}", ordersDTOS.size());
+        log.info("Received Orders from SFDC of size : {}", ordersDTOS.size());
         final String[] headers = new String[]{"id", "orderNumber", "tHCMG_Customer_PO__c", "accountId", "tHCMG_Payment_Term__c",
                 "tHCMG_ERP_Operating_Unit__c", "tHCMG_Cheque_Number__c", "tHCMG_Transaction_Type_Id__c", "tHCMG_Bill_To_Location__c", "tHCMG_Warehouse__c",
                 "tHCMG_Ship_To_Location__c", "tHCMG_Date_Ordered__c", "tHCMG_Payment_Type__c", "effectiveDate", "totalAmount", "tHCMG_FOB__c", "tH_Division__c",
@@ -51,8 +50,11 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
             log.info("Pushing data to respective microservice for consumption and DB persisting...");
             enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
             log.info("Pushing data process completed!");
-            List<OrderIdDTO> orderIdDTOS = orders.stream().map(ordersDTO -> new OrderIdDTO(ordersDTO.getOrderNumber())).collect(Collectors.toList());
-            log.info("Fetching order status and edd for orders: {}", orderIdDTOS);
+            List<OrderIdDTO> orderIdDTOS = orders.stream()
+                    .filter(ordersDTO -> ordersDTO.getERP_Order_Number__c() != null)
+                    .map(ordersDTO -> new OrderIdDTO(ordersDTO.getERP_Order_Number__c()))
+                    .collect(Collectors.toList());
+            log.info("Fetching order status and edd for orders size: {}", orderIdDTOS.size());
             asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS);
             log.info("Order status fetch completed successfully!");
         }

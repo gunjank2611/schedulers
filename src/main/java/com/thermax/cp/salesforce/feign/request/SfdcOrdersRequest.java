@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 
-@FeignClient(name = "SfdcOrdersRequestClient", url = "${feign.client.orderHeadersUrl}", configuration = FeignRequestConfiguration.class)
+@FeignClient(name = "SfdcOrdersRequestClient", url = "${feign.client.order-status.base-url}", configuration = FeignRequestConfiguration.class)
 public interface SfdcOrdersRequest {
 
-    @PostMapping(value = "api/cp/get_order_status/")
+    @PostMapping(value = "${feign.client.order-status.get-status}")
     ResponseEntity<SFDCOrderHeadersListDTO> fetchOrderStatus(@RequestBody List<OrderIdDTO> ordersDTO);
 }
