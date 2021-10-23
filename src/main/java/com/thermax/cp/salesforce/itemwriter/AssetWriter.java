@@ -46,6 +46,6 @@ public class AssetWriter implements ItemWriter<SFDCAssetDTO> {
         log.info("Written assets to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        assetsConnector.sendRecommendationBlobUrl(fileURLDTO);
+        assetsConnector.sendAssetsBlobUrl(fileURLDTO);
     }
 }

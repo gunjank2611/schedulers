@@ -36,6 +36,6 @@ public class AssetHistoryWriter implements ItemWriter<SFDCAssetHistoryDTO> {
         log.info("Written asset history to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        assetsConnector.sendRecommendationBlobUrl(fileURLDTO);
+        assetsConnector.sendAssetHistoryUrl(fileURLDTO);
     }
 }

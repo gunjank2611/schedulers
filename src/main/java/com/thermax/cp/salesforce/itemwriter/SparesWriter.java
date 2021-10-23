@@ -37,6 +37,6 @@ public class SparesWriter implements ItemWriter<SFDCSparesDTO> {
         log.info("Written assets to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        assetsConnector.sendRecommendationBlobUrl(fileURLDTO);
+        assetsConnector.sendSparesUrl(fileURLDTO);
     }
 }

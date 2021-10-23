@@ -32,7 +32,8 @@ public class PricebookWriter implements ItemWriter<SFDCPricebookDTO> {
         log.info("Written pricebook to the file : {}", url.get());
         FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        enquiryConnector.sendPricebookUrl(fileURLDTO);
+        log.info("Pushed pricebook data to DB !");
     }
-
 
 }

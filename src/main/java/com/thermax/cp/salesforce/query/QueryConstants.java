@@ -14,7 +14,7 @@ public interface QueryConstants {
 
     String FETCH_CONTENT_DOCUMENT_QUERY = "SELECT+ContentDocumentId+from+ContentVersion+ where + Id+ = +";
 
-    String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,ProductCode+FROM+Product2+ where + lastmodifiedDate + = +";
+    String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,TH_UOM__c,ProductCode+FROM+Product2+ where + lastmodifiedDate + = + ";
 
     String ACCOUNT_DETAILS_QUERY = "select+id,name,Type,website,AccountSource,TH_Existing_Customer_for_Water_Division__c,TH_Existing_Customer_forHeating_Division__c,Account_Number__c," +
             "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,AccountNumber ,THCH_Email__c,TH_IsActive__c+from account where + lastmodifiedDate + = +";
@@ -70,7 +70,7 @@ public interface QueryConstants {
     String PROPOSALS_QUERY = "SELECT Account__c,Additional_Input_By_Proposer__c,Additional_Input_By_Requester__c,Asset__c,Committed_Date__c,CreatedDate,Department__c,Id,IsLatestVersion__c,IsRevisedAfterClosure__c,LastModifiedDate,Name,Opportunity__c,Original_Proposal__c,Proposal_Number__c,Proposer_User__c,Reason__c," +
             "Status__c FROM Tmax_Proposal__c where Opportunity__r.recordtype.name='Spare+%26+Services'+and+lastmodifiedDate+=";
 
-    String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
+    String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Id,Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account_Id__c,LASTMODIFIEDDATE+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=";
 

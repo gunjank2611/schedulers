@@ -62,10 +62,16 @@ feign:
       order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
       opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
       thermax-users-url: /enquiryApi/api/v1/scheduler/thermaxUsers
+      eligible-spares-service-url: /enquiryApi/api/v1/eligibleSparesServices/scheduler
+      pricebook-url: /enquiryApi/api/v1/pricebook/scheduler
     assets:
       base-Url: tcpassets
-      recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
-      assets-url: /assetsApi/recommendations/assetFromSdfc
+      recommendations-url: /assetsApi/fileReader/recommendationFromSfdc
+      assets-url: /assetsApi/fileReader/assetFromSfdc
+      asset-history-url: /assetsApi/fileReader/assetHistoryFromSfdc
+      services-url: /assetsApi/fileReader/servicesFromSfdc
+      spares-url: /assetsApi/fileReader/sparesFromSfdc
+      service-log-url: /assetsApi/fileReader/serviceLogFromSfdc
     accounts:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc

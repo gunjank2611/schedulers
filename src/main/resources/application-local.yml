@@ -93,10 +93,16 @@ feign:
       opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
       thermax-users-url: /enquiryApi/api/v1/scheduler/thermaxUsers
       complaints-url: /enquiryApi/api/v1/scheduler/complaints
+      eligible-spares-service-url: /enquiryApi/api/v1/eligibleSparesServices/scheduler
+      pricebook-url: /enquiryApi/api/v1/pricebook/scheduler
     assets:
-      base-Url: https://apim-cin-thermax-dev.azure-api.net
-      recommendations-url: /assetsApi/recommendations/recommendationFromSdfc
-      assets-url: /assetsApi/recommendations/assetFromSdfc
+      base-Url: http://localhost:8087
+      recommendations-url: /assetsApi/fileReader/recommendationFromSfdc
+      assets-url: /assetsApi/fileReader/assetFromSfdc
+      asset-history-url: /assetsApi/fileReader/assetHistoryFromSfdc
+      services-url: /assetsApi/fileReader/servicesFromSfdc
+      spares-url: /assetsApi/fileReader/sparesFromSfdc
+      service-log-url: /assetsApi/fileReader/serviceLogFromSfdc
     accounts:
       base-Url: http://localhost:7075
       accounts-url: /accountsApi/accounts/accountsFromSdfc

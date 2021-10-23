@@ -85,7 +85,7 @@ public class BatchUpdateConfig {
                 .<SFDCProductInfoDTO, SFDCProductInfoDTO>chunk(100)
                 .reader(productItemReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ProductItemProcessor())
-                .writer(new ProductsDBWriter())
+                .writer(new ProductWriter())
                 .build();
     }
 
@@ -232,7 +232,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-eligible-spares-services")
                 .<SFDCEligibleSparesServicesDTO, SFDCEligibleSparesServicesDTO>chunk(100)
                 .reader(eligibleSpareServiceReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new EligibleSpareServiceWriter())
+                .writer(new EligibleSpareServiceWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -259,7 +259,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-service-log")
                 .<SFDCServiceLogDTO, SFDCServiceLogDTO>chunk(100)
                 .reader(serviceLogReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ServiceLogWriter())
+                .writer(new ServiceLogWriter(csvWrite,assetsConnector))
                 .build();
     }
 
