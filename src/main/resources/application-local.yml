@@ -95,9 +95,9 @@ feign:
       complaints-url: /enquiryApi/api/v1/scheduler/complaints
       eligible-spares-service-url: /enquiryApi/api/v1/eligibleSparesServices/scheduler
       pricebook-url: /enquiryApi/api/v1/pricebook/scheduler
-      pricbook-entry-url: /enquiryApi/api/v1/ingest/pricebookEntries
-      opportunities-url: /enquiryApi/api/v1/ingest/opportunities
-      opportunity-line-item-url: /enquiryApi/api/v1/ingest/opportunityLineItems
+      pricbook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
+      opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
+      opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
 
     assets:
       base-Url: http://localhost:8087
