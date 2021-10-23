@@ -2,7 +2,7 @@ spring:
   application:
     name: THERMAX-SFDC-INTERFACE
   datasource:
-    url: jdbc:postgresql://azpgsql-cin-thermax-dev.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345&sslmode=require
+    url: jdbc:postgresql://azpgsql-cin-thermax-dev.postgres.database.azure.com:5432/thermaxcp?user=thermax@azpgsql-cin-thermax-dev&password=Password@12345
   jpa:
     show-sql: true
     hibernate:
@@ -95,6 +95,10 @@ feign:
       complaints-url: /enquiryApi/api/v1/scheduler/complaints
       eligible-spares-service-url: /enquiryApi/api/v1/eligibleSparesServices/scheduler
       pricebook-url: /enquiryApi/api/v1/pricebook/scheduler
+      pricbook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
+      opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
+      opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
+
     assets:
       base-Url: http://localhost:8087
       recommendations-url: /assetsApi/fileReader/recommendationFromSfdc
@@ -103,28 +107,30 @@ feign:
       services-url: /assetsApi/fileReader/servicesFromSfdc
       spares-url: /assetsApi/fileReader/sparesFromSfdc
       service-log-url: /assetsApi/fileReader/serviceLogFromSfdc
+    order-status:
+      base-url: https://mobility.thermaxglobal.com/tmx_intg
+      get-status: /api/cp/tmx_erp/get_order_status/
     accounts:
       base-Url: http://localhost:7075
       accounts-url: /accountsApi/accounts/accountsFromSdfc
-    url: https://thermax--tmxdev.my.salesforce.com/services
+    url: https://thermax.my.salesforce.com/services
     fileUploadUrl: http://localhost:9191
-    orderHeadersUrl: https://mobility.thermaxglobal.com/tmx_intg/
 
 sfdc:
   grant-type: password
-  client-id: 3MVG9Se4BnchkASk9vur9uLifnr7DiLDaGX4u2f7VkdNCwemsfmOug1loAmKwRLurEKuM5FHwFgUPJJcsXwGB
-  client-secret: 7785F6398BBDF7F4691ECC097992FF832595A2B55BFC8A877F82A69CE3A39682
-  username: cp.integration.user@nagarro.com
-  password: Salesforce@123
+  client-id: 3MVG9d8..z.hDcPKwCmbHWfOYwjXz41QyY7UK5w8d2cALQZE5wRax7QPFgIDa3T_.CAo5wVGIMvcicZBx7QtW
+  client-secret: 3DBC2AE6CEB57BBF6F87F60FDF01F424F6CBB21B232BDAFC08A3D7D8CEA622B0
+  username: nagarro_intadmin@thermaxprod.com
+  password: Delhi@123
 sfdcorders:
   grant-type: password
-  username: Thermax.CPIntegrationTestUser
-  password: SaENw#@2MCJd
-  INSTANCE: TMXTESTINST
+  username: Thermax.CPIntegrationProdUser
+  password: SaENw#@2$MCJdxks
+  INSTANCE: TMXPRODINST
 
 
 logging:
   level:
-    com.thermax.cp.salesforce: INFO
-    org.springframework: INFO
-    org.springframework.web.servlet: INFO
+    com.thermax.cp.salesforce: DEBUG
+    org.springframework: DEBUG
+    org.springframework.web.servlet: DEBUG

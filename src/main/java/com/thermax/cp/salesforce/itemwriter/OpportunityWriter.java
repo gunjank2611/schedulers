@@ -3,6 +3,7 @@ package com.thermax.cp.salesforce.itemwriter;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
+import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
@@ -14,9 +15,11 @@ import java.util.concurrent.CompletableFuture;
 public class OpportunityWriter implements ItemWriter<SFDCOpportunityDTO> {
 
     final private CSVWrite csvWrite;
+    final private EnquiryConnector enquiryConnector;
 
-    public OpportunityWriter(CSVWrite csvWrite) {
+    public OpportunityWriter(CSVWrite csvWrite,EnquiryConnector enquiryConnector) {
         this.csvWrite = csvWrite;
+        this.enquiryConnector=enquiryConnector;
     }
 
     @Override
@@ -34,5 +37,7 @@ public class OpportunityWriter implements ItemWriter<SFDCOpportunityDTO> {
         log.info("Written opportunities to the file : {}", url.get());
         FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        enquiryConnector.sendOpportunities(fileURLDTO);
+        log.info("Pushed opportunities data to DB !");
     }
 }
