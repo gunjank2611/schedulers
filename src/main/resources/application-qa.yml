@@ -36,7 +36,7 @@ management:
       exposure:
         include: '*'
 server:
-  port: 7071
+  port: 7072
   shutdown: graceful
 
 resilience4j:
