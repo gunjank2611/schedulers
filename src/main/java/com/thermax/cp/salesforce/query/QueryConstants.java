@@ -72,7 +72,7 @@ public interface QueryConstants {
 
     String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Id,Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
 
-    String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account_Id__c,LASTMODIFIEDDATE+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=";
+    String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account__c,lastmodifiedDate+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=+";
 
     String CONTACTS_QUERY="select+id,firstName,middleName,lastName ,accountId ,department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,\n" +
             "MailingCountry,TH_IBG_International_Calling_Code__c,TH_IsActive__c+from+Contact+where+lastmodifiedDate+=+";
