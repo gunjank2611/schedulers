@@ -19,7 +19,7 @@ public class SFDCAssetHistoryDTO {
         private String tH_Change_Type__c;
         @JsonProperty("TH_Description_for__c")
         private String tH_Description_for__c;
-        @JsonProperty("TH_Account_Id__c")
+        @JsonProperty("TH_Account__c")
         private String tH_Account_Id__c;
         @JsonProperty("LastModifiedDate")
         private String lastModifiedDate;
