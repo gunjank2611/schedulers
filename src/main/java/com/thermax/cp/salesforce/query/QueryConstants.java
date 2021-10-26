@@ -74,11 +74,10 @@ public interface QueryConstants {
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account_Id__c,LASTMODIFIEDDATE+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=";
 
-    String CONTACTS_QUERY="select+id,firstName,middleName,lastName ,accountId ,department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,\n" +
-            "MailingCountry,TH_IBG_International_Calling_Code__c,TH_IsActive__c+from+Contact+where+lastmodifiedDate+=+";
+    String CONTACTS_QUERY = "select+id,firstName,middleName,lastName ,accountId ,Account.Name, Email, department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,MailingCountry,Salutation,TH_IBG_International_Calling_Code__c,TH_IsActive__c,TMAX_isActiveForCP__c+from+Contact+where+lastmodifiedDate+=";
 
-    String SERVICE_LOG_QUERY="SELECT+Branded_services_sales__c,Comments__c,CreatedDate,Id,Name,Visit_Date__c+FROM+Branded_Service_Visit_Log__c+where+lastmodifiedDate+=+";
+    String SERVICE_LOG_QUERY = "SELECT+Branded_services_sales__c,Comments__c,CreatedDate,Id,Name,Visit_Date__c+FROM+Branded_Service_Visit_Log__c+where+lastmodifiedDate+=+";
 
-    String THERMAX_USERS_QUERY="SELECT+Id,Name,UserRole.Name,Email,Title,Address,CurrencyISOCode,ManagerId,Manager.Name," +
+    String THERMAX_USERS_QUERY = "SELECT+Id,Name,UserRole.Name,Email,Title,Address,CurrencyISOCode,ManagerId,Manager.Name," +
             "THCMG_ERP_USER_ID__c,EmployeeNumber,THCH_Services__c,TH_IBG_Regions__c,THCS_Division__c+from+User+where+isActive+=true+and+lastmodifiedDate+=+";
 }

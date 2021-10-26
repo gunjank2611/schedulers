@@ -105,12 +105,15 @@ feign:
       services-url: /assetsApi/fileReader/servicesFromSfdc
       spares-url: /assetsApi/fileReader/sparesFromSfdc
       service-log-url: /assetsApi/fileReader/serviceLogFromSfdc
-    order-status:
-      base-url: https://mobility.thermaxglobal.com/tmx_intg
-      get-status: /api/cp/get_order_status/
     accounts:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc
+    contacts:
+      base-url: tcp-usermanagement
+      contacts-url: /api/um/scheduler/user
+    order-status:
+      base-url: https://mobility.thermaxglobal.com/tmx_intg
+      get-status: /api/cp/get_order_status/
     url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
 

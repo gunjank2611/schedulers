@@ -25,6 +25,7 @@ import com.thermax.cp.salesforce.dto.users.ThermaxUsersDTO;
 import com.thermax.cp.salesforce.feign.connectors.AccountsConnector;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
+import com.thermax.cp.salesforce.feign.connectors.ContactsConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
 import com.thermax.cp.salesforce.itemprocessor.*;
@@ -65,6 +66,8 @@ public class BatchUpdateConfig {
     private AccountsConnector accountsConnector;
     @Autowired
     private EnquiryConnector enquiryConnector;
+    @Autowired
+    private ContactsConnector contactsConnector;
     private String frequency;
     private String url;
     @Autowired
@@ -250,7 +253,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-contacts")
                 .<SFDCContactsDTO, SFDCContactsDTO>chunk(100)
                 .reader(contactsReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ContactsWriter())
+                .writer(new ContactsWriter(csvWrite, contactsConnector))
                 .build();
     }
 
