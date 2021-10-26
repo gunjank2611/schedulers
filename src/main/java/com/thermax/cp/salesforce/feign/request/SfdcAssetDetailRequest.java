@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "SfdcAssetDetailFeignClient", url = "${feign.client.url}", configuration = FeignRequestConfiguration.class)
+@FeignClient(name = "SfdcAssetDetailFeignClient", url = "${feign.client.salesforce-url}", configuration = FeignRequestConfiguration.class)
 public interface SfdcAssetDetailRequest {
 
     @GetMapping("/data/v52.0/query/?q={query}")

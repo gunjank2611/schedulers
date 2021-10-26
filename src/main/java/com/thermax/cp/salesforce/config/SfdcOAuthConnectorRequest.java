@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "SfdcOAuthConnectorFeignClient", url = "${feign.client.url}", configuration = OAuthConfiguration.class)
+@FeignClient(name = "SfdcOAuthConnectorFeignClient", url = "${feign.client.salesforce-url}", configuration = OAuthConfiguration.class)
 public interface SfdcOAuthConnectorRequest {
 
     @PostMapping("/oauth2/token")

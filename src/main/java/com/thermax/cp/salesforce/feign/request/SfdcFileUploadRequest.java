@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "SfdcFileUploaderFeignClient", url = "${feign.client.url}", configuration = FeignRequestConfiguration.class)
+@FeignClient(name = "SfdcFileUploaderFeignClient", url = "${feign.client.salesforce-url}", configuration = FeignRequestConfiguration.class)
 public interface SfdcFileUploadRequest {
 
     @PostMapping("/data/v52.0/sobjects/ContentVersion")

@@ -12,7 +12,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: public
+        default-schema: public
         jdbc:
           lob:
             non_contextual_creation: true
@@ -112,7 +112,7 @@ feign:
     accounts:
       base-Url: http://localhost:7075
       accounts-url: /accountsApi/accounts/accountsFromSdfc
-    url: https://thermax.my.salesforce.com/services
+    salesforce-url: https://thermax.my.salesforce.com/services
     fileUploadUrl: http://localhost:9191
 
 sfdc:
@@ -128,8 +128,4 @@ sfdcorders:
   INSTANCE: TMXPRODINST
 
 
-logging:
-  level:
-    com.thermax.cp.salesforce: DEBUG
-    org.springframework: DEBUG
-    org.springframework.web.servlet: DEBUG
+

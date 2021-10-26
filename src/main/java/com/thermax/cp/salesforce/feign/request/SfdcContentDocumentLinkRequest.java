@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@FeignClient(name = "SfdcContentDocumentLinkFeignClient", url = "${feign.client.url}", configuration = FeignRequestConfiguration.class)
+@FeignClient(name = "SfdcContentDocumentLinkFeignClient", url = "${feign.client.salesforce-url}", configuration = FeignRequestConfiguration.class)
 public interface SfdcContentDocumentLinkRequest {
 
     @PostMapping("/data/v52.0/sobjects/ContentDocumentLink")
