@@ -86,6 +86,7 @@ feign:
       pricbook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
       opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
       opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
+      complaints-url: /enquiryApi/api/v1/scheduler/complaints
     assets:
       base-Url: tcpassets
       recommendations-url: /assetsApi/fileReader/recommendationFromSfdc
@@ -103,7 +104,7 @@ feign:
     order-status:
       base-url: https://mobility.thermaxglobal.com/tmx_intg
       get-status: /api/cp/tmx_erp/get_order_status/
-    url: https://thermax.my.salesforce.com/services
+    salesforce-url: https://thermax.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
 
 sfdc:
