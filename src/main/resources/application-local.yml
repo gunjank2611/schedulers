@@ -106,15 +106,17 @@ feign:
       services-url: /assetsApi/fileReader/servicesFromSfdc
       spares-url: /assetsApi/fileReader/sparesFromSfdc
       service-log-url: /assetsApi/fileReader/serviceLogFromSfdc
-    order-status:
-      base-url: https://mobility.thermaxglobal.com/tmx_intg
-      get-status: /api/cp/tmx_erp/get_order_status/
     accounts:
       base-Url: http://localhost:7075
       accounts-url: /accountsApi/accounts/accountsFromSdfc
+    contacts:
+      base-url: http://localhost:8087
+      contacts-url: /api/um/scheduler/user
+    order-status:
+      base-url: https://mobility.thermaxglobal.com/tmx_intg
+      get-status: /api/cp/tmx_erp/get_order_status/
     salesforce-url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: http://localhost:9191
-
 sfdc:
   grant-type: password
   client-id: 3MVG9Se4BnchkASk9vur9uLifnr7DiLDaGX4u2f7VkdNCwemsfmOug1loAmKwRLurEKuM5FHwFgUPJJcsXwGB
