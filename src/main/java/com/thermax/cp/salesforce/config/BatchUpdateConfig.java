@@ -178,6 +178,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-complaints")
                 .<SFDCComplaintsDTO, SFDCComplaintsDTO>chunk(100)
                 .reader(complaintsReader(sfdcBatchDataDetailsRequest, frequency))
+                .processor(new ComplaintsProcessor())
                 .writer(new ComplaintsWriter(csvWrite,enquiryConnector))
                 .build();
     }

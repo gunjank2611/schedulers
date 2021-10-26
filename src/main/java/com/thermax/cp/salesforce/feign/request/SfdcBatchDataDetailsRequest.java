@@ -27,7 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "SfdcBatchDetailsRequestFeignClient", url = "${feign.client.url}", configuration = FeignRequestConfiguration.class)
+@FeignClient(name = "SfdcBatchDetailsRequestFeignClient", url = "${feign.client.salesforce-url}", configuration = FeignRequestConfiguration.class)
 public interface SfdcBatchDataDetailsRequest {
 
 
