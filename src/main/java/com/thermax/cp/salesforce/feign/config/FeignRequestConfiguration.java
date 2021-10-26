@@ -26,6 +26,7 @@ public class FeignRequestConfiguration {
     @Value("${feign.client.order-status.get-status}")
     private String erpOrderStatusUrl;
 
+
     @Bean
     RequestInterceptor buildRequestInterceptor() {
         log.info("Inside buildRequest Interceptor()..");
@@ -42,11 +43,15 @@ public class FeignRequestConfiguration {
                 requestTemplate.header("PASSWORD", sfdcOrdersConfiguration.getPassword());
                 requestTemplate.header("INSTANCE", sfdcOrdersConfiguration.getInstance());
                 return;
-            } else {
+            }  else {
                 requestTemplate.header("Content-Type", "application/json");
                 requestTemplate.header("Accept", "application/json");
             }
-            requestTemplate.header("Authorization", "Bearer " + getBearerAccessTokenFromSfdc());
+            if (requestUrl.contains("/data/v52.0/query/")) {
+                log.info("Salesforce API requested adding the token : " + requestUrl);
+                requestTemplate.header("Authorization", "Bearer " + getBearerAccessTokenFromSfdc());
+                return;
+            }
         };
     }
 

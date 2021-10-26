@@ -85,6 +85,7 @@ feign:
       pricbook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
       opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
       opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
+      complaints-url: /enquiryApi/api/v1/scheduler/complaints
     assets:
       base-Url: tcpassets
       recommendations-url: /assetsApi/fileReader/recommendationFromSfdc
@@ -99,7 +100,7 @@ feign:
     accounts:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc
-    url: https://thermax.my.salesforce.com/services
+    salesforce-url: https://thermax.my.salesforce.com/services
     fileUploadUrl: tcp-fileuploader
 
 sfdc:

@@ -12,7 +12,7 @@ public class SFDCComplaintsDTO {
     @JsonProperty("CaseNumber")
     private String caseNumber;
     @JsonProperty("Reason")
-    private Object reason;
+    private String reason;
     @JsonProperty("OwnerId")
     private String ownerId;
     @JsonProperty("Owner")
@@ -24,21 +24,21 @@ public class SFDCComplaintsDTO {
     @JsonProperty("Origin")
     private String origin;
     @JsonProperty("Subject")
-    private Object subject;
+    private String subject;
     @JsonProperty("Description")
-    private Object description;
+    private String description;
     @JsonProperty("THS_Source__c")
-    private Object tHS_Source__c;
+    private String tHS_Source__c;
     @JsonProperty("AccountId")
-    private Object accountId;
+    private String accountId;
     @JsonProperty("AssetId")
-    private Object assetId;
+    private String assetId;
     @JsonProperty("ContactId")
-    private Object contactId;
+    private String contactId;
     @JsonProperty("THS_Division__c")
-    private Object tHS_Division__c;
+    private String tHS_Division__c;
     @JsonProperty("THS_Case_Source__c")
-    private Object tHS_Case_Source__c;
+    private String tHS_Case_Source__c;
     @JsonProperty("CreatedDate")
     private String createdDate;
     @JsonProperty("LastModifiedDate")
