@@ -8,5 +8,6 @@ import java.util.List;
 public class SFDCAssetDTOList {
     private String totalSize;
     private String done;
+    private String nextRecordsUrl;
     private List<SFDCAssetDTO> records;
 }

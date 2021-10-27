@@ -1,11 +1,16 @@
 package com.thermax.cp.salesforce.itemreader;
 
+import com.thermax.cp.salesforce.dto.asset.SFDCAssetDTO;
+import com.thermax.cp.salesforce.dto.asset.SFDCAssetDTOList;
 import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
 import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsListDTO;
 import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
+import com.thermax.cp.salesforce.exception.ResourceNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @StepScope
+@Log4j2
 public class RecommendationsReader implements ItemReader<SFDCRecommendationsDTO> {
     private   String query;
     @Autowired
@@ -22,6 +28,8 @@ public class RecommendationsReader implements ItemReader<SFDCRecommendationsDTO>
     @Autowired
     private SfdcServiceUtils sfdcServiceUtils;
     private List<SFDCRecommendationsDTO> sfdcRecommendationsDTOList;
+    @Autowired
+    private SfdcNextRecordsClient sfdcNextRecordsClient;
     private int nextProductIndex;
     private String frequency;
 
@@ -59,11 +67,28 @@ public class RecommendationsReader implements ItemReader<SFDCRecommendationsDTO>
 
     private List<SFDCRecommendationsDTO> getRecommendationDetails(String query, String date) throws UnsupportedEncodingException {
         String productDetailsQuery = sfdcServiceUtils.decodeRequestQuery(query) + " "+ date + "";
-        ResponseEntity<SFDCRecommendationsListDTO> recommendationsListDTOResponseEntity = sfdcBatchDataDetailsRequest.loadRecommendations(productDetailsQuery);
-        if (recommendationsListDTOResponseEntity != null) {
-            return recommendationsListDTOResponseEntity.getBody().getRecords();
-        } else {
-            throw new AssetDetailsNotFoundException("Unable to find Product Details from SFDC for the specified date : " + date);
+        ResponseEntity<SFDCRecommendationsListDTO> recommendationsList = sfdcBatchDataDetailsRequest.loadRecommendations(productDetailsQuery);
+        if(recommendationsList!=null) {
+            List<SFDCRecommendationsDTO> recommendationsDTOList = recommendationsList.getBody().getRecords();
+            String nextUrl = recommendationsList.getBody().getNextRecordsUrl();
+
+            while (nextUrl != null) {
+                try {
+                    nextUrl = nextUrl.substring(nextUrl.lastIndexOf('/') + 1);
+                    log.info("next url {}", nextUrl);
+                    ResponseEntity<SFDCRecommendationsListDTO> nextRecordsList = sfdcNextRecordsClient.loadRecommendations(nextUrl);
+                    recommendationsDTOList.addAll(nextRecordsList.getBody().getRecords());
+                    nextUrl = nextRecordsList.getBody().getNextRecordsUrl();
+
+                } catch (Exception e) {
+                    log.info("Error while calling the next records url"+e.getMessage());
+                }
+            }
+            return recommendationsDTOList;
+        }
+        else
+        {
+            throw new ResourceNotFoundException("Unable to find Recommendations Details from SFDC for the specified date : " + date);
         }
     }
 }
