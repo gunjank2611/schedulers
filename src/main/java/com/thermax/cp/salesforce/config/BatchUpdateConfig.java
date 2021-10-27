@@ -85,7 +85,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadProducts() {
         return stepBuilderFactory.get("load-products")
-                .<SFDCProductInfoDTO, SFDCProductInfoDTO>chunk(100)
+                .<SFDCProductInfoDTO, SFDCProductInfoDTO>chunk(500)
                 .reader(productItemReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ProductItemProcessor())
                 .writer(new ProductWriter(csvWrite,enquiryConnector))
@@ -95,7 +95,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadAccounts() {
         return stepBuilderFactory.get("load-accounts")
-                .<SFDCAccountInfoDTO, SFDCAccountInfoDTO>chunk(100)
+                .<SFDCAccountInfoDTO, SFDCAccountInfoDTO>chunk(500)
                 .reader(accountsItemReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new AccountsProcessor())
                 .writer(new AccountsDBWriter(csvWrite,accountsConnector))
@@ -105,7 +105,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadRecommendations() {
         return stepBuilderFactory.get("load-recommendations")
-                .<SFDCRecommendationsDTO, SFDCRecommendationsDTO>chunk(100)
+                .<SFDCRecommendationsDTO, SFDCRecommendationsDTO>chunk(500)
                 .reader(recommendationsReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new RecommendationsProcessor())
                 .writer(new RecommendationsWriter(csvWrite, assetsConnector))
@@ -115,7 +115,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadServices() {
         return stepBuilderFactory.get("load-services")
-                .<SFDCServicesDTO, SFDCServicesDTO>chunk(100)
+                .<SFDCServicesDTO, SFDCServicesDTO>chunk(500)
                 .reader(servicesReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new ServicesWriter(csvWrite, assetsConnector))
                 .build();
@@ -124,7 +124,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadSpares() {
         return stepBuilderFactory.get("load-spares")
-                .<SFDCSparesDTO, SFDCSparesDTO>chunk(100)
+                .<SFDCSparesDTO, SFDCSparesDTO>chunk(500)
                 .reader(sparesReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new SparesWriter(csvWrite, assetsConnector))
                 .build();
@@ -133,7 +133,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadAssets() {
         return stepBuilderFactory.get("load-assets")
-                .<SFDCAssetDTO, SFDCAssetDTO>chunk(100)
+                .<SFDCAssetDTO, SFDCAssetDTO>chunk(500)
                 .reader(assetsReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new AssetProcessor())
                 .writer(new AssetWriter(csvWrite, assetsConnector))
@@ -143,7 +143,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadOpportunities() {
         return stepBuilderFactory.get("load-opportunities")
-                .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(100)
+                .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(500)
                 .reader(opportunityReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new OpportunityWriter(csvWrite,enquiryConnector))
                 .build();
@@ -152,7 +152,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadPricebooks() {
         return stepBuilderFactory.get("load-pricebooks")
-                .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(100)
+                .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(500)
                 .reader(pricebookReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new PricebookWriter(csvWrite,enquiryConnector))
                 .build();
@@ -161,7 +161,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadPricebookEntries() {
         return stepBuilderFactory.get("load-pricebookentries")
-                .<SFDCPricebookEntryDTO, SFDCPricebookEntryDTO>chunk(100)
+                .<SFDCPricebookEntryDTO, SFDCPricebookEntryDTO>chunk(500)
                 .reader(pricebookEntryReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new PricebookEntryWriter(csvWrite,enquiryConnector))
                 .build();
@@ -170,7 +170,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadUsers() {
         return stepBuilderFactory.get("load-users")
-                .<SFDCUsersDTO, SFDCUsersDTO>chunk(100)
+                .<SFDCUsersDTO, SFDCUsersDTO>chunk(500)
                 .reader(usersReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new UsersWriter())
                 .build();
@@ -179,7 +179,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadComplaints() {
         return stepBuilderFactory.get("load-complaints")
-                .<SFDCComplaintsDTO, SFDCComplaintsDTO>chunk(100)
+                .<SFDCComplaintsDTO, SFDCComplaintsDTO>chunk(500)
                 .reader(complaintsReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ComplaintsProcessor())
                 .writer(new ComplaintsWriter(csvWrite,enquiryConnector))
@@ -189,7 +189,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadOrders() {
         return stepBuilderFactory.get("load-orders")
-                .<SFDCOrdersDTO, SFDCOrdersDTO>chunk(100)
+                .<SFDCOrdersDTO, SFDCOrdersDTO>chunk(500)
                 .reader(ordersReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new OrderWriter(csvWrite, enquiryConnector, asyncOrderStatusReadWriter))
                 .build();
@@ -198,7 +198,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadOrderItems() {
         return stepBuilderFactory.get("load-order-items")
-                .<SFDCOrderItemsDTO, SFDCOrderItemsDTO>chunk(100)
+                .<SFDCOrderItemsDTO, SFDCOrderItemsDTO>chunk(500)
                 .reader(orderItemsReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new OrderItemsWriter(csvWrite, enquiryConnector))
                 .build();
@@ -207,7 +207,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadOpportunityContactRole() {
         return stepBuilderFactory.get("load-opportunity-contact-role")
-                .<SFDCOpportunityContactRoleDTO, SFDCOpportunityContactRoleDTO>chunk(100)
+                .<SFDCOpportunityContactRoleDTO, SFDCOpportunityContactRoleDTO>chunk(500)
                 .reader(opportunityContactRoleReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new OpportunityContactRoleWriter(csvWrite, enquiryConnector))
                 .build();
@@ -216,7 +216,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadOpportunityLineItems() {
         return stepBuilderFactory.get("load-opportunity-line-items")
-                .<SFDCOpportunityLineItemsDTO, SFDCOpportunityLineItemsDTO>chunk(100)
+                .<SFDCOpportunityLineItemsDTO, SFDCOpportunityLineItemsDTO>chunk(500)
                 .reader(opportunityLineItemsReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new OpportunityLineItemsWriter(csvWrite,enquiryConnector))
                 .build();
@@ -225,7 +225,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadProposals() {
         return stepBuilderFactory.get("load-proposals")
-                .<SFDCProposalsDTO, SFDCProposalsDTO>chunk(100)
+                .<SFDCProposalsDTO, SFDCProposalsDTO>chunk(500)
                 .reader(proposalsReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new ProposalWriter(csvWrite))
                 .build();
@@ -234,7 +234,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadEligibleSparesServices() {
         return stepBuilderFactory.get("load-eligible-spares-services")
-                .<SFDCEligibleSparesServicesDTO, SFDCEligibleSparesServicesDTO>chunk(100)
+                .<SFDCEligibleSparesServicesDTO, SFDCEligibleSparesServicesDTO>chunk(500)
                 .reader(eligibleSpareServiceReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new EligibleSpareServiceWriter(csvWrite, enquiryConnector))
                 .build();
@@ -243,7 +243,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadAssetHistory() {
         return stepBuilderFactory.get("load-asset-history")
-                .<SFDCAssetHistoryDTO, SFDCAssetHistoryDTO>chunk(100)
+                .<SFDCAssetHistoryDTO, SFDCAssetHistoryDTO>chunk(500)
                 .reader(assetHistoryReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new AssetHistoryWriter(csvWrite,assetsConnector))
                 .build();
@@ -252,7 +252,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadContacts() {
         return stepBuilderFactory.get("load-contacts")
-                .<SFDCContactsDTO, SFDCContactsDTO>chunk(100)
+                .<SFDCContactsDTO, SFDCContactsDTO>chunk(500)
                 .reader(contactsReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new ContactsWriter(csvWrite, contactsConnector))
                 .build();
@@ -261,7 +261,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadServiceLog() {
         return stepBuilderFactory.get("load-service-log")
-                .<SFDCServiceLogDTO, SFDCServiceLogDTO>chunk(100)
+                .<SFDCServiceLogDTO, SFDCServiceLogDTO>chunk(500)
                 .reader(serviceLogReader(sfdcBatchDataDetailsRequest, frequency))
                 .writer(new ServiceLogWriter(csvWrite,assetsConnector))
                 .build();
@@ -270,7 +270,7 @@ public class BatchUpdateConfig {
     @Bean
     public Step loadThermaxUsers() {
         return stepBuilderFactory.get("load-thermax-users")
-                .<ThermaxUsersDTO, ThermaxUsersDTO>chunk(100)
+                .<ThermaxUsersDTO, ThermaxUsersDTO>chunk(500)
                 .reader(thermaxUsersReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ThermaxUserProcessor())
                 .writer(new ThermaxUsersWriter(csvWrite,enquiryConnector))
