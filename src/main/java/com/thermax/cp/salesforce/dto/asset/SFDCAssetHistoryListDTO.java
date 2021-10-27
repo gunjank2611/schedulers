@@ -9,4 +9,5 @@ public class SFDCAssetHistoryListDTO {
     private String totalSize;
     private String done;
     private List<SFDCAssetHistoryDTO> records;
+    private String nextRecordsUrl;
 }

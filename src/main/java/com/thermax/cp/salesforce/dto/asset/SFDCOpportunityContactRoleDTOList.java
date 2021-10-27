@@ -10,4 +10,5 @@ public class SFDCOpportunityContactRoleDTOList {
     private String totalSize;
     private String done;
     private List<SFDCOpportunityContactRoleDTO> records;
+    private String nextRecordsUrl;
 }
