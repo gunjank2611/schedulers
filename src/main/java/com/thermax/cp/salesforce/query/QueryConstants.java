@@ -45,10 +45,10 @@ public interface QueryConstants {
             "THCMG_Ship_To_Location__r.THCMG_State__c,THCMG_Ship_To_Location__r.THCMG_City__c,THCMG_Ship_To_Location__r.THCMG_Pin_Code__c,THCMG_Ship_To_Location__r.THCMG_Address1__c,THCMG_Ship_To_Location__r.THCMG_Address2__c,THCMG_Ship_To_Location__r.THCMG_Address3__c," +
             "THCMG_Cheque_Number__c,THCMG_Customer_PO__c,THCMG_ERP_Division__c,THCMG_ERP_Division__r.Name,THCMG_Payment_Term__c,THCMG_Payment_Term__r.Name,THCMG_Warehouse__c,THCMG_Warehouse__r.Name,THCMG_Transaction_Type__c,THCMG_Transaction_Type__r.Name,THCMG_FOB__c,THCMG_Freight_Terms__c,OwnerId," +
             "Owner.Name,Owner.Email,Owner.MobilePhone,(select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode,ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c+from+OpportunityLineItems)" +
-            "+from+Opportunity+where+recordtype.Name+=+'Spare+%26+Services'+and+lastmodifiedDate+=+";
+            "+from+Opportunity+where+lastmodifiedDate+=+";
 
     String OPPORTUNITY_LINE_ITEMS_QUERY = "select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode," +
-            "ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c+from+OpportunityLineItem+where+opportunity.recordtype.name+=+'Spare+%26+Services'+and+lastmodifiedDate+=";
+            "ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c+from+OpportunityLineItem+where+lastmodifiedDate+=";
 
     String PRICEBOOKS_QUERY = "SELECT+id,Description,IsActive,Name+FROM+Pricebook2+where+lastmodifieddate+=";
 
@@ -65,7 +65,7 @@ public interface QueryConstants {
 
     String ORDER_ITEMS_QUERY = "SELECT+Id,Product2Id,TH_Product_Code__c,Listprice,unitprice,totalprice,THCMG_ERP_User_Id__c,TH_Asset__c+from+OrderItem where Order.Opportunity.recordType.Name = 'Spare+%26+Services'+and+lastmodifiedDate+=";
 
-    String OPPORTUNITY_CONTACT_ROLE = "SELECT+ContactId,Id,IsPrimary,OpportunityId,Role+FROM+OpportunityContactRole+where+Opportunity.recordtype.Name+=+'Spare+%26+Services'+and+lastmodifiedDate+=";
+    String OPPORTUNITY_CONTACT_ROLE = "SELECT+ContactId,Id,IsPrimary,OpportunityId,Role+FROM+OpportunityContactRole+where+lastmodifiedDate+=";
 
     String PROPOSALS_QUERY = "SELECT Account__c,Additional_Input_By_Proposer__c,Additional_Input_By_Requester__c,Asset__c,Committed_Date__c,CreatedDate,Department__c,Id,IsLatestVersion__c,IsRevisedAfterClosure__c,LastModifiedDate,Name,Opportunity__c,Original_Proposal__c,Proposal_Number__c,Proposer_User__c,Reason__c," +
             "Status__c FROM Tmax_Proposal__c where Opportunity__r.recordtype.name='Spare+%26+Services'+and+lastmodifiedDate+=";
