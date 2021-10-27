@@ -10,5 +10,6 @@ public class SFDCOrdersListDTO {
 
     private String totalSize;
     private String done;
+    private String nextRecordsUrl;
     private List<SFDCOrdersDTO> records;
 }

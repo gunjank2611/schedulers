@@ -7,5 +7,6 @@ import java.util.List;
 public class SFDCRecommendationsListDTO {
     private String totalSize;
     private String done;
+    private String nextRecordsUrl;
     private List<SFDCRecommendationsDTO> records;
 }
