@@ -57,7 +57,7 @@ spec:
         ports:
         - containerPort: 7072
         volumeMounts:
-            - mountPath: /opt/logs 
+            - mountPath: /opt/logs/salesforce-interface 
               name: tcpschedulers
               subPath: tcpschedulers
 
