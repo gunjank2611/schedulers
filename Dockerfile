@@ -18,6 +18,7 @@ RUN apt-get -y install azure-cli
 VOLUME /tmp
 ARG JAR_FILE=target/*.jar
 ADD /Devops/app-logging.sh /home/app-logging.sh
+ADD /Devops/appnames.txt /home/appnames.txt
 COPY ${JAR_FILE} TcpSchedulersApplication-0.0.1-SNAPSHOT.jar
 EXPOSE 7072
 ENTRYPOINT ["java","-jar","/TcpSchedulersApplication-0.0.1-SNAPSHOT.jar"]
