@@ -9,5 +9,6 @@ import java.util.List;
 public class SFDCPricebookDTOList {
     private String totalSize;
     private String done;
+    private String nextRecordsUrl;
     private List<SFDCPricebookDTO> records;
 }
