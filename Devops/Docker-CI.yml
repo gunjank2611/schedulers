@@ -79,3 +79,37 @@ stages:
           dbUser: $(dbUsername)
           dbPassword: $(dbPassword)
           dbName: $(dbName)
+
+ - stage: "PROD"
+   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
+   variables:
+   - group: DB-Prod
+   jobs:
+    - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
+      parameters:
+        useSonar: false
+        sonarOrganization: NA
+        sonarKey: ThermaxCP
+        appname: tcpschedulers
+        containerRegistry: acrcintcpprod.azurecr.io
+        environmentBranch: main
+        environmentName: prod
+        dockerRegistryServiceConnection: ThermaxACRProd
+        imageRepository: prod/tcpschedulers
+        MAVEN_OPTS: '-Dmaven.test.skip=true'
+
+    - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
+      parameters:
+          appName: tcpschedulers
+          environmentName: prod
+          environmentBranch: main
+          filepath: 'Devops/k8s-scheduler.yaml'
+          containerreg: acrcintcpprod.azurecr.io
+          imagerepo: prod/tcpschedulers
+          k8ssvcconn: ThermaxK8sProd
+          springProfilesActive: prod
+          dbHost: $(dbHost)
+          dbUser: $(dbUsername)
+          dbPassword: $(dbPassword)
+          dbName: $(dbName)
+          replicaset: 4 
