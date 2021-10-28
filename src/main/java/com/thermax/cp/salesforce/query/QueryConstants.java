@@ -14,7 +14,7 @@ public interface QueryConstants {
 
     String FETCH_CONTENT_DOCUMENT_QUERY = "SELECT+ContentDocumentId+from+ContentVersion+ where + Id+ = +";
 
-    String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,TH_UOM__c,ProductCode+FROM+Product2+ where + lastmodifiedDate + = + ";
+    String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,TH_UOM__c,ProductCode+FROM+Product2+ where+ lastmodifiedDate + = + ";
 
     String ACCOUNT_DETAILS_QUERY = "select+id,name,Type,website,AccountSource,TH_Existing_Customer_for_Water_Division__c,TH_Existing_Customer_forHeating_Division__c,Account_Number__c," +
             "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,AccountNumber ,THCH_Email__c,TH_IsActive__c+from account where + lastmodifiedDate + = +";
@@ -63,7 +63,7 @@ public interface QueryConstants {
 
     String ORDERS_QUERY = "SELECT Id,orderNumber,THCMG_Customer_PO__c,AccountId,THCMG_Payment_Term__c,THCMG_ERP_Operating_Unit__c,THCMG_Cheque_Number__c,THCMG_Transaction_Type_Id__c,THCMG_Bill_To_Location__c,THCMG_Warehouse__c,THCMG_Ship_To_Location__c,THCMG_Date_Ordered__c,THCMG_Payment_Type__c,THCMG_Request_Date__c,EffectiveDate,TotalAmount,THCMG_FOB__c,TH_Division__c,THCMG_Freight_Terms__c,Status,OpportunityId,ERP_Order_Number__c,TH_Opportunity_Number__c,Asset__c,ERP_Credit_Rating__c,ERP_invoice__c,ERP_Invoiced_value__c,ERP_order_booked_date__c,ERP_Order_Value__c,ERP_Order_status__c,OwnerId,Owner.Name,Opportunity.OwnerId,Opportunity.Owner.Name,Opportunity.Owner.Email,Opportunity.Owner.MobilePhone,Opportunity.Owner.UserRole.Name,Opportunity.TH_Opportunity_Type__c,(SELECT+Id,Product2Id,TH_Product_Code__c,Listprice,unitprice,totalprice,THCMG_ERP_User_Id__c,TH_Asset__c+from+OrderItems) from Order where LastmodifiedDate+=";
 
-    String ORDER_ITEMS_QUERY = "SELECT+Id,Product2Id,TH_Product_Code__c,Listprice,unitprice,totalprice,THCMG_ERP_User_Id__c,TH_Asset__c+from+OrderItem where Order.Opportunity.recordType.Name = 'Spare+%26+Services'+and+lastmodifiedDate+=";
+    String ORDER_ITEMS_QUERY = "SELECT+Id,Product2Id,TH_Product_Code__c,Listprice,unitprice,totalprice,THCMG_ERP_User_Id__c,TH_Asset__c+from+OrderItem where +lastmodifiedDate+=";
 
     String OPPORTUNITY_CONTACT_ROLE = "SELECT+ContactId,Id,IsPrimary,OpportunityId,Role+FROM+OpportunityContactRole+where+lastmodifiedDate+=";
 
