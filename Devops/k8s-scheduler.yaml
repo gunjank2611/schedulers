@@ -57,7 +57,7 @@ spec:
         ports:
         - containerPort: 7072
         volumeMounts:
-            - mountPath: /opt/scripts 
+            - mountPath: /opt/logs 
               name: tcpschedulers
               subPath: tcpschedulers
 
