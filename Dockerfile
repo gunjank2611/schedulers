@@ -1,6 +1,10 @@
 # Dockerfile
 FROM openjdk:11-jdk-slim
 RUN apt-get -y update
+RUN apt-get -y install curl
+RUN apt-get -qq -y install curl
+RUN apt-get -y install build-essential
+RUN apt-get -y update
 RUN apt-get install -y apt-transport-https ca-certificates lsb-release gnupg
 RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 RUN touch /etc/apt/sources.list.d/kubernetes.list 
