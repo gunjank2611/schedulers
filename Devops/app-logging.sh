@@ -3,12 +3,12 @@ now=$(date +%m-%d-%Y)
 TIME=`date +%d-%m-%Y_%H.%M.%S`
 for i in {0..3}
 do
-   NEXT_DATE=$(date +%m-%d-%Y -d "$DATE + $i day")
-   if [[ $i=3 ]]
-   then
-     cd /opt/scripts
-     rm -rf *
-   fi  
+  NEXT_DATE=$(date +%m-%d-%Y -d "$DATE + $i day")
+  if [[ $i=3 ]]
+  then
+    cd /opt/scripts
+    rm -rf *
+  fi  
 done
 az login --use-device-code
 az account set --subscription 90a5cf8f-aa05-450d-9850-5d64c0f061d9
