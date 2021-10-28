@@ -93,7 +93,7 @@ spec:
             - name:  cronjob
               image: #{imagepath}#:#{imagetag}#
               command: ["/bin/bash"]
-              args: ["-c","bash /home/app-logging.sh && sleep 90"]
+              args: ["-c","bash /home/app-logging.sh && sleep 300"]
               volumeMounts:
                 - mountPath: /opt/scripts
                   name: tcpschedulers-app-logging
