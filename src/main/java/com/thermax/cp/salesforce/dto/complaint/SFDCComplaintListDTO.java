@@ -9,4 +9,5 @@ public class SFDCComplaintListDTO {
     private String totalSize;
     private String done;
     private List<SFDCComplaintsDTO> records;
+    private String nextRecordsUrl;
 }

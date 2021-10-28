@@ -4,10 +4,15 @@ import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesDTO;
 import com.thermax.cp.salesforce.dto.asset.SFDCEligibleSparesServicesListDTO;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintListDTO;
 import com.thermax.cp.salesforce.dto.complaint.SFDCComplaintsDTO;
+import com.thermax.cp.salesforce.dto.contacts.SFDCContactsDTO;
+import com.thermax.cp.salesforce.dto.contacts.SFDCContactsListDTO;
 import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
+import com.thermax.cp.salesforce.exception.ResourceNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +22,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @StepScope
+@Log4j2
 public class EligibleSparesSerivcesReader implements ItemReader<SFDCEligibleSparesServicesDTO> {
     private   String query;
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
     @Autowired
     private SfdcServiceUtils sfdcServiceUtils;
+    @Autowired
+    private SfdcNextRecordsClient sfdcNextRecordsClient;
     private List<SFDCEligibleSparesServicesDTO> sfdcEligibleSparesServicesDTOList;
     private int nextSpareServiceIndex;
     private String frequency;
@@ -61,11 +69,28 @@ public class EligibleSparesSerivcesReader implements ItemReader<SFDCEligibleSpar
 
     private List<SFDCEligibleSparesServicesDTO> getEligibleSpareServicesDetails(String query,String date) throws UnsupportedEncodingException {
         String eligibleSpareServicesQuery = sfdcServiceUtils.decodeRequestQuery(query) + " "+ date + "";
-        ResponseEntity<SFDCEligibleSparesServicesListDTO> users = sfdcBatchDataDetailsRequest.loadEligibleSparesServices(eligibleSpareServicesQuery);
-        if (users != null) {
-            return users.getBody().getRecords();
-        } else {
-            throw new AssetDetailsNotFoundException("Unable to find Eligible spare and services Details from SFDC for the specified date : " + date);
+        ResponseEntity<SFDCEligibleSparesServicesListDTO> sparesServices = sfdcBatchDataDetailsRequest.loadEligibleSparesServices(eligibleSpareServicesQuery);
+        if(sparesServices!=null) {
+            List<SFDCEligibleSparesServicesDTO> eligibleSparesServicesDTOList = sparesServices.getBody().getRecords();
+            String nextUrl = sparesServices.getBody().getNextRecordsUrl();
+
+            while (nextUrl != null) {
+                try {
+                    nextUrl = nextUrl.substring(nextUrl.lastIndexOf('/') + 1);
+                    log.info("next url {}", nextUrl);
+                    ResponseEntity<SFDCEligibleSparesServicesListDTO> nextRecordsList = sfdcNextRecordsClient.loadEligibleSparesServices(nextUrl);
+                    eligibleSparesServicesDTOList.addAll(nextRecordsList.getBody().getRecords());
+                    nextUrl = nextRecordsList.getBody().getNextRecordsUrl();
+
+                } catch (Exception e) {
+                    log.info("Error while calling the next records url"+e.getMessage());
+                }
+            }
+            return eligibleSparesServicesDTOList;
+        }
+        else
+        {
+            throw new ResourceNotFoundException("Unable to find spares and services from SFDC for the specified date : " + date);
         }
     }
 }

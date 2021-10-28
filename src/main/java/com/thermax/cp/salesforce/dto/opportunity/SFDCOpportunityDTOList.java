@@ -11,4 +11,5 @@ public class SFDCOpportunityDTOList {
   private String totalSize;
   private String done;
   private List<SFDCOpportunityDTO> records;
+  private String nextRecordsUrl;
 }

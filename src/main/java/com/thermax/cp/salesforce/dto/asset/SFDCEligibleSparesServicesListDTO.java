@@ -9,4 +9,5 @@ public class SFDCEligibleSparesServicesListDTO {
     private String totalSize;
     private String done;
     private List<SFDCEligibleSparesServicesDTO> records;
+    private String nextRecordsUrl;
 }

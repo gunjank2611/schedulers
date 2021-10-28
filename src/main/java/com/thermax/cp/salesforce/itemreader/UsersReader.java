@@ -4,10 +4,15 @@ import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookDTO;
 import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookDTOList;
 import com.thermax.cp.salesforce.dto.users.SFDCUserDTOList;
 import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
+import com.thermax.cp.salesforce.dto.users.ThermaxUsersDTO;
+import com.thermax.cp.salesforce.dto.users.ThermaxUsersListDTO;
 import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
+import com.thermax.cp.salesforce.exception.ResourceNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +22,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @StepScope
+@Log4j2
 public class UsersReader implements ItemReader<SFDCUsersDTO> {
     private   String query;
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
     @Autowired
     private SfdcServiceUtils sfdcServiceUtils;
+    @Autowired
+    private SfdcNextRecordsClient sfdcNextRecordsClient;
     private List<SFDCUsersDTO> sfdcUsersDTOSList;
     private int nextUserIndex;
     private String frequency;
@@ -62,10 +70,27 @@ public class UsersReader implements ItemReader<SFDCUsersDTO> {
     private List<SFDCUsersDTO> getUserDetails(String query,String date) throws UnsupportedEncodingException {
         String productDetailsQuery = sfdcServiceUtils.decodeRequestQuery(query) + " "+ date + "";
         ResponseEntity<SFDCUserDTOList> users = sfdcBatchDataDetailsRequest.loadUsers(productDetailsQuery);
-        if (users != null) {
-            return users.getBody().getRecords();
-        } else {
-            throw new AssetDetailsNotFoundException("Unable to find User Details from SFDC for the specified date : " + date);
+        if(users!=null) {
+            List<SFDCUsersDTO> usersDTOS = users.getBody().getRecords();
+            String nextUrl = users.getBody().getNextRecordsUrl();
+
+            while (nextUrl != null) {
+                try {
+                    nextUrl = nextUrl.substring(nextUrl.lastIndexOf('/') + 1);
+                    log.info("next url {}", nextUrl);
+                    ResponseEntity<SFDCUserDTOList> nextRecordsList = sfdcNextRecordsClient.loadUsers(nextUrl);
+                    usersDTOS.addAll(nextRecordsList.getBody().getRecords());
+                    nextUrl = nextRecordsList.getBody().getNextRecordsUrl();
+
+                } catch (Exception e) {
+                    log.info("Error while calling the next records url"+e.getMessage());
+                }
+            }
+            return usersDTOS;
+        }
+        else
+        {
+            throw new ResourceNotFoundException("Unable to find users from SFDC for the specified date : " + date);
         }
     }
 }

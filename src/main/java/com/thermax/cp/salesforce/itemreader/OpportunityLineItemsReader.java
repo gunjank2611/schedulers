@@ -1,13 +1,18 @@
 package com.thermax.cp.salesforce.itemreader;
 
+import com.thermax.cp.salesforce.dto.asset.SFDCOpportunityContactRoleDTOList;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTOList;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsListDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOpportunityContactRoleDTO;
 import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
+import com.thermax.cp.salesforce.exception.ResourceNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @StepScope
+@Log4j2
 public class OpportunityLineItemsReader implements ItemReader<SFDCOpportunityLineItemsDTO>
 
     {
@@ -25,6 +31,8 @@ public class OpportunityLineItemsReader implements ItemReader<SFDCOpportunityLin
         private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
         @Autowired
         private SfdcServiceUtils sfdcServiceUtils;
+        @Autowired
+        private SfdcNextRecordsClient sfdcNextRecordsClient;
         private List<SFDCOpportunityLineItemsDTO> sfdcOpportunityLineItemsDTOList;
         private int nextOpportunityLineItemIndex;
         private String frequency;
@@ -65,10 +73,27 @@ public class OpportunityLineItemsReader implements ItemReader<SFDCOpportunityLin
         {
             String opportunityLineItemsList = sfdcServiceUtils.decodeRequestQuery(query) + " " + date + "";
             ResponseEntity<SFDCOpportunityLineItemsListDTO> opportunityLineItems = sfdcBatchDataDetailsRequest.loadOpportunityLineItems(opportunityLineItemsList);
-            if (opportunityLineItems != null) {
-                return opportunityLineItems.getBody().getRecords();
-            } else {
-                throw new AssetDetailsNotFoundException("Unable to find Opportunity Line item Details from SFDC for the specified date : " + date);
+            if(opportunityLineItems!=null) {
+                List<SFDCOpportunityLineItemsDTO> lineItemsDTOList = opportunityLineItems.getBody().getRecords();
+                String nextUrl = opportunityLineItems.getBody().getNextRecordsUrl();
+
+                while (nextUrl != null) {
+                    try {
+                        nextUrl = nextUrl.substring(nextUrl.lastIndexOf('/') + 1);
+                        log.info("next url {}", nextUrl);
+                        ResponseEntity<SFDCOpportunityLineItemsListDTO> nextRecordsList = sfdcNextRecordsClient.loadOpportunityLineItems(nextUrl);
+                        lineItemsDTOList.addAll(nextRecordsList.getBody().getRecords());
+                        nextUrl = nextRecordsList.getBody().getNextRecordsUrl();
+
+                    } catch (Exception e) {
+                        log.info("Error while calling the next records url"+e.getMessage());
+                    }
+                }
+                return lineItemsDTOList;
+            }
+            else
+            {
+                throw new ResourceNotFoundException("Unable to find lineItemsDTO from SFDC for the specified date : " + date);
             }
         }
     }
