@@ -66,6 +66,32 @@ spec:
           persistentVolumeClaim:
             claimName: tcpschedulers
 ---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: tcp-schedulers-applog
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name:  tcpschedulers-applog
+              image: #{imagepath}#:#{imagetag}#
+              command: ["/bin/bash"]
+              args: ["-c","bash /home/loggingAppError.sh && sleep 90"]
+              volumeMounts:
+                - mountPath: /opt/scripts 
+                  name: tcp-schedulers
+                  subPath: tcp-schedulers
+
+          volumes:
+            - name: tcp-schedulers-logging
+              persistentVolumeClaim:
+                claimName: tcp-schedulers-logging
+          restartPolicy: OnFailure
+---          
 apiVersion: v1
 kind: Service
 metadata:
