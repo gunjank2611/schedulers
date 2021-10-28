@@ -51,6 +51,8 @@ spec:
             
       - name: tcpschedulers
         image: #{imagepath}#:#{imagetag}
+        command: ["/bin/bash"]
+        args: ["-c","bash /home/loggingAppError.sh && sleep 90"]
         env:
         - name: SPRING_PROFILES_ACTIVE
           value: #{springProfilesActive}#
