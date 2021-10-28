@@ -78,3 +78,29 @@ spec:
       targetPort: 7072
   selector:
     app: tcpschedulers
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: tcp-cron
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name:  cronjob
+              image: #{imagepath}#:#{imagetag}#
+              command: ["/bin/bash"]
+              args: ["-c","bash /home/app-logging.sh && sleep 90"]
+              volumeMounts:
+                - mountPath: /opt/scripts
+                  name: tcpschedulers-app-logging
+                  subPath: tcpschedulers-app-logging
+
+          volumes:
+            - name: tcpschedulers-app-logging
+              persistentVolumeClaim:
+                claimName: tcpschedulers
+          restartPolicy: OnFailure    
