@@ -13,6 +13,7 @@ import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 @Log4j2
+@StepScope
 public class AssetHistoryReader implements ItemReader<SFDCAssetHistoryDTO> {
     private   String query;
     @Autowired

@@ -1,13 +1,18 @@
 package com.thermax.cp.salesforce.itemreader;
 
+import com.thermax.cp.salesforce.dto.services.SFDCServiceLogDTO;
+import com.thermax.cp.salesforce.dto.services.SFDCServiceLogListDTO;
 import com.thermax.cp.salesforce.dto.services.SFDCServicesDTO;
 import com.thermax.cp.salesforce.dto.services.SFDCServicesListDTO;
 import com.thermax.cp.salesforce.dto.spares.SFDCSparesDTO;
 import com.thermax.cp.salesforce.dto.spares.SFDCSparesListDTO;
 import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
+import com.thermax.cp.salesforce.exception.ResourceNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
 import com.thermax.cp.salesforce.query.QueryConstants;
 import com.thermax.cp.salesforce.utils.SfdcServiceUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +22,15 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @StepScope
+@Log4j2
 public class SparesReader implements ItemReader<SFDCSparesDTO> {
-    private   String query;
+    private String query;
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
     @Autowired
     private SfdcServiceUtils sfdcServiceUtils;
+    @Autowired
+    private SfdcNextRecordsClient sfdcNextRecordsClient;
     private List<SFDCSparesDTO> sfdcSparesDTOList;
     private int nextProductIndex;
     private String frequency;
@@ -62,10 +70,27 @@ public class SparesReader implements ItemReader<SFDCSparesDTO> {
     private List<SFDCSparesDTO> getSparesDetails(String query, String date) throws UnsupportedEncodingException {
         String sparesDetailsQuery = sfdcServiceUtils.decodeRequestQuery(query) + " " + date + "";
         ResponseEntity<SFDCSparesListDTO> sparesListDTOList = sfdcBatchDataDetailsRequest.loadSpares(sparesDetailsQuery);
-        if (sparesListDTOList != null) {
-            return sparesListDTOList.getBody().getRecords();
-        } else {
-            throw new AssetDetailsNotFoundException("Unable to find Spares Deatils Details from SFDC for the specified date : " + date);
+        if(sparesListDTOList!=null) {
+            List<SFDCSparesDTO> sparesDTOS = sparesListDTOList.getBody().getRecords();
+            String nextUrl = sparesListDTOList.getBody().getNextRecordsUrl();
+
+            while (nextUrl != null) {
+                try {
+                    nextUrl = nextUrl.substring(nextUrl.lastIndexOf('/') + 1);
+                    log.info("next url {}", nextUrl);
+                    ResponseEntity<SFDCSparesListDTO> nextRecordsList = sfdcNextRecordsClient.loadSpares(nextUrl);
+                    sparesDTOS.addAll(nextRecordsList.getBody().getRecords());
+                    nextUrl = nextRecordsList.getBody().getNextRecordsUrl();
+
+                } catch (Exception e) {
+                    log.info("Error while calling the next records url"+e.getMessage());
+                }
+            }
+            return sparesDTOS;
+        }
+        else
+        {
+            throw new ResourceNotFoundException("Unable to find spare details from SFDC for the specified date : " + date);
         }
     }
 }

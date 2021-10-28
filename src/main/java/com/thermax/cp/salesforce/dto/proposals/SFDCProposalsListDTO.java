@@ -9,5 +9,6 @@ import java.util.List;
 public class SFDCProposalsListDTO {
     private String totalSize;
     private String done;
+    private String nextRecordsUrl;
     private List<SFDCProposalsDTO> records;
 }
