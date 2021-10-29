@@ -1,6 +1,6 @@
 trigger: 
   - development 
-  - main
+  - main 
 pr: none
 
 pool:
@@ -23,23 +23,23 @@ stages:
       parameters:
         useSonar: false
         sonarOrganization: NA
-        appname: Salesforce
+        appname: Scheduler
         sonarKey: ThermaxCP
         containerRegistry: acrcinthermaxdev.azurecr.io
         environmentBranch: development
-        environmentName: Dev
+        environmentName: dev
         dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: dev/SalesforceManagement
+        imageRepository: dev/Scheduler
         MAVEN_OPTS: '-Dmaven.test.skip=true'
 
     - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
       parameters:
-          appName: tcpsalesforce
+          appName: tcpscheduler 
           environmentName: Dev
           environmentBranch: Development
-          filepath: 'Devops/k8s-salesforce.yaml'
+          filepath: 'Devops/k8s-scheduler.yaml'
           containerreg: acrcinthermaxdev.azurecr.io
-          imagerepo: dev/salesforcemanagement
+          imagerepo: dev/scheduler
           k8ssvcconn: Thermaxk8sdev 
           springProfilesActive: dev
           dbHost: $(dbHost)
@@ -56,23 +56,23 @@ stages:
       parameters:
         useSonar: false
         sonarOrganization: NA
-        appname: Salesforce
+        appname: Scheduler
         sonarKey: ThermaxCP
         containerRegistry: acrcinthermaxdev.azurecr.io
         environmentBranch: main
         environmentName: uat
         dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: qa/SalesforceManagement
+        imageRepository: qa/Scheduler
         MAVEN_OPTS: '-Dmaven.test.skip=true'
 
     - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
       parameters:
-          appName: tcpsalesforce
+          appName: tcpscheduler 
           environmentName: uat
           environmentBranch: main
-          filepath: 'Devops/k8s-salesforce.yaml'
+          filepath: 'Devops/k8s-scheduler.yaml'
           containerreg: acrcinthermaxdev.azurecr.io
-          imagerepo: qa/salesforcemanagement
+          imagerepo: qa/scheduler
           k8ssvcconn: Thermaxk8sqa
           springProfilesActive: qa
           dbHost: $(dbHost)
@@ -84,33 +84,33 @@ stages:
  - stage: "PROD"
    condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
    variables:
-   - group: DB-Prod 
+   - group: DB-Prod
    jobs:
-     - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
-       parameters:
+    - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
+      parameters:
         useSonar: false
         sonarOrganization: NA
         sonarKey: ThermaxCP
-        appname: tcpsalesforce
+        appname: tcpschedulers
         containerRegistry: acrcintcpprod.azurecr.io
         environmentBranch: main
         environmentName: prod
         dockerRegistryServiceConnection: ThermaxACRProd
-        imageRepository: prod/tcpsalesforce
+        imageRepository: prod/tcpschedulers
         MAVEN_OPTS: '-Dmaven.test.skip=true'
-      
-     - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
-       parameters:
-        appName: tcpsalesforce
-        environmentName: prod
-        environmentBranch: main
-        filepath: 'Devops/k8s-salesforce.yaml'
-        containerreg: acrcintcpprod.azurecr.io
-        imagerepo: prod/tcpsalesforce
-        k8ssvcconn: ThermaxK8sProd
-        springProfilesActive: prod
-        dbHost: $(dbHost)
-        dbUser: $(dbUsername)
-        dbPassword: $(dbPassword)
-        dbName: $(dbName)
-        replicaset: 4
+
+    - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
+      parameters:
+          appName: tcpschedulers
+          environmentName: prod
+          environmentBranch: main
+          filepath: 'Devops/k8s-scheduler.yaml'
+          containerreg: acrcintcpprod.azurecr.io
+          imagerepo: prod/tcpschedulers
+          k8ssvcconn: ThermaxK8sProd
+          springProfilesActive: prod
+          dbHost: $(dbHost)
+          dbUser: $(dbUsername)
+          dbPassword: $(dbPassword)
+          dbName: $(dbName)
+          replicaset: 4 
