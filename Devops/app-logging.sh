@@ -17,10 +17,10 @@ do
   echo $success_status
   if [[ $success_status == *"No resources"* ]]
   then 
-    mkdir -p /opt/scripts/$app_name/failure
+    mkdir -p /opt/scripts/$app_name/failure/$CURRENT_DATE
     kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning|head -10>/opt/scripts/$app_name/failure/$CURRENT_DATE/error.log
   else
-    mkdir -p /opt/scripts/$app_name/success
+    mkdir -p /opt/scripts/$app_name/success/$CURRENT_DATE
     kubectl logs --selector=app=$app_name -c $app_name -n thermax|tail -5>/opt/scripts/$app_name/success/$CURRENT_DATE/success.log
   fi
 done
