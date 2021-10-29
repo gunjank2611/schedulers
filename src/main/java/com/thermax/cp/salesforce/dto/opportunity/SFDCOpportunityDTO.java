@@ -21,6 +21,8 @@ public class SFDCOpportunityDTO{
     private String opportunityAssetId;
     @JsonProperty("CloseDate")
     private String closeDate;
+    @JsonProperty("CreatedDate")
+    private String createdDate;
     @JsonProperty("StageName")
     private String stageName;
     @JsonProperty("Amount")
