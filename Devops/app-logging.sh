@@ -1,5 +1,5 @@
 #!/bin/bash
-CURRENT_DATE=$(date)
+CURRENT_DATE=`date +%d-%m-%Y_%H.%M.%S`
 PURGE_DATE=$(date -d "+3 days")
 if [[ "$CURRENT_DATE" == "$PURGE_DATE" ]]
 then
