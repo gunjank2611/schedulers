@@ -18,9 +18,9 @@ do
   if [[ $success_status == *"No resources"* ]]
   then 
     mkdir -p /opt/scripts/$app_name/failure
-    kubectl logs --selector=app=$app_name -c $app_name |grep -B 5 -i -e error -e warning>/opt/scripts/$app_name/failure/$now/error.log
+    kubectl logs --selector=app=$app_name -c $app_name |grep -i -e error -e warning|head -10>/opt/scripts/$app_name/failure/$now/error.log
   else
     mkdir -p /opt/scripts/$app_name/success
-    kubectl logs --selector=app=$app_name -c $app_name |grep -B 5 -w OK>/opt/scripts/$app_name/success/$now/success.log
+    kubectl logs --selector=app=$app_name -c $app_name |grep -w OK|head -10>/opt/scripts/$app_name/success/$now/success.log
   fi
 done
