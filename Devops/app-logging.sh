@@ -1,7 +1,6 @@
 #!/bin/bash
-now=$(date +%m-%d-%Y)
-CURRENT_DATE=`date +%d-%m-%Y_%H.%M.%S`
-PURGE_DATE=$(date +%m-%d-%Y -d "$DATE + $3 day")
+CURRENT_DATE=$(date)
+PURGE_DATE=$(date -d "+3 days")
 if [[ "$CURRENT_DATE" == "$PURGE_DATE" ]]
 then
   cd /opt/scripts
