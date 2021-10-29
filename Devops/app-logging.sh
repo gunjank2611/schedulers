@@ -21,6 +21,6 @@ do
     kubectl logs --selector=app=$app_name -c $app_name |grep -i -e error -e warning|head -10>/opt/scripts/$app_name/failure/$now/error.log
   else
     mkdir -p /opt/scripts/$app_name/success
-    kubectl logs --selector=app=$app_name -c $app_name |grep -w OK|head -10>/opt/scripts/$app_name/success/$now/success.log
+    kubectl logs --selector=app=$app_name -c $app_name |head -10>/opt/scripts/$app_name/success/$now/success.log
   fi
 done
