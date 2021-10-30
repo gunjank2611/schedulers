@@ -2,6 +2,7 @@ package com.thermax.cp.salesforce.dto.asset;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thermax.cp.salesforce.dto.commons.AttributesDTO;
+import com.thermax.cp.salesforce.dto.commons.UserRoleDTO;
 import lombok.Data;
 
 @Data
@@ -10,7 +11,7 @@ public class TMAXTCAUserRDTO{
     @JsonProperty("Name")
     private String name;
     @JsonProperty("UserRole")
-    private AssetUserRoleDTO userRole;
+    private UserRoleDTO userRole;
     @JsonProperty("MobilePhone")
     private String mobilePhone;
     @JsonProperty("Email")

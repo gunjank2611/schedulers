@@ -1,6 +1,7 @@
 package com.thermax.cp.salesforce.itemprocessor;
 
 import com.thermax.cp.salesforce.dto.asset.*;
+import com.thermax.cp.salesforce.dto.commons.OwnerDTO;
 import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
 import org.springframework.batch.item.ItemProcessor;
 
@@ -11,11 +12,11 @@ public class AssetProcessor implements ItemProcessor<SFDCAssetDTO, SFDCAssetDTO>
 
         if(sfdcAssetDTO!=null)
         {
-            AssetOwnerDTO assetOwnerDTO=sfdcAssetDTO.getAssetOwnerDTO();
+            OwnerDTO assetOwnerDTO=sfdcAssetDTO.getAssetOwnerDTO();
             if(assetOwnerDTO!=null) {
                 sfdcAssetDTO.setOwnerName(assetOwnerDTO.getOwnerName());
                 sfdcAssetDTO.setOwnerMobile(assetOwnerDTO.getMobilePhone());
-                sfdcAssetDTO.setOwnerUserRoleName(assetOwnerDTO.getAssetUserRoleDTO()!=null?assetOwnerDTO.getAssetUserRoleDTO().getUserRoleName():"");
+                sfdcAssetDTO.setOwnerUserRoleName(assetOwnerDTO.getUserRole()!=null?assetOwnerDTO.getUserRole().getUserRoleName():"");
             }
             TMAXTCAUserRDTO tmaxtcaUserRDTO=sfdcAssetDTO.getTMAX_TCA_User__r();
             if(tmaxtcaUserRDTO!=null) {

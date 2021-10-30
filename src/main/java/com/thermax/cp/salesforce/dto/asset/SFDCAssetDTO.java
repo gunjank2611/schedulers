@@ -2,6 +2,7 @@ package com.thermax.cp.salesforce.dto.asset;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thermax.cp.salesforce.dto.commons.AttributesDTO;
+import com.thermax.cp.salesforce.dto.commons.OwnerDTO;
 import lombok.Data;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class SFDCAssetDTO{
     @JsonProperty("OwnerId")
     private String ownerId;
     @JsonProperty("Owner")
-    private AssetOwnerDTO assetOwnerDTO;
+    private OwnerDTO assetOwnerDTO;
     private String ownerName;
     private String ownerMobile;
     private String ownerUserRoleName;
