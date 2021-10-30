@@ -1,11 +1,6 @@
 #!/bin/bash
 CURRENT_DATE=`date +%d-%m-%Y_%H.%M.%S`
-PURGE_DATE=$(date -d "+3 days")
-if [[ "$CURRENT_DATE" == "$PURGE_DATE" ]]
-then
-  cd /opt/scripts
-  rm -rf *
-fi  
+find /opt/scripts -type d -mtime +3 | xargs rm -rf
 az login --use-device-code
 az account set --subscription 90a5cf8f-aa05-450d-9850-5d64c0f061d9
 az aks get-credentials --overwrite --resource-group rgaz-cin-tcp-qa --name aks-cin-thermax-qa
@@ -17,9 +12,9 @@ do
   if [[ $success_status == *"No resources"* ]]
   then 
     mkdir -p /opt/scripts/$app_name/failure/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning|head -10>/opt/scripts/$app_name/failure/$CURRENT_DATE/error.log
+    kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning>/opt/scripts/$app_name/failure/$CURRENT_DATE/error.log
   else
     mkdir -p /opt/scripts/$app_name/success/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name -c $app_name -n thermax|tail -5>/opt/scripts/$app_name/success/$CURRENT_DATE/success.log
+    kubectl logs --selector=app=$app_name -c $app_name -n thermax>/opt/scripts/$app_name/success/$CURRENT_DATE/success.log
   fi
 done
