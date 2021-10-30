@@ -79,7 +79,6 @@ stages:
           dbUser: $(dbUsername)
           dbPassword: $(dbPassword)
           dbName: $(dbName)
-          replicaset: 4
 
  - stage: "PROD"
    condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}

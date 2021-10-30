@@ -3,6 +3,7 @@ spring:
     name: THERMAX-SFDC-INTERFACE
   datasource:
     url: 'jdbc:postgresql://localhost:6432/thermaxtcp?user=thermaxdatabasetcp@pgsql-cin-tcp-prod&password=thermax#TCP01Nov&prepareThreshold=0'
+  jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
