@@ -98,7 +98,7 @@ feign:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc
     contacts:
-      base-url: tcp-usermanagement
+      base-url: tcpusermanagement
       contacts-url: /api/um/scheduler/user
     order-status:
       base-url: https://mobility.thermaxglobal.com/tmx_intg
