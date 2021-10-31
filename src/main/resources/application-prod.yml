@@ -22,7 +22,7 @@ spring:
     initialize-schema: always
 logging:
   level:
-    com.thermax.cp.salesforce.feign: INFO
+    com.thermax.cp.salesforce: INFO
     org.springframework: INFO
     org.springframework.web.servlet: INFO
 

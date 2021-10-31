@@ -39,7 +39,7 @@ public class AsyncOrderStatusReadWriter {
     @Async
     public void fetchWriteOrderStatus(List<OrderIdDTO> orderIds, String ordersBlobUrl) throws Exception {
         if (!CollectionUtils.isEmpty(orderIds)) {
-            log.info("Requesting order status for : {}", ordersBlobUrl);
+            log.info("Requesting order status of size: {}, for : {}", orderIds.size(), ordersBlobUrl);
             Integer count = 0;
             List<SFDCOrderHeadersDTO> orderStatusCompleteList = new ArrayList<>();
             for (List<OrderIdDTO> orderIdDTOS : Partition.ofSize(orderIds, ORDER_STATUS_CHUNK_SIZE)) {
@@ -61,6 +61,7 @@ public class AsyncOrderStatusReadWriter {
                 }
             }
             if (!CollectionUtils.isEmpty(orderStatusCompleteList)) {
+                log.info("Processing order status of size: {}, for : {}", orderStatusCompleteList.size(), ordersBlobUrl);
                 processHeaderResponse(orderStatusCompleteList);
             }
 
