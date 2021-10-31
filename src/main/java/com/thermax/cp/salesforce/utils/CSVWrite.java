@@ -48,7 +48,7 @@ public class CSVWrite {
             outputStream.write(bytes);*/
             beanWriter.flush();
 
-            ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure(apiName + "_" + String.valueOf(Instant.now().toEpochMilli()), output);
+            ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure(apiName + "_" + Instant.now().toEpochMilli(), output);
             if (responseDTO.getStatusCode() == HttpStatus.OK && responseDTO.getBody() != null) {
                 csvOutput = responseDTO.getBody().getAzureBlobUrl();
                 LOGGER.info("Output file is saved at azure blob location" + csvOutput);
