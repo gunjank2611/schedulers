@@ -2,11 +2,6 @@ package com.thermax.cp.salesforce.itemreader;
 
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersListDTO;
-import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsDTO;
-import com.thermax.cp.salesforce.dto.recommendations.SFDCRecommendationsListDTO;
-import com.thermax.cp.salesforce.dto.users.SFDCUserDTOList;
-import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
-import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.exception.ResourceNotFoundException;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.feign.request.SfdcNextRecordsClient;
@@ -24,7 +19,7 @@ import java.util.List;
 @StepScope
 @Log4j2
 public class OrderReader implements ItemReader<SFDCOrdersDTO> {
-    private   String query;
+    private String query;
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
     @Autowired
@@ -35,26 +30,24 @@ public class OrderReader implements ItemReader<SFDCOrdersDTO> {
     private int nextOrderIndex;
     private String frequency;
 
-    public OrderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,String frequency)
-    {
-        this.query= QueryConstants.ORDERS_QUERY;
-        this.sfdcBatchDataDetailsRequest=sfdcBatchDataDetailsRequest;
-        this.nextOrderIndex=0;
-        this.frequency=frequency;
+    public OrderReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest, String frequency) {
+        this.query = QueryConstants.ORDERS_QUERY;
+        this.sfdcBatchDataDetailsRequest = sfdcBatchDataDetailsRequest;
+        this.nextOrderIndex = 0;
+        this.frequency = frequency;
     }
+
     @Override
     public SFDCOrdersDTO read() throws Exception {
 
-        if(ordersDataNotInitialized())
-        {
-            sfdcOrdersDTOSList=getOrderDetails(query,frequency);
+        if (ordersDataNotInitialized()) {
+            sfdcOrdersDTOSList = getOrderDetails(query, frequency);
         }
         SFDCOrdersDTO nextOrder;
         if (nextOrderIndex < sfdcOrdersDTOSList.size()) {
             nextOrder = sfdcOrdersDTOSList.get(nextOrderIndex);
             nextOrderIndex++;
-        }
-        else {
+        } else {
             nextOrderIndex = 0;
             nextOrder = null;
         }
@@ -62,15 +55,14 @@ public class OrderReader implements ItemReader<SFDCOrdersDTO> {
         return nextOrder;
     }
 
-    private boolean ordersDataNotInitialized()
-    {
-        return this.sfdcOrdersDTOSList==null;
+    private boolean ordersDataNotInitialized() {
+        return this.sfdcOrdersDTOSList == null;
     }
 
-    private List<SFDCOrdersDTO> getOrderDetails(String query,String date) throws UnsupportedEncodingException {
-        String orderDetailsQuery = sfdcServiceUtils.decodeRequestQuery(query) + " "+ date + "";
+    private List<SFDCOrdersDTO> getOrderDetails(String query, String date) throws UnsupportedEncodingException {
+        String orderDetailsQuery = sfdcServiceUtils.decodeRequestQuery(query) + " " + date + "";
         ResponseEntity<SFDCOrdersListDTO> orders = sfdcBatchDataDetailsRequest.loadOrders(orderDetailsQuery);
-        if(orders!=null) {
+        if (orders != null) {
             List<SFDCOrdersDTO> ordersDTOSList = orders.getBody().getRecords();
             String nextUrl = orders.getBody().getNextRecordsUrl();
 
@@ -81,15 +73,12 @@ public class OrderReader implements ItemReader<SFDCOrdersDTO> {
                     ResponseEntity<SFDCOrdersListDTO> nextRecordsList = sfdcNextRecordsClient.loadOrders(nextUrl);
                     ordersDTOSList.addAll(nextRecordsList.getBody().getRecords());
                     nextUrl = nextRecordsList.getBody().getNextRecordsUrl();
-
                 } catch (Exception e) {
-                    log.info("Error while calling the next records url"+e.getMessage());
+                    log.info("Error while calling the next records url" + e.getMessage());
                 }
             }
             return ordersDTOSList;
-        }
-        else
-        {
+        } else {
             throw new ResourceNotFoundException("Unable to find Order Details from SFDC for the specified date : " + date);
         }
     }
