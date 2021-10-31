@@ -99,13 +99,13 @@ feign:
       base-Url: tcpaccountmanagement
       accounts-url: /accountsApi/accounts/accountsFromSdfc
     contacts:
-      base-url: tcp-usermanagement
-      contacts-url: /api/um/scheduler/user
+      base-url: tcpusermanagement
+      contacts-url: /api/um/auth/scheduler/user
     order-status:
       base-url: https://mobility.thermaxglobal.com/tmx_intg
       get-status: /api/cp/tmx_erp/get_order_status/
     salesforce-url: https://thermax.my.salesforce.com/services
-    fileUploadUrl: tcp-fileuploader
+    fileUploadUrl: tcpfileuploader
 
 sfdc:
   grant-type: password

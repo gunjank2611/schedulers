@@ -58,8 +58,8 @@ public interface QueryConstants {
     String USERS_QUERY = "SELECT+Id,Name,UserRole.Name,Email,Title,Address,CurrencyISOCode,ManagerId,Manager.Name,THCMG_ERP_USER_ID__c,EmployeeNumber,THCH_Services__c," +
             "TH_IBG_Regions__c,THCS_Division__c+from+User+where+isActive+=true+and+lastmodifiedDate+=";
 
-    String COMPLAINTS_QUERY = "SELECT+Id,CaseNumber,RecordType.Name,Reason,OwnerId,Owner.Name,Owner.Email,Status,Subject,Description,THS_Source__c,AccountId,AssetId,ContactId,THS_Division__c,Zone__c," +
-            "THS_Sub_Division__c,Origin,THS_Case_Source__c,TH_Region__c,THS_Dept_Dependency__c,THC_Country__c,THS_Asset_Status__c,Priority,CreatedDate,lastmodifieddate+from+case+where+lastmodifieddate+=";
+    String COMPLAINTS_QUERY = "SELECT+Id,Owner_Role_name__c,Owners_MobilePhone__c,CaseNumber,RecordType.Name,Reason,OwnerId,owner.Name,owner.email,Status,Subject" +
+            ",Description,THS_Source__c,AccountId,AssetId,ContactId,THS_Division__c,Zone__c,THS_Sub_Division__c,Origin,THS_Case_Source__c,TH_Region__c,THS_Dept_Dependency__c,THC_Country__c,THS_Asset_Status__c,Priority,CreatedDate,lastmodifieddate+from+case+where+lastmodifieddate+=";
 
     String ORDERS_QUERY = "SELECT Id,orderNumber,THCMG_Customer_PO__c,AccountId,THCMG_Payment_Term__c,THCMG_ERP_Operating_Unit__c,THCMG_Cheque_Number__c,THCMG_Transaction_Type_Id__c,THCMG_Bill_To_Location__c,THCMG_Warehouse__c,THCMG_Ship_To_Location__c,THCMG_Date_Ordered__c,THCMG_Payment_Type__c,THCMG_Request_Date__c,EffectiveDate,TotalAmount,THCMG_FOB__c,TH_Division__c,THCMG_Freight_Terms__c,Status,OpportunityId,ERP_Order_Number__c,TH_Opportunity_Number__c,Asset__c,ERP_Credit_Rating__c,ERP_invoice__c,ERP_Invoiced_value__c,ERP_order_booked_date__c,ERP_Order_Value__c,ERP_Order_status__c,OwnerId,Owner.Name,Opportunity.OwnerId,Opportunity.Owner.Name,Opportunity.Owner.Email,Opportunity.Owner.MobilePhone,Opportunity.Owner.UserRole.Name,Opportunity.TH_Opportunity_Type__c,(SELECT+Id,Product2Id,TH_Product_Code__c,Listprice,unitprice,totalprice,THCMG_ERP_User_Id__c,TH_Asset__c+from+OrderItems) from Order where LastmodifiedDate+=";
 
@@ -74,7 +74,7 @@ public interface QueryConstants {
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account__c,lastmodifiedDate+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=+";
 
-    String CONTACTS_QUERY = "select+id,firstName,middleName,lastName ,accountId ,Account.Name, Email, department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,MailingCountry,Salutation,TH_IBG_International_Calling_Code__c,TH_IsActive__c,TMAX_isActiveForCP__c+from+Contact+where+lastmodifiedDate+=";
+    String CONTACTS_QUERY = "select+id,firstName,middleName,lastName ,accountId ,Account.Name, Email, department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,MailingCountry,Salutation,TH_IBG_International_Calling_Code__c,TH_IsActive__c,TMAX_isActiveForCP__c+from+Contact+where+TMAX_isActiveForCP__c=true+AND+TH_IsActive__c=true+AND+lastmodifiedDate+=";
 
     String SERVICE_LOG_QUERY = "SELECT+Branded_services_sales__c,Comments__c,CreatedDate,Id,Name,Visit_Date__c+FROM+Branded_Service_Visit_Log__c+where+lastmodifiedDate+=+";
 

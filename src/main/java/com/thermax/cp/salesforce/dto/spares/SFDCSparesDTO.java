@@ -24,7 +24,7 @@ public class SFDCSparesDTO {
     @JsonProperty("TH_QTY__c")
     private String quantity;
     @JsonProperty("TH_UNIT_SELLING_PRICE__c")
-    private String unitSellingPrice;
+    private Double unitSellingPrice;
     @JsonProperty("TH_UOM__c")
     private String uom;
     @JsonProperty("TH_ORDERED_ITEM__c")

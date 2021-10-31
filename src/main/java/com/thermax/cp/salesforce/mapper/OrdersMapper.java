@@ -44,10 +44,10 @@ public interface OrdersMapper {
     @Mapping(source = "TH_Opportunity_Number__c", target = "TH_Opportunity_Number__c")
     @Mapping(source = "asset__c", target = "asset__c")
     @Mapping(source = "opportunity.ownerId", target = "ownerId")
-    @Mapping(source = "opportunity.owner.name", target = "ownerName")
+    @Mapping(source = "opportunity.owner.ownerName", target = "ownerName")
     @Mapping(source = "opportunity.owner.email", target = "ownerEmail")
     @Mapping(source = "opportunity.owner.mobilePhone", target = "ownerContact")
-    @Mapping(source = "opportunity.owner.userRole.name", target = "ownerRole")
+    @Mapping(source = "opportunity.owner.userRole.userRoleName", target = "ownerRole")
     @Mapping(source = "opportunity.opportunityType", target = "opportunityType")
     OrdersDTO convertToOrdersFromSFDCOrders(final SFDCOrdersDTO sfdcOrdersDTO);
 

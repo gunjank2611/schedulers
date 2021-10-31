@@ -39,7 +39,7 @@ public class ContactsWriter implements ItemWriter<SFDCContactsDTO> {
             log.info("Written Contacts to the file : {}", url.get());
             FileURLDTO fileURLDTO = new FileURLDTO();
             fileURLDTO.setFileUrl(url.get());
-            log.info("Pushing data to respective microservice for consumption and DB persisting...");
+            log.info("Pushing data to contacts microservice for consumption and DB persisting...");
             contactsConnector.sendContactsBlobUrl(fileURLDTO);
             log.info("Pushing data process completed!");
         }

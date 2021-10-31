@@ -2,6 +2,7 @@ package com.thermax.cp.salesforce.dto.orders;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thermax.cp.salesforce.dto.commons.AttributesDTO;
+import com.thermax.cp.salesforce.dto.commons.OwnerDTO;
 import lombok.Data;
 
 @Data
@@ -71,7 +72,7 @@ public class SFDCOrdersDTO {
     @JsonProperty("OwnerId")
     private String ownerId;
     @JsonProperty("Owner")
-    private SFDCOrdersOwnerDTO owner;
+    private OwnerDTO owner;
     @JsonProperty("Opportunity")
     private SFDCOrderOpportunityDTO opportunity;
 }
