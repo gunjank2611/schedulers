@@ -21,6 +21,11 @@ spring:
       enabled: false
     initialize-schema: always
 
+logging:
+  level:
+    com.thermax.cp.salesforce: INFO
+    org.springframework: INFO
+    org.springframework.web.servlet: INFO
 
 management:
   endpoint:
