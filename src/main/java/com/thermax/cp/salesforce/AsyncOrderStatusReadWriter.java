@@ -10,12 +10,14 @@ import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
 import com.thermax.cp.salesforce.mapper.OrdersMapper;
 import com.thermax.cp.salesforce.utils.CSVWrite;
+import com.thermax.cp.salesforce.utils.Partition;
 import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -29,25 +31,33 @@ public class AsyncOrderStatusReadWriter {
     private CSVWrite csvWrite;
     @Autowired
     private EnquiryConnector enquiryConnector;
+
+    public static Integer ORDER_STATUS_CHUNK_SIZE = 100;
     private final OrdersMapper ordersMapper = Mappers.getMapper(OrdersMapper.class);
 
     @Async
-    public void fetchWriteOrderStatus(List<OrderIdDTO> orderIds) throws Exception {
-        log.info("Requesting order status...");
-        ResponseEntity<SFDCOrderHeadersListDTO> orderHeadersDTOList = sfdOrdersRequest.fetchOrderStatus(orderIds);
-        log.info("Requested order status response...");
-        if (orderHeadersDTOList != null) {
-            List<SFDCOrderHeadersDTO> orderStatusList = orderHeadersDTOList.getBody().getOrdersList();
-            log.info("Requested order status response...");
-            log.info("Found order status for {} items and writing them for DB!", orderStatusList.size());
-            if (orderStatusList.isEmpty()) {
-                log.info("No status found to be updated!");
-            } else {
-                processHeaderResponse(orderStatusList);
+    public void fetchWriteOrderStatus(List<OrderIdDTO> orderIds, String ordersBlobUrl) throws Exception {
+        if (!CollectionUtils.isEmpty(orderIds)) {
+            log.info("Requesting order status for : {}", ordersBlobUrl);
+            Integer count = 0;
+            for (List<OrderIdDTO> orderIdDTOS : Partition.ofSize(orderIds, ORDER_STATUS_CHUNK_SIZE)) {
+                count = count + orderIdDTOS.size();
+                log.info("Requesting order status for next: {} records of total size: {}, processed so far: {}", orderIdDTOS.size(), orderIds.size(), count);
+                ResponseEntity<SFDCOrderHeadersListDTO> orderHeadersDTOList = sfdOrdersRequest.fetchOrderStatus(orderIdDTOS);
+                log.info("Requested order status response...");
+                if (orderHeadersDTOList != null) {
+                    List<SFDCOrderHeadersDTO> orderStatusList = orderHeadersDTOList.getBody().getOrdersList();
+                    log.info("Found order status for {} records and writing them for DB!", orderStatusList.size());
+                    if (orderStatusList.isEmpty()) {
+                        log.info("No status found to be updated!");
+                    } else {
+                        processHeaderResponse(orderStatusList);
+                    }
+                    log.info("Header response processed!!");
+                } else {
+                    throw new AssetDetailsNotFoundException("Unable to find Order Details from SFDC");
+                }
             }
-            log.info("Header response processed!!");
-        } else {
-            throw new AssetDetailsNotFoundException("Unable to find Order Details from SFDC");
         }
     }
 
