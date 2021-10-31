@@ -46,7 +46,8 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
             CompletableFuture<String> url = csvWrite.writeToCSV(orders, headers, fileName, apiName);
             log.info("Written orders to the file : {}", url.get());
             FileURLDTO fileURLDTO = new FileURLDTO();
-            fileURLDTO.setFileUrl(url.get());
+            String ordersBlobUrl = url.get();
+            fileURLDTO.setFileUrl(ordersBlobUrl);
             log.info("Pushing data to respective microservice for consumption and DB persisting...");
             enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
             log.info("Pushing data process completed!");
@@ -55,7 +56,7 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
                     .map(ordersDTO -> new OrderIdDTO(ordersDTO.getERP_Order_Number__c()))
                     .collect(Collectors.toList());
             log.info("Fetching order status and edd for orders size: {}", orderIdDTOS.size());
-            asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS);
+            asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS, ordersBlobUrl);
             log.info("Order status fetch completed successfully!");
         }
 
