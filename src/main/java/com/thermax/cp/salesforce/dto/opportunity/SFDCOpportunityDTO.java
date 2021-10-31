@@ -1,6 +1,7 @@
 package com.thermax.cp.salesforce.dto.opportunity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.thermax.cp.salesforce.dto.commons.OwnerDTO;
 import lombok.Data;
 
 import java.util.List;
@@ -77,5 +78,11 @@ public class SFDCOpportunityDTO{
     private String tHCMG_Freight_Terms__c;
     @JsonProperty("OwnerId")
     private String ownerId;
+    @JsonProperty("Owner")
+    private OwnerDTO opportunityOwner;
+    private String ownerName;
+    private String ownerEmail;
+    private String userRoleName;
+    private String mobilePhone;
 }
 

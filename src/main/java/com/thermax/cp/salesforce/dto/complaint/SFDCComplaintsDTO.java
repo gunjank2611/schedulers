@@ -2,6 +2,7 @@ package com.thermax.cp.salesforce.dto.complaint;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thermax.cp.salesforce.dto.commons.AttributesDTO;
+import com.thermax.cp.salesforce.dto.commons.OwnerDTO;
 import lombok.Data;
 
 @Data
@@ -16,9 +17,13 @@ public class SFDCComplaintsDTO {
     @JsonProperty("OwnerId")
     private String ownerId;
     @JsonProperty("Owner")
-    private SFDCComplaintsOwnerDTO owner;
+    private OwnerDTO owner;
     private String ownerName;
     private String ownerEmail;
+    @JsonProperty("Owner_Role_name__c")
+    private String ownerRoleName;
+    @JsonProperty("Owners_MobilePhone__c")
+    private String ownerMobilePhone;
     @JsonProperty("Status")
     private String status;
     @JsonProperty("Origin")

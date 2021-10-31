@@ -28,7 +28,7 @@ public class ComplaintsWriter implements ItemWriter<SFDCComplaintsDTO> {
         log.info("Received complaints from SFDC : {}", complaintsDTOS.size());
         log.info("Written complaints size : {}", complaintsDTOS.size());
         final String[] headers = new String[]{"id", "caseNumber", "ownerName", "reason","ownerId","status",
-                "subject", "description", "accountId","assetId","contactId","tHS_Division__c","ownerEmail","origin","tHS_Source__c","tHS_Case_Source__c",
+                "subject", "description", "accountId","assetId","contactId","tHS_Division__c","ownerEmail","ownerRoleName","ownerMobilePhone","origin","tHS_Source__c","tHS_Case_Source__c",
         "createdDate","lastModifiedDate"};
         final String fileName="complaints.csv";
         final String apiName="Complaints";

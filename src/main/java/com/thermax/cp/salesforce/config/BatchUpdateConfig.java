@@ -145,6 +145,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-opportunities")
                 .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(500)
                 .reader(opportunityReader(sfdcBatchDataDetailsRequest, frequency))
+                .processor(new OpportunityProcessor())
                 .writer(new OpportunityWriter(csvWrite,enquiryConnector))
                 .build();
     }
