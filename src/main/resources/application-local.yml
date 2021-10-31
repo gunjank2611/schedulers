@@ -21,6 +21,12 @@ spring:
       enabled: false
     initialize-schema: always
 
+logging:
+  level:
+    com.thermax.cp.salesforce.feign: INFO
+    org.springframework: INFO
+    org.springframework.web.servlet: INFO
+
 management:
   endpoint:
     health:

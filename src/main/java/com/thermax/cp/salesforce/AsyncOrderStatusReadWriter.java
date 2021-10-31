@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -40,6 +41,7 @@ public class AsyncOrderStatusReadWriter {
         if (!CollectionUtils.isEmpty(orderIds)) {
             log.info("Requesting order status for : {}", ordersBlobUrl);
             Integer count = 0;
+            List<SFDCOrderHeadersDTO> orderStatusCompleteList = new ArrayList<>();
             for (List<OrderIdDTO> orderIdDTOS : Partition.ofSize(orderIds, ORDER_STATUS_CHUNK_SIZE)) {
                 count = count + orderIdDTOS.size();
                 log.info("Requesting order status for next: {} records of total size: {}, processed so far: {}", orderIdDTOS.size(), orderIds.size(), count);
@@ -51,13 +53,17 @@ public class AsyncOrderStatusReadWriter {
                     if (orderStatusList.isEmpty()) {
                         log.info("No status found to be updated!");
                     } else {
-                        processHeaderResponse(orderStatusList);
+                        orderStatusCompleteList.addAll(orderStatusList);
                     }
                     log.info("Header response processed!!");
                 } else {
                     throw new AssetDetailsNotFoundException("Unable to find Order Details from SFDC");
                 }
             }
+            if (!CollectionUtils.isEmpty(orderStatusCompleteList)) {
+                processHeaderResponse(orderStatusCompleteList);
+            }
+
         }
     }
 
