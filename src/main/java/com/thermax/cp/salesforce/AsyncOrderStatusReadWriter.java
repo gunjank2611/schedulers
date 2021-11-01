@@ -72,12 +72,17 @@ public class AsyncOrderStatusReadWriter {
                     final String apiName = "OrderStatus";
                     List<OrderHeadersDTO> orderHeaderDTOList = ordersMapper.convertToTOrderHeadersDTOList(orderStatusCompleteList);
                     CompletableFuture<String> url = csvWrite.writeToCSV(orderHeaderDTOList, headers, fileName, apiName);
-                    log.info("Written order status to the file : {}", url.get());
-                    FileURLDTO fileURLDTO = new FileURLDTO();
-                    fileURLDTO.setFileUrl(url.get());
-                    log.info("Pushing order status data to DB : {}", fileURLDTO);
-                    enquiryConnector.sendOrderStatusBlobUrl(fileURLDTO);
-                    log.info("Pushed order status data to DB !");
+                    String orderStatusBlobUrl = url.get();
+                    if (orderStatusBlobUrl != null) {
+                        log.info("Written order status to the file : {}", orderStatusBlobUrl);
+                        FileURLDTO fileURLDTO = new FileURLDTO();
+                        fileURLDTO.setFileUrl(orderStatusBlobUrl);
+                        log.info("Pushing order status data to DB : {}", fileURLDTO);
+                        enquiryConnector.sendOrderStatusBlobUrl(fileURLDTO);
+                        log.info("Pushed order status data to DB !");
+                    } else {
+                        log.error("Error while getting order status Blob URL!");
+                    }
                 } catch (Exception e) {
                     log.error("Error while processing order status: {}", e.getMessage());
                 }
