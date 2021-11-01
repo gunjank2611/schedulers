@@ -538,17 +538,12 @@ public class SfdcBatchUpdateController {
     }
 
     public JobParameters getNext(String frequency) {
+        JobParameters params = (parameters == null) ? new JobParameters() : parameters;
+
         long id = new Date().getTime();
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("run.id", id)
                 .addString("frequency", frequency).toJobParameters();
-        return jobParameters;
-    }
-
-    public JobParameters getNextStatus(String url) {
-        long id = new Date().getTime();
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addString("url", url).toJobParameters();
         return jobParameters;
     }
 
