@@ -17,7 +17,7 @@ public interface QueryConstants {
     String PRODUCT_DETAILS_QUERY = "SELECT+Id,Description,Family,IsActive,Name,TH_UOM__c,ProductCode+FROM+Product2+ where+ lastmodifiedDate + = + ";
 
     String ACCOUNT_DETAILS_QUERY = "select+id,name,Type,website,AccountSource,TH_Existing_Customer_for_Water_Division__c,TH_Existing_Customer_forHeating_Division__c,Account_Number__c," +
-            "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,AccountNumber ,THCH_Email__c,TH_IsActive__c+from account where + lastmodifiedDate + = +";
+            "THCMG_ERP_Operating_Unit__c,Rating,TH_Status__c,TH_CIN_Number__c,TH_GST_Number__c,TH_Pan_No__c,ParentId,Phone,AccountNumber ,THCH_Email__c,TH_IsActive__c+from account where +Account_Number__c+!=null+and+TH_Status__c+=+'Approved'+and+recordtype.developerName+=+'Customer_Account_Thermax_account'+and+lastmodifiedDate += +";
 
     String RECOMMENDATIONS_QUERY = "SELECT+Id,LastModifiedDate,CreatedDate,Name,OwnerId,Owner.Name,TH_Account_Name__c,TH_Additional_Information__c,TH_Asset__c,TH_City__c,TH_Closure_Notes__c,TH_Description_for__c,TH_Description__c,TH_Interaction_Planned_Date__c,TH_Opportunity__c," +
             "TH_Planned_Activities__c,TH_Planned_Shutdown_date__c,TH_Potential_Value__c,TH_Purpose__c,TH_Recommendation_Close_Date__c,TH_Reject_Reason__c,TH_Reminder_For_Next_Contact__c,TH_Service__c,TH_Service__r.THSC_Contract_Start_Date__c,TH_Service__r.THSC_Contract_End_Date__c," +
@@ -28,7 +28,7 @@ public interface QueryConstants {
             " THSC_Unit_Selling_Price__c,THSC_UOM__c,THSC_Ordered_Item__c,THSC_Line_Total__c,THSC_Order_Line_ID__c,TH_Line_Status__c,THSC_Description__c+from+THSC_Branded_services_sales__c+where+lastmodifiedDate+=+";
 
     String SPARES_DETAILS_QUERY = "SELECT+Id,Name ,TH_ORDER_LINE_ID__c,Th_Asset__c,THSC_Division__c,TH_LINE_STATUS__c,TH_DESCRIPTION__c,TH_SALES_ORDER_NUMBER__c,TH_LINE_TOTAL__c,THSC_Region__c,TH_QTY__c,TH_ORDERED_ITEM__c,TH_UNIT_SELLING_PRICE__c," +
-            "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
+            "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c,createdDate,lastmodifiedDate+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
 
     String ASSET_DETAILS_QUERY = "SELECT+Id,Name,InstallDate,THSC_Warranty_Expiry_Date__c,THS_Asset_Service_By_From_ERP__c,OwnerId,Owner.Name,Owner.UserRole.Name,Owner.MobilePhone,Owner.Email,AccountId,TH_IBG_Division__c,THS_Division_Type__c,THCH_Region__c," +
             "THCH_Sales_Order_Number__c,Asset_Make__c,THCH_Asset_Status__c,Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c,THS_I_C_Scope__c,THS_Service_Sales_Engineer__c,TPF_User__c,THS_WARRANTY_DUR_FR_COMM_DT__c,THS_WARRANTY_DUR_FR_DISP_DT__c," +
