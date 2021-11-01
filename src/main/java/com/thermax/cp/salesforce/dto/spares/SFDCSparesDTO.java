@@ -43,6 +43,11 @@ public class SFDCSparesDTO {
     private String lifecycleDays;
     @JsonProperty("TH_Account_Id__c")
     private String account;
+    @JsonProperty("CreatedDate")
+    private String createdDate;
+    @JsonProperty("LastModifiedDate")
+    private String lastModifiedDate;
+
 
 
 }
