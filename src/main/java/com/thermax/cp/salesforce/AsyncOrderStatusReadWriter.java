@@ -5,7 +5,6 @@ import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersListDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
-import com.thermax.cp.salesforce.exception.AssetDetailsNotFoundException;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
 import com.thermax.cp.salesforce.mapper.OrdersMapper;
@@ -20,12 +19,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Log4j2
 @Component
 public class AsyncOrderStatusReadWriter {
+    public static Integer ORDER_STATUS_CHUNK_SIZE = 100;
+    private final OrdersMapper ordersMapper = Mappers.getMapper(OrdersMapper.class);
     @Autowired
     private SfdcOrdersRequest sfdOrdersRequest;
     @Autowired
@@ -33,11 +35,8 @@ public class AsyncOrderStatusReadWriter {
     @Autowired
     private EnquiryConnector enquiryConnector;
 
-    public static Integer ORDER_STATUS_CHUNK_SIZE = 100;
-    private final OrdersMapper ordersMapper = Mappers.getMapper(OrdersMapper.class);
-
     @Async
-    public void fetchWriteOrderStatus(List<OrderIdDTO> orderIds, String ordersBlobUrl) throws Exception {
+    public CompletableFuture<List<SFDCOrderHeadersDTO>> fetchWriteOrderStatus(List<OrderIdDTO> orderIds, String ordersBlobUrl) {
         if (!CollectionUtils.isEmpty(orderIds)) {
             log.info("Requesting order status of size: {}, for : {}", orderIds.size(), ordersBlobUrl);
             Integer count = 0;
@@ -45,7 +44,12 @@ public class AsyncOrderStatusReadWriter {
             for (List<OrderIdDTO> orderIdDTOS : Partition.ofSize(orderIds, ORDER_STATUS_CHUNK_SIZE)) {
                 count = count + orderIdDTOS.size();
                 log.info("Requesting order status for next: {} records of total size: {}, processed so far: {}", orderIdDTOS.size(), orderIds.size(), count);
-                ResponseEntity<SFDCOrderHeadersListDTO> orderHeadersDTOList = sfdOrdersRequest.fetchOrderStatus(orderIdDTOS);
+                ResponseEntity<SFDCOrderHeadersListDTO> orderHeadersDTOList = null;
+                try {
+                    orderHeadersDTOList = sfdOrdersRequest.fetchOrderStatus(orderIdDTOS);
+                } catch (Exception e) {
+                    log.error("Error while fetching order status! {}", e.getMessage());
+                }
                 log.info("Requested order status response...");
                 if (orderHeadersDTOList != null) {
                     List<SFDCOrderHeadersDTO> orderStatusList = orderHeadersDTOList.getBody().getOrdersList();
@@ -57,31 +61,36 @@ public class AsyncOrderStatusReadWriter {
                     }
                     log.info("Header response processed!!");
                 } else {
-                    throw new AssetDetailsNotFoundException("Unable to find Order Details from SFDC");
+                    log.info("No order status found!");
                 }
             }
             if (!CollectionUtils.isEmpty(orderStatusCompleteList)) {
                 log.info("Processing order status of size: {}, for : {}", orderStatusCompleteList.size(), ordersBlobUrl);
-                processHeaderResponse(orderStatusCompleteList);
+                try {
+                    final String[] headers = new String[]{"orderNumber", "erpStatus", "edd"};
+                    final String fileName = "orderstatus.csv";
+                    final String apiName = "OrderStatus";
+                    List<OrderHeadersDTO> orderHeaderDTOList = ordersMapper.convertToTOrderHeadersDTOList(orderStatusCompleteList);
+                    CompletableFuture<String> url = csvWrite.writeToCSV(orderHeaderDTOList, headers, fileName, apiName);
+                    String orderStatusBlobUrl = url.get();
+                    if (orderStatusBlobUrl != null) {
+                        log.info("Written order status to the file : {}", orderStatusBlobUrl);
+                        FileURLDTO fileURLDTO = new FileURLDTO();
+                        fileURLDTO.setFileUrl(orderStatusBlobUrl);
+                        log.info("Pushing order status data to DB : {}", fileURLDTO);
+                        enquiryConnector.sendOrderStatusBlobUrl(fileURLDTO);
+                        log.info("Pushed order status data to DB !");
+                    } else {
+                        log.error("Error while getting order status Blob URL!");
+                    }
+                } catch (Exception e) {
+                    log.error("Error while processing order status: {}", e.getMessage());
+                }
             }
-
+            return CompletableFuture.completedFuture(orderStatusCompleteList);
+        } else {
+            log.info("Order status of size: {}, for : {}", orderIds.size(), ordersBlobUrl);
+            return CompletableFuture.completedFuture(Collections.EMPTY_LIST);
         }
     }
-
-
-    public void processHeaderResponse(List<SFDCOrderHeadersDTO> orderHeaderDTOS) throws Exception {
-        log.info("Received order status from SFDC : {}", orderHeaderDTOS.size());
-        final String[] headers = new String[]{"orderNumber", "erpStatus", "edd"};
-        final String fileName = "orderstatus.csv";
-        final String apiName = "OrderStatus";
-        List<OrderHeadersDTO> orderHeaderDTOList = ordersMapper.convertToTOrderHeadersDTOList(orderHeaderDTOS);
-        CompletableFuture<String> url = csvWrite.writeToCSV(orderHeaderDTOList, headers, fileName, apiName);
-        log.info("Written order status to the file : {}", url.get());
-        FileURLDTO fileURLDTO = new FileURLDTO();
-        fileURLDTO.setFileUrl(url.get());
-        log.info("Pushing order status data to DB : {}", fileURLDTO);
-        enquiryConnector.sendOrderStatusBlobUrl(fileURLDTO);
-        log.info("Pushed order status data to DB !");
-    }
-
 }

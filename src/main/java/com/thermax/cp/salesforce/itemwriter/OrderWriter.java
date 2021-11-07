@@ -3,6 +3,7 @@ package com.thermax.cp.salesforce.itemwriter;
 import com.thermax.cp.salesforce.AsyncOrderStatusReadWriter;
 import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
 import com.thermax.cp.salesforce.dto.orders.OrdersDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
@@ -39,26 +40,34 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
                 "tHCMG_Freight_Terms__c", "status", "opportunityId", "eRP_Order_Number__c", "tH_Opportunity_Number__c", "asset__c", "ownerId", "ownerName", "ownerEmail", "ownerContact", "ownerRole", "opportunityType"};
         final String fileName = "Orders.csv";
         final String apiName = "Orders";
-        if (ordersDTOS != null && !ordersDTOS.isEmpty()) {
-            log.info("Mapping response for writing...");
-            List<OrdersDTO> orders = ordersMapper.convertToOrdersFromSFDCOrdersList((List<SFDCOrdersDTO>) ordersDTOS);
-            log.info("Writing response to CSV...");
-            CompletableFuture<String> url = csvWrite.writeToCSV(orders, headers, fileName, apiName);
-            log.info("Written orders to the file : {}", url.get());
-            FileURLDTO fileURLDTO = new FileURLDTO();
-            String ordersBlobUrl = url.get();
-            fileURLDTO.setFileUrl(ordersBlobUrl);
-            log.info("Pushing data to respective microservice for consumption and DB persisting...");
-            enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
-            log.info("Pushing data process completed!");
-            List<OrderIdDTO> orderIdDTOS = orders.stream()
-                    .filter(ordersDTO -> ordersDTO.getERP_Order_Number__c() != null)
-                    .map(ordersDTO -> new OrderIdDTO(ordersDTO.getERP_Order_Number__c()))
-                    .collect(Collectors.toList());
-            log.info("Fetching order status and edd for orders size: {}", orderIdDTOS.size());
-            asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS, ordersBlobUrl);
-            log.info("Order status fetch completed successfully!");
+        try {
+            if (ordersDTOS != null && !ordersDTOS.isEmpty()) {
+                log.info("Mapping response for writing...");
+                List<OrdersDTO> orders = ordersMapper.convertToOrdersFromSFDCOrdersList((List<SFDCOrdersDTO>) ordersDTOS);
+                log.info("Writing response to CSV...");
+                CompletableFuture<String> url = csvWrite.writeToCSV(orders, headers, fileName, apiName);
+                String ordersBlobUrl = url.get();
+                if (ordersBlobUrl != null) {
+                    FileURLDTO fileURLDTO = new FileURLDTO();
+                    fileURLDTO.setFileUrl(ordersBlobUrl);
+                    log.info("Pushing data to respective microservice for consumption and DB persisting...");
+                    enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
+                    log.info("Pushing data process completed!");
+                    List<OrderIdDTO> orderIdDTOS = orders.stream()
+                            .filter(ordersDTO -> ordersDTO.getERP_Order_Number__c() != null)
+                            .map(ordersDTO -> new OrderIdDTO(ordersDTO.getERP_Order_Number__c()))
+                            .collect(Collectors.toList());
+                    log.info("Fetching order status and edd for orders size: {}", orderIdDTOS.size());
+                    CompletableFuture<List<SFDCOrderHeadersDTO>> completableFutureOrderStatus = asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS, ordersBlobUrl);
+                    log.info("{} order statuses fetch completed successfully!", completableFutureOrderStatus.get().size());
+                } else {
+                    log.error("Error while getting orders Blob URL!");
+                }
+            } else {
+                log.info("No data to write for order status!");
+            }
+        } catch (Exception e) {
+            log.error("Error while processing order: {}", e.getMessage());
         }
-
     }
 }
