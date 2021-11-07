@@ -21,7 +21,6 @@ public class SFDCProductInfoDTO {
     @JsonProperty("Description")
     private String description;
 
-
     @JsonProperty("IsActive")
     private boolean active;
 

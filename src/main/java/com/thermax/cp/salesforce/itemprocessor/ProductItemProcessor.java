@@ -11,6 +11,11 @@ public class ProductItemProcessor implements ItemProcessor<SFDCProductInfoDTO, S
     @Override
     public SFDCProductInfoDTO process(SFDCProductInfoDTO sfdcProductInfoDTOs) throws Exception {
 
+        if(sfdcProductInfoDTOs.getDescription()!=null) {
+            String description=sfdcProductInfoDTOs.getDescription().replace("\n", "").replace("\r", "")
+                    .replaceAll(",","~");
+            sfdcProductInfoDTOs.setDescription(description);
+        }
         return sfdcProductInfoDTOs;
     }
 }
