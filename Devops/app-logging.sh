@@ -11,11 +11,11 @@ do
   if [[ $success_status == *"No resources"* ]]
   then 
     mkdir -p /opt/scripts/$appname|tr -dc '[:alnum:]\n\r'/failure/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name|tr -dc '[:alnum:]\n\r' -c $app_name|tr -dc '[:alnum:]\n\r' -n thermax |grep -i -e error -e warning>/opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/failure/$CURRENT_DATE/error.log
+    kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning>/opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/failure/$CURRENT_DATE/error.log
     find /opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/failure -type d -mtime +1 | xargs rm -rf
   else
     mkdir -p /opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name|tr -dc '[:alnum:]\n\r' -c $app_name|tr -dc '[:alnum:]\n\r' -n thermax>/opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success/$CURRENT_DATE/success.log
+    kubectl logs --selector=app=$app_name -c $app_name -n thermax>/opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success/$CURRENT_DATE/success.log
     find /opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success -type d -mtime +1 | xargs rm -rf
   fi
 done
