@@ -6,16 +6,17 @@ az aks get-credentials --overwrite --resource-group rgaz-cin-tcp-qa --name aks-c
 kubectl config set-context --current --namespace=thermax
 for app_name in $(cat /home/appnames.txt)
 do
-  success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$app_name"|head -1)
+  appname=$(echo app_name)
+  success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$appname"|head -1)
   echo $success_status
   if [[ $success_status == *"No resources"* ]]
   then 
-    mkdir -p /opt/scripts/$app_name/failure/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning>/opt/scripts/$app_name/failure/$CURRENT_DATE/error.log
-    find /opt/scripts/$app_name/failure -type d -mtime +1 | xargs rm -rf
+    mkdir -p /opt/scripts/$appname/failure/$CURRENT_DATE
+    kubectl logs --selector=app=$appname -c $appname -n thermax |grep -i -e error -e warning>/opt/scripts/$appname/failure/$CURRENT_DATE/error.log
+    find /opt/scripts/$appname/failure -type d -mtime +1 | xargs rm -rf
   else
-    mkdir -p /opt/scripts/$app_name/success/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name -c $app_name -n thermax>/opt/scripts/$app_name/success/$CURRENT_DATE/success.log
-    find /opt/scripts/$app_name/success -type d -mtime +1 | xargs rm -rf
+    mkdir -p /opt/scripts/$appname/success/$CURRENT_DATE
+    kubectl logs --selector=app=$appname -c $app_name -n thermax>/opt/scripts/$appname/success/$CURRENT_DATE/success.log
+    find /opt/scripts/$appname/success -type d -mtime +1 | xargs rm -rf
   fi
 done
