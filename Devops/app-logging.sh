@@ -6,7 +6,8 @@ az aks get-credentials --overwrite --resource-group rgaz-cin-tcp-qa --name aks-c
 kubectl config set-context --current --namespace=thermax
 for app_name in $(cat /home/appnames.txt)
 do
-  appname=$(echo app_name)
+  appname=$(echo app_name|tr -dc '[:alnum:]\n\r')
+  echo $appname
   success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$appname"|head -1)
   echo $success_status
   if [[ $success_status == *"No resources"* ]]
