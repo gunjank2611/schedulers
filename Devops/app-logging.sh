@@ -8,7 +8,7 @@ for app_name in $(cat /home/appnames.txt)
 do
   success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$appname"|head -1)
   echo $success_status
-  app_name=$($app_name|tr -dc '[:alnum:]\n\r')
+  app_name=$(echo $app_name|tr -dc '[:alnum:]\n\r')
   echo $app_name
   if [[ $success_status == *"No resources"* ]]
   then 
