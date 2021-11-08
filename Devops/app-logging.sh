@@ -8,14 +8,15 @@ for app_name in $(cat /home/appnames.txt)
 do
   success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$appname"|head -1)
   echo $success_status
+  echo $app_name|tr -dc '[:alnum:]\n\r'
   if [[ $success_status == *"No resources"* ]]
   then 
-    mkdir -p /opt/scripts/$appname|tr -dc '[:alnum:]\n\r'/failure/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning>/opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/failure/$CURRENT_DATE/error.log
-    find /opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/failure -type d -mtime +1 | xargs rm -rf
+    mkdir -p /opt/scripts/$app_name/failure/$CURRENT_DATE
+    kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning>/opt/scripts/$app_name/failure/$CURRENT_DATE/error.log
+    find /opt/scripts/$app_name/failure -type d -mtime +1 | xargs rm -rf
   else
-    mkdir -p /opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success/$CURRENT_DATE
-    kubectl logs --selector=app=$app_name -c $app_name -n thermax>/opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success/$CURRENT_DATE/success.log
-    find /opt/scripts/$app_name|tr -dc '[:alnum:]\n\r'/success -type d -mtime +1 | xargs rm -rf
+    mkdir -p /opt/scripts/$app_name/success/$CURRENT_DATE
+    kubectl logs --selector=app=$app_name -c $app_name -n thermax>/opt/scripts/$app_name/success/$CURRENT_DATE/success.log
+    find /opt/scripts/$app_name/success -type d -mtime +1 | xargs rm -rf
   fi
 done
