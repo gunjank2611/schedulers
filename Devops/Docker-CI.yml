@@ -1,6 +1,7 @@
 trigger: 
   - development 
   - main 
+  - production
 pr: none
 
 pool:
