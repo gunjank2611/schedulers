@@ -15,11 +15,11 @@ do
   then 
     mkdir -p /opt/scripts/failure/$app_name/$CURRENT_DATE
     kubectl logs --selector=app=$app_name -c $app_name -n thermax |grep -i -e error -e warning>/opt/scripts/failure/$app_name/$CURRENT_DATE/error.log
-    find /opt/scripts/$app_name/failure -type d -mtime +1 | xargs rm -rf
+    find /opt/scripts/failure/$app_name -type d -mtime +1 | xargs rm -rf
   else
     mkdir -p /opt/scripts/success/$app_name/$CURRENT_DATE
     kubectl logs --selector=app=$app_name -c $app_name -n thermax>/opt/scripts/success/$app_name/$CURRENT_DATE/success.log
-    find /opt/scripts/$app_name/success -type d -mtime +1 | xargs rm -rf
+    find /opt/scripts/success/$app_name -type d -mtime +1 | xargs rm -rf
   fi
 done
 IFS=$OLDIFS
