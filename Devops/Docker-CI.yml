@@ -81,7 +81,7 @@ stages:
           dbName: $(dbName)
 
  - stage: "PROD"
-   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
+   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/release') }}
    variables:
    - group: DB-Prod
    jobs:
@@ -92,7 +92,7 @@ stages:
         sonarKey: ThermaxCP
         appname: tcpschedulers
         containerRegistry: acrcintcpprod.azurecr.io
-        environmentBranch: main
+        environmentBranch: release
         environmentName: prod
         dockerRegistryServiceConnection: ThermaxACRProd
         imageRepository: prod/tcpschedulers
@@ -102,7 +102,7 @@ stages:
       parameters:
           appName: tcpschedulers
           environmentName: prod
-          environmentBranch: main
+          environmentBranch: release
           filepath: 'Devops/k8s-scheduler.yaml'
           containerreg: acrcintcpprod.azurecr.io
           imagerepo: prod/tcpschedulers
