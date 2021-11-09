@@ -36,7 +36,7 @@ stages:
       parameters:
           appName: tcpscheduler 
           environmentName: Dev
-          environmentBranch: Development
+          environmentBranch: development
           filepath: 'Devops/k8s-scheduler.yaml'
           containerreg: acrcinthermaxdev.azurecr.io
           imagerepo: dev/scheduler
@@ -92,7 +92,7 @@ stages:
         sonarKey: ThermaxCP
         appname: tcpschedulers
         containerRegistry: acrcintcpprod.azurecr.io
-        environmentBranch: main
+        environmentBranch: production
         environmentName: prod
         dockerRegistryServiceConnection: ThermaxACRProd
         imageRepository: prod/tcpschedulers
