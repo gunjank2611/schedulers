@@ -92,6 +92,7 @@ feign:
       opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
       opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
       complaints-url: /enquiryApi/api/v1/scheduler/complaints
+      products-url: /enquiryApi/api/v1/scheduler/products
     assets:
       base-Url: tcpassets
       recommendations-url: /assetsApi/fileReader/recommendationFromSfdc

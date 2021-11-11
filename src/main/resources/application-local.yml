@@ -103,6 +103,7 @@ feign:
       pricebook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
       opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
       opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
+      products-url: /enquiryApi/api/v1/scheduler/products
 
     assets:
       base-Url: http://localhost:8087

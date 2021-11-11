@@ -41,7 +41,7 @@ public class ProductWriter implements ItemWriter<SFDCProductInfoDTO> {
         fileURLDTO.setFileUrl(url.get());
         fileURLDTO.setEndPoint("load-products");
         fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
-        //enquiryConnector.sendServiceLogUrl(fileURLDTO);
+        enquiryConnector.sendProducts(fileURLDTO);
     }
 
 
