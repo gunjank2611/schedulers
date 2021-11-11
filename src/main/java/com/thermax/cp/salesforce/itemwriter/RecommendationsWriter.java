@@ -10,6 +10,7 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -42,6 +43,8 @@ public class RecommendationsWriter implements ItemWriter<SFDCRecommendationsDTO>
         log.info("Written recommendations to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-recommendations");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         assetsConnector.sendRecommendationBlobUrl(fileURLDTO);
     }
 }
