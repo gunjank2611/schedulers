@@ -9,7 +9,6 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,8 +36,6 @@ public class ThermaxUsersWriter implements ItemWriter<ThermaxUsersDTO> {
         log.info("Written Thermax users to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        fileURLDTO.setEndPoint("load-thermax-users");
-        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         enquiryConnector.sendThermaxUsersUrl(fileURLDTO);
         }
 }

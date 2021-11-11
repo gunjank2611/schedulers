@@ -7,7 +7,6 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,10 +31,8 @@ public class OpportunityContactRoleWriter implements ItemWriter<SFDCOpportunityC
         final String apiName = "OpportunityContactRole";
         CompletableFuture<String> url = csvWrite.writeToCSV(sfdcOpportunityContactRoleDTOS, headers, fileName, apiName);
         log.info("Written Opportunity Contact Role to the file : {}", url.get());
-        FileURLDTO fileURLDTO=new FileURLDTO();
+        FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        fileURLDTO.setEndPoint("load-opportunity-contactroles");
-        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         log.info("Pushing Opportunity Contact Role data to DB : {}", fileURLDTO);
         enquiryConnector.sendOpportunityContactRoleBlobUrl(fileURLDTO);
         log.info("Pushed Opportunity Contact Role data to DB !");

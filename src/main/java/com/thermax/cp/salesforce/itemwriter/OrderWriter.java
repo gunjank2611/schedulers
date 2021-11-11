@@ -12,7 +12,6 @@ import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
@@ -49,8 +48,6 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
             FileURLDTO fileURLDTO = new FileURLDTO();
             String ordersBlobUrl = url.get();
             fileURLDTO.setFileUrl(ordersBlobUrl);
-            fileURLDTO.setEndPoint("load-orders");
-            fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
             log.info("Pushing data to respective microservice for consumption and DB persisting...");
             enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
             log.info("Pushing data process completed!");

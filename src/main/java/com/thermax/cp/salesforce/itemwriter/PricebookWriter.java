@@ -7,7 +7,6 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -31,10 +30,8 @@ public class PricebookWriter implements ItemWriter<SFDCPricebookDTO> {
         final String apiName = "PriceBook";
         CompletableFuture<String> url = csvWrite.writeToCSV(productInfos, headers, fileName, apiName);
         log.info("Written pricebook to the file : {}", url.get());
-        FileURLDTO fileURLDTO=new FileURLDTO();
+        FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        fileURLDTO.setEndPoint("load-price-books");
-        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         enquiryConnector.sendPricebookUrl(fileURLDTO);
         log.info("Pushed pricebook data to DB !");
     }

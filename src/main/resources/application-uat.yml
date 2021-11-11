@@ -81,9 +81,9 @@ feign:
       order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
       opportunity-contact-role-url: /enquiryApi/api/v1/scheduler/opportunityContactRole
       thermax-users-url: /enquiryApi/api/v1/scheduler/thermaxUsers
-      eligible-spares-service-url: /enquiryApi/api/v1/scheduler/eligibleSparesServices
-      pricebook-url: /enquiryApi/api/v1/scheduler/pricebook
-      pricebook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
+      eligible-spares-service-url: /enquiryApi/api/v1/eligibleSparesServices/scheduler
+      pricebook-url: /enquiryApi/api/v1/pricebook/scheduler
+      pricbook-entry-url: /enquiryApi/api/v1/scheduler/pricebookEntries
       opportunities-url: /enquiryApi/api/v1/scheduler/opportunities
       opportunity-line-item-url: /enquiryApi/api/v1/scheduler/opportunityLineItems
       complaints-url: /enquiryApi/api/v1/scheduler/complaints

@@ -8,7 +8,6 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,10 +31,8 @@ public class OpportunityLineItemsWriter implements ItemWriter<SFDCOpportunityLin
         final String apiName = "OpportunityLineItems";
         CompletableFuture<String> url = csvWrite.writeToCSV(opportunityLineItemsDTOS, headers, fileName, apiName);
         log.info("Written opportunity line items to the file : {}", url.get());
-        FileURLDTO fileURLDTO=new FileURLDTO();
+        FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        fileURLDTO.setEndPoint("load-opportunity-line-items");
-        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         enquiryConnector.sendOpportunityLineItems(fileURLDTO);
         log.info("Pushed opportunity line items data to DB !");
     }

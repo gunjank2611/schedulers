@@ -7,7 +7,6 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -33,10 +32,8 @@ public class OrderItemsWriter implements ItemWriter<SFDCOrderItemsDTO> {
         final String apiName = "OrderItems";
         CompletableFuture<String> url = csvWrite.writeToCSV(orderItemsDTOS, headers, fileName, apiName);
         log.info("Written orders Items to the file : {}", url.get());
-        FileURLDTO fileURLDTO=new FileURLDTO();
+        FileURLDTO fileURLDTO = new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        fileURLDTO.setEndPoint("load-order-items");
-        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         log.info("Pushing orders Items data to DB : {}", fileURLDTO);
         enquiryConnector.sendOrderItemsBlobUrl(fileURLDTO);
         log.info("Pushed orders Items data to DB !");
