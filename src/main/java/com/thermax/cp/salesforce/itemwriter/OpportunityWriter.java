@@ -8,6 +8,7 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,8 +37,10 @@ public class OpportunityWriter implements ItemWriter<SFDCOpportunityDTO> {
         final String apiName = "Opportunities";
         CompletableFuture<String> url = csvWrite.writeToCSV(opportunityDTOS, headers, fileName, apiName);
         log.info("Written opportunities to the file : {}", url.get());
-        FileURLDTO fileURLDTO = new FileURLDTO();
+        FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-opportunities");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         enquiryConnector.sendOpportunities(fileURLDTO);
         log.info("Pushed opportunities data to DB !");
     }
