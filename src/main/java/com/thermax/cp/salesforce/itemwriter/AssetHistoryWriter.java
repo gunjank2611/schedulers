@@ -8,6 +8,7 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,6 +37,8 @@ public class AssetHistoryWriter implements ItemWriter<SFDCAssetHistoryDTO> {
         log.info("Written asset history to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-asset-history");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         assetsConnector.sendAssetHistoryUrl(fileURLDTO);
     }
 }

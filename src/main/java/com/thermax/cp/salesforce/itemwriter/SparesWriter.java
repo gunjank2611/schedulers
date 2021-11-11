@@ -9,6 +9,7 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,6 +38,8 @@ public class SparesWriter implements ItemWriter<SFDCSparesDTO> {
         log.info("Written assets to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-spares");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         assetsConnector.sendSparesUrl(fileURLDTO);
     }
 }
