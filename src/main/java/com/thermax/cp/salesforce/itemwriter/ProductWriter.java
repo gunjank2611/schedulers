@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -38,7 +39,9 @@ public class ProductWriter implements ItemWriter<SFDCProductInfoDTO> {
         log.info("Written products to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
-        //enquiryConnector.sendServiceLogUrl(fileURLDTO);
+        fileURLDTO.setEndPoint("load-products");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
+        enquiryConnector.sendProducts(fileURLDTO);
     }
 
 

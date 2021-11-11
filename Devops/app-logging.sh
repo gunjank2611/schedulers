@@ -2,15 +2,12 @@
 CURRENT_DATE=`date +%d-%m-%Y_%H.%M.%S`
 az login --use-device-code
 az account set --subscription 90a5cf8f-aa05-450d-9850-5d64c0f061d9
-az aks get-credentials --overwrite --resource-group rgaz-cin-tcp-qa --name aks-cin-thermax-qa
+az aks get-credentials --overwrite --resource-group Tmx_Nagarro_SP --name aks-cin-thermax-dev
 kubectl config set-context --current --namespace=thermax
 sed 's/\r$//' /home/appnames.txt>/home/app.txt
 for app_name in $(cat /home/app.txt)
 do
   success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$appname"|head -1)
-  echo $success_status
-  app_name=$(echo $app_name|tr -dc '[:alnum:]\n\r')
-  echo $app_name
   if [[ $success_status == *"No resources"* ]]
   then 
     mkdir -p /opt/scripts/failure/$app_name/$CURRENT_DATE
@@ -22,4 +19,3 @@ do
     find /opt/scripts/success/$app_name -type d -mtime +1 | xargs rm -rf
   fi
 done
-IFS=$OLDIFS

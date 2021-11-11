@@ -54,12 +54,7 @@ public interface EnquiryConnector {
 
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
-    @PostMapping(value = "${feign.client.enquiry.pricebook-url}")
-    ResponseEntity<Void> sendPricebookEntry(@RequestBody FileURLDTO fileURLDTO);
-
-    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
-    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
-    @PostMapping(value = "${feign.client.enquiry.pricbook-entry-url}")
+    @PostMapping(value = "${feign.client.enquiry.pricebook-entry-url}")
     ResponseEntity<Void> sendPricebookEntries(@RequestBody FileURLDTO fileURLDTO);
 
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
@@ -71,6 +66,11 @@ public interface EnquiryConnector {
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
     @PostMapping(value = "${feign.client.enquiry.opportunity-line-item-url}")
     ResponseEntity<Void> sendOpportunityLineItems(@RequestBody FileURLDTO fileURLDTO);
+
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.enquiry.products-url}")
+    ResponseEntity<Void> sendProducts(@RequestBody FileURLDTO fileURLDTO);
 
     default ResponseEntity<String> circuitBreakerFallback(Exception e) {
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
