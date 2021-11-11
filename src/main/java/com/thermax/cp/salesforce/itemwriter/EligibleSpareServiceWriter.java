@@ -7,6 +7,7 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,8 +31,10 @@ public class EligibleSpareServiceWriter implements ItemWriter<SFDCEligibleSpares
         final String apiName = "EligibleSparesServices";
         CompletableFuture<String> url = csvWrite.writeToCSV(eligibleSparesServicesDTOS, headers, fileName, apiName);
         log.info("Written Eligible Spares Services to the file : {}", url.get());
-        FileURLDTO fileURLDTO = new FileURLDTO();
+        FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-eligible-spares");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         enquiryConnector.sendEligibleSparesServiceUrl(fileURLDTO);
         log.info("Pushed Eligible Spares Service data to DB !");
     }

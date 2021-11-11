@@ -10,6 +10,7 @@ import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -33,9 +34,11 @@ public class ComplaintsWriter implements ItemWriter<SFDCComplaintsDTO> {
         final String fileName="complaints.csv";
         final String apiName="Complaints";
         CompletableFuture<String> url = csvWrite.writeToCSV(complaintsDTOS,headers,fileName,apiName);
-        log.info("Written assets to the file : {}", url.get());
+        log.info("Written complaints to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-complaints");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         enquiryConnector.sendComplaintsUrl(fileURLDTO);
     }
 }
