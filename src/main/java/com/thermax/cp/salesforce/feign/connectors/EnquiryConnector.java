@@ -67,6 +67,11 @@ public interface EnquiryConnector {
     @PostMapping(value = "${feign.client.enquiry.opportunity-line-item-url}")
     ResponseEntity<Void> sendOpportunityLineItems(@RequestBody FileURLDTO fileURLDTO);
 
+    @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
+    @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
+    @PostMapping(value = "${feign.client.enquiry.products-url}")
+    ResponseEntity<Void> sendProducts(@RequestBody FileURLDTO fileURLDTO);
+
     default ResponseEntity<String> circuitBreakerFallback(Exception e) {
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
                 .body("Enquiry service is currently unavailable, please try again after sometime: " + e.getMessage());

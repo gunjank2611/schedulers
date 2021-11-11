@@ -126,6 +126,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-spares")
                 .<SFDCSparesDTO, SFDCSparesDTO>chunk(500)
                 .reader(sparesReader(sfdcBatchDataDetailsRequest, frequency))
+                .processor(new SparesProcessor())
                 .writer(new SparesWriter(csvWrite, assetsConnector))
                 .build();
     }
