@@ -27,6 +27,7 @@ public class SFDCAssetDTO{
     private String ownerName;
     private String ownerMobile;
     private String ownerUserRoleName;
+    private String ownerEmail;
     @JsonProperty("AccountId")
     private String accountId;
     @JsonProperty("TH_IBG_Division__c")
