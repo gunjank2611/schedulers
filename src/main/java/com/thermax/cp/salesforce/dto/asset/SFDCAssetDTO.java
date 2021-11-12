@@ -93,6 +93,7 @@ public class SFDCAssetDTO{
     private String serviceSpocName;
     private String serviceSpocMobile;
     private String serviceSpocUserRoleName;
+    private String serviceSpocEmail;
     @JsonProperty("TMAX_Spares_Sales_SPOC_CP__c")
     private String tMAX_Spares_Sales_SPOC_CP__c;
     @JsonProperty("TMAX_Spares_Sales_SPOC_CP__r")
@@ -100,6 +101,7 @@ public class SFDCAssetDTO{
     private String spareSalesSpocName;
     private String spareSalesSpocMobile;
     private String spareSalesSpocUserRoleName;
+    private String spareSalesSpocEmail;
     @JsonProperty("TMAX_Service_Sales_SPOC_CP__c")
     private String tMAX_Service_Sales_SPOC_CP__c;
     @JsonProperty("TMAX_Service_Sales_SPOC_CP__r")
@@ -107,6 +109,7 @@ public class SFDCAssetDTO{
     private String servicesSalesSpocName;
     private String serviceSalesSpocUserRoleName;
     private String serviceSalesSpocMobile;
+    private String serviceSalesSpocEmail;
     @JsonProperty("ContactId")
     private Object contactId;
     @JsonProperty("Contact")
