@@ -33,7 +33,7 @@ public class AssetWriter implements ItemWriter<SFDCAssetDTO> {
         log.info("Received assets from SFDC : {}", assetDTOS.size());
         log.info("Written assets size : {}", assetDTOS.size());
         final String[] headers = new String[]{"id", "name", "installDate", "tHSC_Warranty_Expiry_Date__c","tHS_Asset_Service_By_From_ERP__c","ownerId",
-                "accountId", "tH_IBG_Division__c", "tHCH_Region__c", "ownerId","ownerName","ownerUserRoleName","tHCH_Sales_Order_Number__c","asset_Make__c",
+                "accountId", "tH_IBG_Division__c", "tHCH_Region__c", "ownerId","ownerName","ownerUserRoleName","ownerEmail","tHCH_Sales_Order_Number__c","asset_Make__c",
         "tHCH_Asset_Status__c","calorie_Potential__c","tHSC_I_C_Scope__c","tHS_Service_Sales_Engineer__c","tPF_User__c","tHS_WARRANTY_DUR_FR_COMM_DT__c",
         "tHS_WARRANTY_DUR_FR_DISP_DT__c","tHSC_First_Date_of_Dispatch__c","tH_Shipment_received_date__c","tH_IBG_Commissioning_Date__c",
         "revised_warranty_expiry_date__c","warranty_Revision_Status__c","reasonForExtendedWarranty","tHSC_Country__c","tHS_Order__r",
