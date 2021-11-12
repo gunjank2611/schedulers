@@ -29,18 +29,21 @@ public class AssetProcessor implements ItemProcessor<SFDCAssetDTO, SFDCAssetDTO>
                 sfdcAssetDTO.setServiceSpocName(tmaxServiceSPOCCPRDTO.getName());
                 sfdcAssetDTO.setServiceSpocMobile(tmaxServiceSPOCCPRDTO.getMobilePhone());
                 sfdcAssetDTO.setServiceSpocUserRoleName(tmaxServiceSPOCCPRDTO.getUserRole()!=null ?tmaxServiceSPOCCPRDTO.getUserRole().getUserRoleName():"");
+                sfdcAssetDTO.setServiceSpocEmail(tmaxServiceSPOCCPRDTO.getEmail());
             }
             TMAXSparesSalesSPOCCPRDTO tmaxSparesSalesSPOCCPRDTO=sfdcAssetDTO.getTMAX_Spares_Sales_SPOC_CP__r();
             if(tmaxSparesSalesSPOCCPRDTO!=null) {
                 sfdcAssetDTO.setSpareSalesSpocName(tmaxSparesSalesSPOCCPRDTO.getName());
                 sfdcAssetDTO.setSpareSalesSpocMobile(tmaxSparesSalesSPOCCPRDTO.getMobilePhone());
                 sfdcAssetDTO.setSpareSalesSpocUserRoleName(tmaxSparesSalesSPOCCPRDTO.getUserRole()!=null?tmaxSparesSalesSPOCCPRDTO.getUserRole().getUserRoleName():"");
+                sfdcAssetDTO.setSpareSalesSpocEmail(tmaxSparesSalesSPOCCPRDTO.getEmail());
             }
             TMAXServiceSalesSPOCCPRDTO tmaxServiceSalesSPOCCPRDTO=sfdcAssetDTO.getTMAX_Service_Sales_SPOC_CP__r();
             if(tmaxServiceSalesSPOCCPRDTO!=null) {
                 sfdcAssetDTO.setServicesSalesSpocName(tmaxServiceSalesSPOCCPRDTO.getName());
                 sfdcAssetDTO.setServiceSpocMobile(tmaxServiceSalesSPOCCPRDTO.getMobilePhone());
                 sfdcAssetDTO.setServiceSalesSpocUserRoleName(tmaxServiceSalesSPOCCPRDTO.getUserRole()!=null?tmaxServiceSalesSPOCCPRDTO.getUserRole().getUserRoleName():"");
+                sfdcAssetDTO.setServiceSalesSpocEmail(tmaxServiceSalesSPOCCPRDTO.getEmail());
             }
         }
         return sfdcAssetDTO;

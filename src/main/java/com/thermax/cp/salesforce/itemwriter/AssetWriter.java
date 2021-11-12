@@ -38,9 +38,9 @@ public class AssetWriter implements ItemWriter<SFDCAssetDTO> {
         "tHS_WARRANTY_DUR_FR_DISP_DT__c","tHSC_First_Date_of_Dispatch__c","tH_Shipment_received_date__c","tH_IBG_Commissioning_Date__c",
         "revised_warranty_expiry_date__c","warranty_Revision_Status__c","reasonForExtendedWarranty","tHSC_Country__c","tHS_Order__r",
         "tH_When_to_Engage_Customer_days__c","createdDate","lastModifiedDate","tMAX_TCA_User__c","caUsername","caUserMobile","caUserRoleName",
-        "serviceSpocName","serviceSpocMobile","serviceSpocUserRoleName","tMAX_TCA_User__c","tMAX_Service_SPOC_CP__c","tMAX_Spares_Sales_SPOC_CP__c",
-        "spareSalesSpocName","spareSalesSpocMobile","spareSalesSpocUserRoleName","tMAX_Service_Sales_SPOC_CP__c","servicesSalesSpocName","serviceSalesSpocUserRoleName",
-        "serviceSalesSpocMobile","contactId","contact","TMAX_Product_Family_CP__c"};
+        "serviceSpocName","serviceSpocMobile","serviceSpocUserRoleName","serviceSpocEmail","tMAX_TCA_User__c","tMAX_Service_SPOC_CP__c","tMAX_Spares_Sales_SPOC_CP__c",
+        "spareSalesSpocName","spareSalesSpocMobile","spareSalesSpocUserRoleName","spareSalesSpocEmail","tMAX_Service_Sales_SPOC_CP__c","servicesSalesSpocName","serviceSalesSpocUserRoleName",
+        "serviceSalesSpocMobile","serviceSalesSpocEmail","contactId","contact","TMAX_Product_Family_CP__c"};
         final String fileName="assets.csv";
         final String apiName="Assets";
         CompletableFuture<String> url = csvWrite.writeToCSV(assetDTOS,headers,fileName,apiName);
