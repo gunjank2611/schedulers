@@ -17,13 +17,14 @@ public class AssetProcessor implements ItemProcessor<SFDCAssetDTO, SFDCAssetDTO>
                 sfdcAssetDTO.setOwnerName(assetOwnerDTO.getOwnerName());
                 sfdcAssetDTO.setOwnerMobile(assetOwnerDTO.getMobilePhone());
                 sfdcAssetDTO.setOwnerUserRoleName(assetOwnerDTO.getUserRole()!=null?assetOwnerDTO.getUserRole().getUserRoleName():"");
-                sfdcAssetDTO.setOwnerEmail(sfdcAssetDTO.getOwnerEmail());
+                sfdcAssetDTO.setOwnerEmail(assetOwnerDTO.getEmail());
             }
             TMAXTCAUserRDTO tmaxtcaUserRDTO=sfdcAssetDTO.getTMAX_TCA_User__r();
             if(tmaxtcaUserRDTO!=null) {
                 sfdcAssetDTO.setCaUsername(tmaxtcaUserRDTO.getName());
                 sfdcAssetDTO.setCaUserMobile(tmaxtcaUserRDTO.getMobilePhone());
                 sfdcAssetDTO.setCaUserRoleName(tmaxtcaUserRDTO.getUserRole()!=null ?tmaxtcaUserRDTO.getUserRole().getUserRoleName():"");
+                sfdcAssetDTO.setCaUserEmail(tmaxtcaUserRDTO.getEmail());
             }
             TMAXServiceSPOCCPRDTO tmaxServiceSPOCCPRDTO=sfdcAssetDTO.getTMAX_Service_SPOC_CP__r();
             if(tmaxServiceSPOCCPRDTO!=null) {
