@@ -87,6 +87,7 @@ public class SFDCAssetDTO{
     private String caUsername;
     private String caUserMobile;
     private String caUserRoleName;
+    private String caUserEmail;
     @JsonProperty("TMAX_Service_SPOC_CP__c")
     private String tMAX_Service_SPOC_CP__c;
     @JsonProperty("TMAX_Service_SPOC_CP__r")

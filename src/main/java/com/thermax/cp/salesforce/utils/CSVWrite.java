@@ -44,8 +44,7 @@ public class CSVWrite {
             for (final Object dto : dtoList) {
                 beanWriter.write(dto, headers);
             }
-          /*  byte[] bytes = csvWriter.toString().substring(30,csvWriter.toString().length()).getBytes("UTF-8");
-            outputStream.write(bytes);*/
+
             beanWriter.flush();
 
             ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure(apiName + "_" + Instant.now().toEpochMilli(), output);
@@ -60,6 +59,9 @@ public class CSVWrite {
         } finally {
             beanWriter.close();
             outputStream.close();
+            if (output.exists()) {
+                output.delete();
+            }
         }
         return CompletableFuture.completedFuture(csvOutput);
     }
