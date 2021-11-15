@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -36,6 +37,8 @@ public class AccountsDBWriter implements ItemWriter<SFDCAccountInfoDTO> {
         log.info("Written accounts to the file : {}", url.get());
         FileURLDTO fileURLDTO=new FileURLDTO();
         fileURLDTO.setFileUrl(url.get());
+        fileURLDTO.setEndPoint("load-accounts");
+        fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
         accountsConnector.sendAccountBlobUrl(fileURLDTO);
     }
 }
