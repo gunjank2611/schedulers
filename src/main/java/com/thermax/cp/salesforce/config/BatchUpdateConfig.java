@@ -256,6 +256,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-contacts")
                 .<SFDCContactsDTO, SFDCContactsDTO>chunk(500)
                 .reader(contactsReader(sfdcBatchDataDetailsRequest, frequency))
+                .processor(new ContactsProcessor())
                 .writer(new ContactsWriter(csvWrite, contactsConnector))
                 .build();
     }
