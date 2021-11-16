@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.mapstruct.factory.Mappers;
 import org.springframework.batch.item.ItemWriter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,8 +38,10 @@ public class ContactsWriter implements ItemWriter<SFDCContactsDTO> {
             List<ContactsDTO> contactsDTOList = contactsMapper.convertToContactsFromSFDCContactsList((List<SFDCContactsDTO>) sfdcContactsDTO);
             CompletableFuture<String> url = csvWrite.writeToCSV(contactsDTOList, headers, fileName, apiName);
             log.info("Written Contacts to the file : {}", url.get());
-            FileURLDTO fileURLDTO = new FileURLDTO();
+            FileURLDTO fileURLDTO=new FileURLDTO();
             fileURLDTO.setFileUrl(url.get());
+            fileURLDTO.setEndPoint("load-contacts");
+            fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
             log.info("Pushing data to contacts microservice for consumption and DB persisting...");
             contactsConnector.sendContactsBlobUrl(fileURLDTO);
             log.info("Pushing data process completed!");
