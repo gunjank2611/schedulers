@@ -20,6 +20,12 @@ public class OpportunityProcessor implements ItemProcessor<SFDCOpportunityDTO,SF
             }
         }
 
+        if(sfdcOpportunityDTO.getName()!=null) {
+            String name=sfdcOpportunityDTO.getName().replaceAll("\"", "")
+                    .replaceAll(",","~");;
+            sfdcOpportunityDTO.setName(name);
+        }
+
         return sfdcOpportunityDTO;
     }
 }
