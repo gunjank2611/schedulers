@@ -1,6 +1,7 @@
 package com.thermax.cp.salesforce.itemprocessor;
 
 import com.thermax.cp.salesforce.dto.commons.OwnerDTO;
+import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityAssetDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 
 import org.springframework.batch.item.ItemProcessor;
@@ -25,7 +26,10 @@ public class OpportunityProcessor implements ItemProcessor<SFDCOpportunityDTO,SF
                     .replaceAll(",","~");;
             sfdcOpportunityDTO.setName(name);
         }
-
+        if(sfdcOpportunityDTO.getOpportunityAsset()!=null)
+        {
+            sfdcOpportunityDTO.setAssetId(sfdcOpportunityDTO.getOpportunityAsset().getRecords().get(0).getAssetId());
+        }
         return sfdcOpportunityDTO;
     }
 }
