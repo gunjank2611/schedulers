@@ -1,6 +1,7 @@
 trigger: 
   - development 
   - main 
+  - release
 pr: none
 
 pool:
@@ -11,105 +12,117 @@ resources:
     - repository: "ThermaxDevOpsAutomation"
       type: "git"
       name: "Customer Portal/ThermaxDevOpsAutomation"
-      ref: "main"  
+      ref: "dev"  
 
 stages: 
- - stage: "DEV"
-   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/development') }}
-   variables:
-   - group: DB-Dev
-   jobs:
-    - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
-      parameters:
-        useSonar: false
-        sonarOrganization: NA
-        appname: Scheduler
-        sonarKey: ThermaxCP
-        containerRegistry: acrcinthermaxdev.azurecr.io
-        environmentBranch: development
-        environmentName: dev
-        dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: dev/Scheduler
-        MAVEN_OPTS: '-Dmaven.test.skip=true'
+  - stage: "DEV"
+    condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/development') }}
+    variables:
+    - group: DB-Dev
+    jobs:
+      - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
+        parameters:
+          useSonar: false
+          sonarOrganization: NA
+          appname: Scheduler
+          sonarKey: ThermaxCP
+          containerRegistry: acrcinthermaxdev.azurecr.io
+          environmentName: dev
+          dockerRegistryServiceConnection: Thermaxdockerdev
+          imageRepository: dev/Scheduler
+          MAVEN_OPTS: '-Dmaven.test.skip=true'
 
-    - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
-      parameters:
-          appName: tcpscheduler 
-          environmentName: Dev
-          environmentBranch: Development
-          filepath: 'Devops/k8s-scheduler.yaml'
-          containerreg: acrcinthermaxdev.azurecr.io
-          imagerepo: dev/scheduler
-          k8ssvcconn: Thermaxk8sdev 
-          springProfilesActive: dev
-          dbHost: $(dbHost)
-          dbUser: $(dbUsername)
-          dbPassword: $(dbPassword)
-          dbName: $(dbName)
+      - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
+        parameters:
+            appName: tcpscheduler 
+            environmentName: Dev
+            filepath: 'Devops/k8s-scheduler.yaml'
+            containerreg: acrcinthermaxdev.azurecr.io
+            imagerepo: dev/scheduler
+            k8ssvcconn: Thermaxk8sdev 
+            springProfilesActive: dev
+            dbHost: $(dbHost)
+            dbUser: $(dbUsername)
+            dbPassword: $(dbPassword)
+            dbName: $(dbName)
+            ConnectedServiceNameARM: Thermaxdev
+            ResourceGroupName: 'Tmx_Nagarro_SP'
+            ApiPortalName: 'apim-cin-thermax-dev'
+            swaggerlocation: 'http://20.204.240.89/v2/api-docs'
+            targetapi: Scheduler
+            pathapi: schedulerapi
 
- - stage: "UAT"
-   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
-   variables:
-   - group: DB-QA
-   jobs:
-    - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
-      parameters:
-        useSonar: false
-        sonarOrganization: NA
-        appname: Scheduler
-        sonarKey: ThermaxCP
-        containerRegistry: acrcinthermaxdev.azurecr.io
-        environmentBranch: main
-        environmentName: uat
-        dockerRegistryServiceConnection: Thermaxdockerdev
-        imageRepository: qa/Scheduler
-        MAVEN_OPTS: '-Dmaven.test.skip=true'
-
-    - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
-      parameters:
-          appName: tcpscheduler 
+  - stage: "UAT"
+    condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
+    variables:
+    - group: DB-QA
+    jobs:
+      - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
+        parameters:
+          useSonar: false
+          sonarOrganization: NA
+          appname: Scheduler
+          sonarKey: ThermaxCP
+          containerRegistry: acrcinthermaxdev.azurecr.io
           environmentName: uat
-          environmentBranch: main
-          filepath: 'Devops/k8s-scheduler.yaml'
-          containerreg: acrcinthermaxdev.azurecr.io
-          imagerepo: qa/scheduler
-          k8ssvcconn: Thermaxk8sqa
-          springProfilesActive: qa
-          dbHost: $(dbHost)
-          dbUser: $(dbUsername)
-          dbPassword: $(dbPassword)
-          dbName: $(dbName)
+          dockerRegistryServiceConnection: Thermaxdockerdev
+          imageRepository: qa/Scheduler
+          MAVEN_OPTS: '-Dmaven.test.skip=true'
 
- - stage: "PROD"
-   condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/release') }}
-   variables:
-   - group: DB-Prod
-   jobs:
-    - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
-      parameters:
-        useSonar: false
-        sonarOrganization: NA
-        sonarKey: ThermaxCP
-        appname: tcpschedulers
-        containerRegistry: acrcintcpprod.azurecr.io
-        environmentBranch: release
-        environmentName: prod
-        dockerRegistryServiceConnection: ThermaxACRProd
-        imageRepository: prod/tcpschedulers
-        MAVEN_OPTS: '-Dmaven.test.skip=true'
+      - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
+        parameters:
+            appName: tcpscheduler 
+            environmentName: uat
+            filepath: 'Devops/k8s-scheduler.yaml'
+            containerreg: acrcinthermaxdev.azurecr.io
+            imagerepo: qa/scheduler
+            k8ssvcconn: Thermaxk8sqa
+            springProfilesActive: qa
+            dbHost: $(dbHost)
+            dbUser: $(dbUsername)
+            dbPassword: $(dbPassword)
+            dbName: $(dbName)
+            ConnectedServiceNameARM: ThermaxQA
+            ResourceGroupName: 'rgaz-cin-tcp-qa'
+            ApiPortalName: 'apim-cin-thermax-qa'
+            swaggerlocation: 'http://20.204.202.16/v2/api-docs'
+            targetapi: Scheduler
+            pathapi: schedulerapi
 
-    - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
-      parameters:
-          appName: tcpschedulers
+  - stage: "PROD"
+    condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/release') }}
+    variables:
+    - group: DB-Prod
+    jobs:
+      - template: CI/Build&PushDocker.yml@ThermaxDevOpsAutomation
+        parameters:
+          useSonar: false
+          sonarOrganization: NA
+          sonarKey: ThermaxCP
+          appname: tcpschedulers
+          containerRegistry: acrcintcpprod.azurecr.io
           environmentName: prod
-          environmentBranch: release
-          filepath: 'Devops/k8s-scheduler.yaml'
-          containerreg: acrcintcpprod.azurecr.io
-          imagerepo: prod/tcpschedulers
-          k8ssvcconn: ThermaxK8sProd
-          springProfilesActive: prod
-          dbHost: $(dbHost)
-          dbUser: $(dbUsername)
-          dbPassword: $(dbPassword)
-          dbName: $(dbName)
-          replicaset: 4 
+          dockerRegistryServiceConnection: ThermaxACRProd
+          imageRepository: prod/tcpschedulers
+          MAVEN_OPTS: '-Dmaven.test.skip=true'
+
+      - template: CD/k8s-deploy.yml@ThermaxDevOpsAutomation
+        parameters:
+            appName: tcpschedulers
+            environmentName: prod
+            filepath: 'Devops/k8s-scheduler.yaml'
+            containerreg: acrcintcpprod.azurecr.io
+            imagerepo: prod/tcpschedulers
+            k8ssvcconn: ThermaxK8sProd
+            springProfilesActive: prod
+            dbHost: $(dbHost)
+            dbUser: $(dbUsername)
+            dbPassword: $(dbPassword)
+            dbName: $(dbName)
+            replicaset: 4 
+            ConnectedServiceNameARM: ThermaxProd
+            ResourceGroupName: 'Tmx_Nagarro_Prod'
+            ApiPortalName: 'api-cin-tcp-prod'
+            swaggerlocation: 'http://20.204.209.118/v2/api-docs'
+            targetapi: Scheduler
+            pathapi: schedulerapi
