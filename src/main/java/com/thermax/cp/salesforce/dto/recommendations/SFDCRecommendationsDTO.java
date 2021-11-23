@@ -50,6 +50,8 @@ public class SFDCRecommendationsDTO {
         private String recommendationSubType;
         @JsonProperty("TH_Type__c")
         private String recommendationType;
+        @JsonProperty("TH_Part_Code__c")
+        private String partCode;
 
 }
 

@@ -36,7 +36,7 @@ public class RecommendationsWriter implements ItemWriter<SFDCRecommendationsDTO>
         log.info("Received recommendations from SFDC : {}", recommendationsDTOS.size());
         log.info("Written recommendations size : {}", recommendationsDTOS.size());
         final String[] headers = new String[]{"id", "asset", "accountName", "plannedShutdownDescription", "plannedShutdownDate","status",
-                "service", "spare", "selectedServices", "selectedSpares","recommendationType","recommendationSubType","createdDate","lastModifiedDate"};
+                "service", "spare", "selectedServices", "selectedSpares","recommendationType","recommendationSubType","createdDate","lastModifiedDate","partCode"};
         final String fileName="recommendations.csv";
         final String apiName="Recommendations";
         CompletableFuture<String> url = csvWrite.writeToCSV(recommendationsDTOS,headers,fileName,apiName);
