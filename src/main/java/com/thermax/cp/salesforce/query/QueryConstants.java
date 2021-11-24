@@ -28,7 +28,7 @@ public interface QueryConstants {
             " THSC_Unit_Selling_Price__c,THSC_UOM__c,THSC_Ordered_Item__c,THSC_Line_Total__c,THSC_Order_Line_ID__c,TH_Line_Status__c,THSC_Description__c+from+THSC_Branded_services_sales__c+where+lastmodifiedDate+=+";
 
     String SPARES_DETAILS_QUERY = "SELECT+Id,Name ,TH_ORDER_LINE_ID__c,Th_Asset__c,THSC_Division__c,TH_LINE_STATUS__c,TH_DESCRIPTION__c,TH_SALES_ORDER_NUMBER__c,TH_LINE_TOTAL__c,THSC_Region__c,TH_QTY__c,TH_ORDERED_ITEM__c,TH_UNIT_SELLING_PRICE__c," +
-            "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c,createdDate,lastmodifiedDate+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
+            "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c,createdDate,lastmodifiedDate,TH_LAST_UPDATE_DATE__c+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
 
     String ASSET_DETAILS_QUERY = "SELECT+Id,Name,InstallDate,THSC_Warranty_Expiry_Date__c,THS_Asset_Service_By_From_ERP__c,OwnerId,Owner.Name,Owner.UserRole.Name,Owner.MobilePhone,Owner.Email,AccountId,TH_IBG_Division__c,THS_Division_Type__c,THCH_Region__c," +
             "THCH_Sales_Order_Number__c,Asset_Make__c,THCH_Asset_Status__c,Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c,THS_I_C_Scope__c,THS_Service_Sales_Engineer__c,TPF_User__c,THS_WARRANTY_DUR_FR_COMM_DT__c,THS_WARRANTY_DUR_FR_DISP_DT__c," +

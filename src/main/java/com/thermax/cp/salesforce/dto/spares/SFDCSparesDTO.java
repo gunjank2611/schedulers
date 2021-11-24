@@ -47,7 +47,6 @@ public class SFDCSparesDTO {
     private String createdDate;
     @JsonProperty("LastModifiedDate")
     private String lastModifiedDate;
-
-
-
+    @JsonProperty("TH_LAST_UPDATE_DATE__c")
+    private String lastUpdatedDate;
 }
