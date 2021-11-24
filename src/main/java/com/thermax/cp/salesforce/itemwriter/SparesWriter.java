@@ -31,7 +31,7 @@ public class SparesWriter implements ItemWriter<SFDCSparesDTO> {
         log.info("Received assets from SFDC : {}", sparesDTOS.size());
         log.info("Written assets size : {}", sparesDTOS.size());
         final String[] headers = new String[]{"id", "name", "asset", "region","division","salesOrderNumber",
-                "quantity", "unitSellingPrice", "uom", "orderedItem","lineTotal","orderLineId","lineStatus","description","lifecycleDays","account","LastModifiedDate","createdDate"};
+                "quantity", "unitSellingPrice", "uom", "orderedItem","lineTotal","orderLineId","lineStatus","description","lifecycleDays","account","LastModifiedDate","createdDate","lastUpdatedDate"};
         final String fileName="spares.csv";
         final String apiName="Spares";
         CompletableFuture<String> url = csvWrite.writeToCSV(sparesDTOS,headers,fileName,apiName);
