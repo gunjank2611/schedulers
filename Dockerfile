@@ -1,7 +1,5 @@
 # Dockerfile
 FROM openjdk:11-jdk-slim
-USER Thermax.Customer_Portal
-WORKDIR /home/Thermax.Customer_Portal
 RUN apt-get -y update
 RUN apt-get -y install curl
 RUN apt-get -qq -y install curl
