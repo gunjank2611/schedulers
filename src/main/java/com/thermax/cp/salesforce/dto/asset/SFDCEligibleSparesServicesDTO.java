@@ -26,4 +26,6 @@ public class SFDCEligibleSparesServicesDTO {
     public String type__c;
     @JsonProperty("When_to_Engage_Customer__c")
     public Object when_to_Engage_Customer__c;
+    @JsonProperty("Description__c")
+    private String description;
 }
