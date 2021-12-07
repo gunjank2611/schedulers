@@ -3,5 +3,4 @@ tcpemailnotification
 tcpsalesforce
 tcpusermanagement
 tcpassets
-tcpemailnotification
 tcpenquirymanagement
