@@ -4,8 +4,7 @@ az login --use-device-code
 az account set --subscription 90a5cf8f-aa05-450d-9850-5d64c0f061d9
 az aks get-credentials --overwrite --resource-group rgaz-cin-tcp-qa --name aks-cin-thermax-qa
 kubectl config set-context --current --namespace=thermax
-sed 's/\r$//' /home/appnames.txt>/home/app.txt
-for app_name in $(cat /home/app.txt)
+for app_name in $(cat /home/appnames.txt)
 do
   success_status=$(kubectl get pod --field-selector status.phase=Running --no-headers|grep "$appname"|head -1)
   if [[ $success_status == *"No resources"* ]]
