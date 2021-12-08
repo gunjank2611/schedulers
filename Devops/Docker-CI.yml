@@ -12,7 +12,7 @@ resources:
     - repository: "ThermaxDevOpsAutomation"
       type: "git"
       name: "Customer Portal/ThermaxDevOpsAutomation"
-      ref: "dev"  
+      ref: "main"  
 
 stages: 
   - stage: "DEV"
