@@ -1,7 +1,6 @@
 tcpschedulers
 tcpemailnotification
 tcpsalesforce
-tcp-usermanagement
+tcpusermanagement
 tcpassets
-tcpemailnotification
 tcpenquirymanagement
