@@ -12,7 +12,7 @@ resources:
     - repository: "ThermaxDevOpsAutomation"
       type: "git"
       name: "Customer Portal/ThermaxDevOpsAutomation"
-      ref: "dev"  
+      ref: "main"
 
 stages: 
   - stage: "DEV"
@@ -51,6 +51,7 @@ stages:
             swaggerlocation: 'http://20.204.240.89/v2/api-docs'
             targetapi: Scheduler
             pathapi: schedulerapi
+            validateTokenUrl: 'http://10.211.15.138/api/um/auth/validateToken'
 
   - stage: "UAT"
     condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/main') }}
@@ -88,6 +89,7 @@ stages:
             swaggerlocation: 'http://20.204.202.16/v2/api-docs'
             targetapi: Scheduler
             pathapi: schedulerapi
+            validateTokenUrl: 'http://10.250.0.139/api/um/auth/validateToken'
 
   - stage: "PROD"
     condition: ${{ eq(variables['Build.SourceBranch'], 'refs/heads/release') }}
@@ -126,3 +128,4 @@ stages:
             swaggerlocation: 'http://20.204.209.118/v2/api-docs'
             targetapi: Scheduler
             pathapi: schedulerapi
+            validateTokenUrl: 'http://10.250.0.134/api/um/auth/validateToken'
