@@ -42,6 +42,10 @@ stages:
             imagerepo: dev/scheduler
             k8ssvcconn: Thermaxk8sdev 
             springProfilesActive: dev
+            dbHost: $(dbHost)
+            dbUser: $(dbUsername)
+            dbPassword: $(dbPassword)
+            dbName: $(dbName)
             ConnectedServiceNameARM: Thermaxdev
             ResourceGroupName: 'Tmx_Nagarro_SP'
             ApiPortalName: 'apim-cin-thermax-dev'
