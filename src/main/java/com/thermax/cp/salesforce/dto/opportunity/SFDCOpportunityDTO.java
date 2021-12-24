@@ -84,5 +84,8 @@ public class SFDCOpportunityDTO{
     private String ownerEmail;
     private String userRoleName;
     private String mobilePhone;
+    @JsonProperty("OpportuntiyAsset__r")
+    private OpportunityAssetDTO opportunityAsset;
+    private String assetId;
 }
 

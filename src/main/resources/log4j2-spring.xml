@@ -3,14 +3,14 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                    pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
+                    pattern="%style{%d{ISO8601}}{black} [%X{traceId}/%X{spanId}] %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable"/>
         </Console>
 
         <RollingFile name="RollingFile"
                      fileName="/var/tcp/tcp-schedulers/tcp_api.log"
                      filePattern="/var/tcp/tcp-schedulers/%d{yyyy-MM}/tcp_api.log-%d{-dd-MMMM-yyyy}-%i.log.gz">
             <PatternLayout>
-                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+                <pattern>%d %p %C{1.} [%X{traceId}/%X{spanId}] [%t] %m%n</pattern>
             </PatternLayout>
             <Policies>
                 <OnStartupTriggeringPolicy/>

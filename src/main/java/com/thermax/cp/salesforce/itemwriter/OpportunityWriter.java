@@ -32,7 +32,7 @@ public class OpportunityWriter implements ItemWriter<SFDCOpportunityDTO> {
                 "cMG_Won_against_Whom__c", "tH_Lost_to_Whom__c", "tH_Closing_Summary__c", "tHCMG_Date_Ordered__c", "tHCMG_Bill_To_Location__c",
                 "tHCMG_Ship_To_Location__c", "tHCMG_Cheque_Number__c", "tHCMG_Customer_PO__c", "tHCMG_ERP_Division__c", "tHCMG_Payment_Term__c",
                 "tHCMG_Warehouse__c", "tHCMG_Transaction_Type__c", "tHCMG_FOB__c", "tHCMG_Freight_Terms__c", "ownerId","ownerName","ownerEmail","userRoleName","mobilePhone",
-                "opportunityNumber","opportunityAssetId"};
+                "opportunityNumber","opportunityAssetId","assetId"};
         final String fileName = "opportunities.csv";
         final String apiName = "Opportunities";
         CompletableFuture<String> url = csvWrite.writeToCSV(opportunityDTOS, headers, fileName, apiName);

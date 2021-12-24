@@ -23,6 +23,8 @@ public class CSVWrite {
     @Autowired
     private FileUploadFeignClient fileUploadFeignClient;
 
+    private final String SCHEDULER_PREFIX="Scheduler_";
+
 
     private static final Logger LOGGER = LogManager.getLogger(CSVWrite.class);
 
@@ -47,7 +49,7 @@ public class CSVWrite {
 
             beanWriter.flush();
 
-            ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure(apiName + "_" + Instant.now().toEpochMilli(), output);
+            ResponseEntity<UploadResponseDTO> responseDTO = fileUploadFeignClient.uploadFileToAzure(SCHEDULER_PREFIX+ apiName + "_" + Instant.now().toEpochMilli(), output);
             if (responseDTO.getStatusCode() == HttpStatus.OK && responseDTO.getBody() != null) {
                 csvOutput = responseDTO.getBody().getAzureBlobUrl();
                 LOGGER.info("Output file is saved at azure blob location" + csvOutput);

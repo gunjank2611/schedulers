@@ -22,13 +22,13 @@ public interface QueryConstants {
     String RECOMMENDATIONS_QUERY = "SELECT+Id,LastModifiedDate,CreatedDate,Name,OwnerId,Owner.Name,TH_Account_Name__c,TH_Additional_Information__c,TH_Asset__c,TH_City__c,TH_Closure_Notes__c,TH_Description_for__c,TH_Description__c,TH_Interaction_Planned_Date__c,TH_Opportunity__c," +
             "TH_Planned_Activities__c,TH_Planned_Shutdown_date__c,TH_Potential_Value__c,TH_Purpose__c,TH_Recommendation_Close_Date__c,TH_Reject_Reason__c,TH_Reminder_For_Next_Contact__c,TH_Service__c,TH_Service__r.THSC_Contract_Start_Date__c,TH_Service__r.THSC_Contract_End_Date__c," +
             "TH_Service__r.THSC_No_of_Visits__c,TH_Service__r.THSC_Description__c,TH_Service__r.THSC_Ordered_Item__c,TH_Spare__c,TH_Spare__r.TH_DESCRIPTION__c," +
-            "TH_Spare__r.TH_LifeCycle_days__c,TH_Spare__r.TH_ORDER_LINE_ID__c,TH_Status__c,TH_SubType__c,TH_Type__c,TH_Selected_Services__c,TH_Selected_Spares__c+FROM+TH_Interaction__c where  recordtype.name = 'Recommendation' and lastmodifiedDate = +";
+            "TH_Spare__r.TH_LifeCycle_days__c,TH_Spare__r.TH_ORDER_LINE_ID__c,TH_Status__c,TH_SubType__c,TH_Type__c,TH_Selected_Services__c,TH_Part_Code__c,TH_Selected_Spares__c+FROM+TH_Interaction__c where  recordtype.name = 'Recommendation' and lastmodifiedDate = +";
 
     String SERVICES_DETAILS_QUERY = "select+id,name,TH_Count_of_Visit_Log__c,THSC_No_of_Visits__c,THSC_Contract_Start_Date__c,THSC_Contract_End_Date__c,THSC_Asset__c,THSC_Region__c,THSC_Division__c,THSC_Executor__c,THSC_Sales_Order_Number__c,THSC_Quantity__c," +
             " THSC_Unit_Selling_Price__c,THSC_UOM__c,THSC_Ordered_Item__c,THSC_Line_Total__c,THSC_Order_Line_ID__c,TH_Line_Status__c,THSC_Description__c+from+THSC_Branded_services_sales__c+where+lastmodifiedDate+=+";
 
     String SPARES_DETAILS_QUERY = "SELECT+Id,Name ,TH_ORDER_LINE_ID__c,Th_Asset__c,THSC_Division__c,TH_LINE_STATUS__c,TH_DESCRIPTION__c,TH_SALES_ORDER_NUMBER__c,TH_LINE_TOTAL__c,THSC_Region__c,TH_QTY__c,TH_ORDERED_ITEM__c,TH_UNIT_SELLING_PRICE__c," +
-            "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c,createdDate,lastmodifiedDate+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
+            "TH_UOM__c,TH_Thermax_Spare__c,TH_LifeCycle_days__c,TH_Account_Id__c,createdDate,lastmodifiedDate,TH_LAST_UPDATE_DATE__c+from+TH_Spare_FOC__c+where+lastmodifiedDate+=+";
 
     String ASSET_DETAILS_QUERY = "SELECT+Id,Name,InstallDate,THSC_Warranty_Expiry_Date__c,THS_Asset_Service_By_From_ERP__c,OwnerId,Owner.Name,Owner.UserRole.Name,Owner.MobilePhone,Owner.Email,AccountId,TH_IBG_Division__c,THS_Division_Type__c,THCH_Region__c," +
             "THCH_Sales_Order_Number__c,Asset_Make__c,THCH_Asset_Status__c,Calorie_Potential__c,THSC_I_C_Scope__c,THSC_Number_of_days_included_in_PO__c,THS_I_C_Scope__c,THS_Service_Sales_Engineer__c,TPF_User__c,THS_WARRANTY_DUR_FR_COMM_DT__c,THS_WARRANTY_DUR_FR_DISP_DT__c," +
@@ -44,8 +44,8 @@ public interface QueryConstants {
             "THCMG_Bill_To_Location__r.THCMG_Pin_Code__c,THCMG_Bill_To_Location__r.THCMG_Address1__c,THCMG_Bill_To_Location__r.THCMG_Address2__c,THCMG_Bill_To_Location__r.THCMG_Address3__c,THCMG_Ship_To_Location__r.THCMG_Country__c," +
             "THCMG_Ship_To_Location__r.THCMG_State__c,THCMG_Ship_To_Location__r.THCMG_City__c,THCMG_Ship_To_Location__r.THCMG_Pin_Code__c,THCMG_Ship_To_Location__r.THCMG_Address1__c,THCMG_Ship_To_Location__r.THCMG_Address2__c,THCMG_Ship_To_Location__r.THCMG_Address3__c," +
             "THCMG_Cheque_Number__c,THCMG_Customer_PO__c,THCMG_ERP_Division__c,THCMG_ERP_Division__r.Name,THCMG_Payment_Term__c,THCMG_Payment_Term__r.Name,THCMG_Warehouse__c,THCMG_Warehouse__r.Name,THCMG_Transaction_Type__c,THCMG_Transaction_Type__r.Name,THCMG_FOB__c,THCMG_Freight_Terms__c,OwnerId," +
-            "Owner.Name,Owner.Email,Owner.MobilePhone,(select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode,ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c+from+OpportunityLineItems)" +
-            "+from+Opportunity+where+lastmodifiedDate+=+";
+            "Owner.Name,Owner.Email,Owner.MobilePhone,(select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode,ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c,TH_Asset__c+from+OpportunityLineItems),(Select+id,Asset__c+from OpportuntiyAsset__r+limit+1)" +
+            "+from+Opportunity+where+recordtype.Name+=+'Spare+%26+Services'+and+lastmodifiedDate+=+";
 
     String OPPORTUNITY_LINE_ITEMS_QUERY = "select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode," +
             "ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c+from+OpportunityLineItem+where+lastmodifiedDate+=";
@@ -70,7 +70,7 @@ public interface QueryConstants {
     String PROPOSALS_QUERY = "SELECT Account__c,Additional_Input_By_Proposer__c,Additional_Input_By_Requester__c,Asset__c,Committed_Date__c,CreatedDate,Department__c,Id,IsLatestVersion__c,IsRevisedAfterClosure__c,LastModifiedDate,Name,Opportunity__c,Original_Proposal__c,Proposal_Number__c,Proposer_User__c,Reason__c," +
             "Status__c FROM Tmax_Proposal__c where Opportunity__r.recordtype.name='Spare+%26+Services'+and+lastmodifiedDate+=";
 
-    String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Id,Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
+    String ELIGIBLE_SPARE_SERVICE_QUERY = "SELECT+Id,Asset__c,CurrencyIsoCode,Life_Cycle_Date__c,Name,Part_Number__c,TH_Thermax_Spare__c,Type__c,Description__c,When_to_Engage_Customer__c+FROM+Master_Asset_to_Spare_Map__c+where+lastmodifiedDate+=";
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account__c,lastmodifiedDate+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=+";
 
