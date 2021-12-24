@@ -26,6 +26,7 @@ spec:
       labels:
         app: tcpschedulers
       spec:
+      containers:
       - name: tcpschedulers
         image: #{imagepath}#:#{imagetag}
         env:
