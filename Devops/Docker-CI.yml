@@ -37,14 +37,11 @@ stages:
             appName: tcpscheduler 
             environmentName: Dev
             filepath: 'Devops/k8s-scheduler.yaml'
+            envfilepath: 'src/main/resources/application-dev.yml'
             containerreg: acrcinthermaxdev.azurecr.io
             imagerepo: dev/scheduler
             k8ssvcconn: Thermaxk8sdev 
             springProfilesActive: dev
-            dbHost: $(dbHost)
-            dbUser: $(dbUsername)
-            dbPassword: $(dbPassword)
-            dbName: $(dbName)
             ConnectedServiceNameARM: Thermaxdev
             ResourceGroupName: 'Tmx_Nagarro_SP'
             ApiPortalName: 'apim-cin-thermax-dev'
@@ -75,6 +72,7 @@ stages:
             appName: tcpscheduler 
             environmentName: uat
             filepath: 'Devops/k8s-scheduler.yaml'
+            envfilepath: 'src/main/resources/application-qa.yml'
             containerreg: acrcinthermaxdev.azurecr.io
             imagerepo: qa/scheduler
             k8ssvcconn: Thermaxk8sqa
@@ -113,6 +111,7 @@ stages:
             appName: tcpschedulers
             environmentName: prod
             filepath: 'Devops/k8s-scheduler.yaml'
+            envfilepath: 'src/main/resources/application-prod.yml'
             containerreg: acrcintcpprod.azurecr.io
             imagerepo: prod/tcpschedulers
             k8ssvcconn: ThermaxK8sProd
