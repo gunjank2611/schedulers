@@ -126,8 +126,8 @@ feign:
 
 sfdc:
   grant-type: password
-  client-id: 3MVG9Se4BnchkASk9vur9uLifnr7DiLDaGX4u2f7VkdNCwemsfmOug1loAmKwRLurEKuM5FHwFgUPJJcsXwGB
-  client-secret: 7785F6398BBDF7F4691ECC097992FF832595A2B55BFC8A877F82A69CE3A39682
+  client-id: 3MVG9cbS6twd6G6cc1k_NMJlXNoDgU4w6S9r.x2CenLtpdt5Besc_mpJK9usoXK.pvzcJgRkvgUUCRmjKZkmq
+  client-secret: 0F77199455BF11F06C995B6E1FA7C6B7637E96F1F2D352952F1C70B565253286
   username: nagarro_intadmin@thermaxprod.com.tmxdev
   password: Thermax@123
 sfdcorders:
