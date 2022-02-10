@@ -4,6 +4,7 @@ import com.thermax.cp.salesforce.dto.contacts.ContactsDTO;
 import com.thermax.cp.salesforce.dto.contacts.SFDCContactsDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
 import com.thermax.cp.salesforce.feign.connectors.ContactsConnector;
+import com.thermax.cp.salesforce.feign.request.DeleteUserOperationFeignClient;
 import com.thermax.cp.salesforce.mapper.ContactsMapper;
 import com.thermax.cp.salesforce.utils.CSVWrite;
 import lombok.extern.log4j.Log4j2;
@@ -21,24 +22,34 @@ public class ContactsWriter implements ItemWriter<SFDCContactsDTO> {
     final private ContactsConnector contactsConnector;
     private final ContactsMapper contactsMapper = Mappers.getMapper(ContactsMapper.class);
 
-    public ContactsWriter(CSVWrite csvWrite, ContactsConnector contactsConnector) {
+    private final DeleteUserOperationFeignClient deleteUserOperationFeignClient;
+
+    public ContactsWriter(CSVWrite csvWrite, ContactsConnector contactsConnector,
+                          DeleteUserOperationFeignClient deleteUserOperationFeignClient) {
         this.csvWrite = csvWrite;
         this.contactsConnector = contactsConnector;
+        this.deleteUserOperationFeignClient = deleteUserOperationFeignClient;
     }
 
     @Override
     public void write(List<? extends SFDCContactsDTO> sfdcContactsDTO) throws Exception {
+
         log.info("Saving data for Contacts of size: {} ", sfdcContactsDTO.size());
         log.info("Writing users of size : {}", sfdcContactsDTO.size());
+
         final String[] headers = new String[]{"id", "firstName", "middleName", "lastName", "accountId", "accountName", "email", "salutation", "department", "designation", "phone", "mobilePhone", "mailingStreet", "mailingCity", "mailingState", "mailingPostalCode", "mailingCountry", "icc", "isActive", "isActiveForCP"};
         final String fileName = "Contacts.csv";
         final String apiName = "Contacts";
+
+        // Call deleteOperations endpoint..
+        deleteUserOperationFeignClient.deleteContacts();
+
         if (sfdcContactsDTO != null && !sfdcContactsDTO.isEmpty()) {
             log.info("Writing response to CSV...");
             List<ContactsDTO> contactsDTOList = contactsMapper.convertToContactsFromSFDCContactsList((List<SFDCContactsDTO>) sfdcContactsDTO);
             CompletableFuture<String> url = csvWrite.writeToCSV(contactsDTOList, headers, fileName, apiName);
             log.info("Written Contacts to the file : {}", url.get());
-            FileURLDTO fileURLDTO=new FileURLDTO();
+            FileURLDTO fileURLDTO = new FileURLDTO();
             fileURLDTO.setFileUrl(url.get());
             fileURLDTO.setEndPoint("load-contacts");
             fileURLDTO.setFileUploadTimeStamp(ZonedDateTime.now());
