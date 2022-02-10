@@ -119,6 +119,7 @@ feign:
     contacts:
       base-url: http://localhost:8087
       contacts-url: /api/um/auth/scheduler/user
+      delete-operation-url: /api/um/auth/scheduler/user/deleteContacts
     order-status:
       base-url: https://mobility.thermaxglobal.com/tmx_intg
       get-status: /api/cp/tmx_erp/get_order_status/

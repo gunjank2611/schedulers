@@ -74,7 +74,7 @@ public interface QueryConstants {
 
     String ASSET_HISTORY_QUERY = "SELECT+Id,Name,TH_Asset__c,TH_Spare__c,TH_Change_Type__c,TH_Description_for__c,TH_Account__c,lastmodifiedDate+from+TH_Asset_History__c+where+TH_Asset__c !=null and lastmodifiedDate+=+";
 
-    String CONTACTS_QUERY = "select+id,firstName,middleName,lastName ,accountId ,Account.Name, Email, department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,MailingCountry,Salutation,TH_IBG_International_Calling_Code__c,TH_IsActive__c,TMAX_isActiveForCP__c+from+Contact+where+TMAX_isActiveForCP__c=true+AND+TH_IsActive__c=true+AND+TMAX_Minutes_since_modified__c <=";
+    String CONTACTS_QUERY = "select+id,firstName,middleName,lastName ,accountId ,Account.Name, Email, department,title,phone,mobilephone,MailingStreet, MailingCity, MailingState, MailingPostalCode,MailingCountry,Salutation,TH_IBG_International_Calling_Code__c,TH_IsActive__c,TMAX_isActiveForCP__c+from+Contact+where+TMAX_Minutes_since_modified__c <=";
 
     String SERVICE_LOG_QUERY = "SELECT+Branded_services_sales__c,Comments__c,CreatedDate,Id,Name,Visit_Date__c+FROM+Branded_Service_Visit_Log__c+where+lastmodifiedDate+=+";
 

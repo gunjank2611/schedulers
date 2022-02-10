@@ -28,6 +28,7 @@ import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.connectors.ContactsConnector;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
+import com.thermax.cp.salesforce.feign.request.DeleteUserOperationFeignClient;
 import com.thermax.cp.salesforce.itemprocessor.*;
 import com.thermax.cp.salesforce.itemreader.*;
 import com.thermax.cp.salesforce.itemwriter.*;
@@ -70,8 +71,12 @@ public class BatchUpdateConfig {
     private ContactsConnector contactsConnector;
     private String frequency;
     private String url;
+
     @Autowired
     private AsyncOrderStatusReadWriter asyncOrderStatusReadWriter;
+
+    @Autowired
+    private DeleteUserOperationFeignClient deleteUserOperationFeignClient;
 
     public JobParametersIncrementer jobParametersIncrementer() {
         return new RunIdIncrementer();
@@ -257,7 +262,7 @@ public class BatchUpdateConfig {
                 .<SFDCContactsDTO, SFDCContactsDTO>chunk(500)
                 .reader(contactsReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ContactsProcessor())
-                .writer(new ContactsWriter(csvWrite, contactsConnector))
+                .writer(new ContactsWriter(csvWrite, contactsConnector, deleteUserOperationFeignClient))
                 .build();
     }
 
