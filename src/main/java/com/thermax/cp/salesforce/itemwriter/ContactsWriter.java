@@ -41,9 +41,6 @@ public class ContactsWriter implements ItemWriter<SFDCContactsDTO> {
         final String fileName = "Contacts.csv";
         final String apiName = "Contacts";
 
-        // Call deleteOperations endpoint..
-        deleteUserOperationFeignClient.deleteContacts();
-
         if (sfdcContactsDTO != null && !sfdcContactsDTO.isEmpty()) {
             log.info("Writing response to CSV...");
             List<ContactsDTO> contactsDTOList = contactsMapper.convertToContactsFromSFDCContactsList((List<SFDCContactsDTO>) sfdcContactsDTO);
@@ -58,6 +55,5 @@ public class ContactsWriter implements ItemWriter<SFDCContactsDTO> {
             log.info("Pushing data process completed!");
         }
     }
-
 }
 

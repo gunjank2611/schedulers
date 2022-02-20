@@ -1,5 +1,6 @@
 package com.thermax.cp.salesforce.controller;
 
+import com.thermax.cp.salesforce.feign.request.DeleteUserOperationFeignClient;
 import com.thermax.cp.salesforce.feign.request.FileUploadFeignClient;
 import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.service.BatchDataServiceImpl;
@@ -36,6 +37,9 @@ public class SfdcBatchUpdateController {
 
     @Autowired
     private BatchDataServiceImpl batchDataService;
+
+    @Autowired
+    private DeleteUserOperationFeignClient deleteUserOperationFeignClient;
 
     @Autowired
     JobLauncher jobLauncher;
@@ -481,20 +485,27 @@ public class SfdcBatchUpdateController {
     @ResponseStatus(value = HttpStatus.OK, reason = "contacts loaded successfully")
     public void loadContacts(@PathVariable String frequency) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
-        maps.put("time", new JobParameter(System.currentTimeMillis()));
-        JobInstance existingInstance = jobExplorer.getLastJobInstance(contactsJob.getName());
-        if (existingInstance != null) {
-            parameters = getNext(frequency);
-            log.info("Trying to restart task \"{}\" with the parameters [{}]", contactsJob, parameters);
-        }
-        JobExecution jobExecution = jobLauncher.run(contactsJob, parameters);
-        log.info("JobExecution  {} ", jobExecution.getStatus());
+        // Call Delete Contacts from Users API..
+        try {
+            deleteUserOperationFeignClient.deleteContacts();
+        } catch (Exception e) {
+            log.error("Exception Occurred while performing deleteContacts..");
+            e.printStackTrace();
+        } finally {
+            maps.put("time", new JobParameter(System.currentTimeMillis()));
+            JobInstance existingInstance = jobExplorer.getLastJobInstance(contactsJob.getName());
+            if (existingInstance != null) {
+                parameters = getNext(frequency);
+                log.info("Trying to restart task \"{}\" with the parameters [{}]", contactsJob, parameters);
+            }
+            JobExecution jobExecution = jobLauncher.run(contactsJob, parameters);
+            log.info("JobExecution  {} ", jobExecution.getStatus());
 
-        log.info("Batch is Running...");
-        while (jobExecution.isRunning()) {
-            System.out.println("...");
+            log.info("Batch is Running...");
+            while (jobExecution.isRunning()) {
+                System.out.println("...");
+            }
         }
-
     }
 
     @GetMapping("/loadServiceLog/{frequency}")
