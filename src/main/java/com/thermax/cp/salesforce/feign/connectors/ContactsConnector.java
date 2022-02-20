@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(value = "UserConnector", url = "${feign.client.contacts.base-url}")
 public interface ContactsConnector {
+
     @RateLimiter(name = "commonClientRateLimit", fallbackMethod = "rateLimitFallBack")
     @CircuitBreaker(name = "commonClientCB", fallbackMethod = "circuitBreakerFallback")
     @PostMapping(value = "${feign.client.contacts.contacts-url}")
