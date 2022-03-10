@@ -107,6 +107,9 @@ public class SfdcBatchUpdateController {
     @Autowired
     Job thermaxUsersJob;
 
+    @Autowired
+    Job erpOrderStatusJob;
+
     Map<String, JobParameter> maps = new HashMap<>();
 
     JobParameters parameters = new JobParameters(maps);
@@ -558,5 +561,25 @@ public class SfdcBatchUpdateController {
         return jobParameters;
     }
 
+    @GetMapping("/loadErpOrderStatus/{frequency}")
+    @ResponseStatus(value = HttpStatus.OK, reason = "ERP Status loaded successfully")
+    public void loadErpOrderStatus(@PathVariable String frequency) throws JobParametersInvalidException,
+            JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobInstance existingInstance = jobExplorer.getLastJobInstance(erpOrderStatusJob.getName());
+        if (existingInstance != null) {
+            parameters = getNext(frequency);
+            log.info("Trying to restart task \"{}\" with the parameters [{}]", erpOrderStatusJob, parameters);
+        }
+        JobExecution jobExecution = jobLauncher.run(erpOrderStatusJob, parameters);
+        log.info("JobExecution  {} ", jobExecution.getStatus());
+
+        log.info("Batch is Running...");
+        while (jobExecution.isRunning()) {
+            System.out.println("...");
+        }
+
+    }
 
 }

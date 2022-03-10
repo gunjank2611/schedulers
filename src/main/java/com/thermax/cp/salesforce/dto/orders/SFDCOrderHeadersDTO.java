@@ -6,10 +6,13 @@ import lombok.Data;
 
 @Data
 public class SFDCOrderHeadersDTO {
-    @JsonProperty("order_number")
+
+    @JsonProperty("Order Number")
     private String orderNumber;
+
     @JsonProperty("Header Status")
     private String headerStatus;
+
     @JsonProperty("Expected Delivery Date")
     private String expectedDeliveryDate;
 }

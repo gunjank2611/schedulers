@@ -6,7 +6,13 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class SFDCOrderHeadersListDTO {
+public class ErpOrderStatusDTO {
+
+    @JsonProperty("Total Count")
+    private long totalCount;
+
+    @JsonProperty("Page Number")
+    private long pageNumber;
 
     @JsonProperty("Return")
     private List<SFDCOrderHeadersDTO> ordersList;
