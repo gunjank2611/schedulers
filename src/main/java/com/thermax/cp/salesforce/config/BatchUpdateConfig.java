@@ -10,6 +10,7 @@ import com.thermax.cp.salesforce.dto.contacts.SFDCContactsDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityDTO;
 import com.thermax.cp.salesforce.dto.opportunity.SFDCOpportunityLineItemsDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOpportunityContactRoleDTO;
+import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderItemsDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.pricebook.SFDCPricebookDTO;
@@ -24,11 +25,11 @@ import com.thermax.cp.salesforce.dto.users.SFDCUsersDTO;
 import com.thermax.cp.salesforce.dto.users.ThermaxUsersDTO;
 import com.thermax.cp.salesforce.feign.connectors.AccountsConnector;
 import com.thermax.cp.salesforce.feign.connectors.AssetsConnector;
-import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.connectors.ContactsConnector;
-import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
-import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
+import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
 import com.thermax.cp.salesforce.feign.request.DeleteUserOperationFeignClient;
+import com.thermax.cp.salesforce.feign.request.ErpOrderStatusRequest;
+import com.thermax.cp.salesforce.feign.request.SfdcBatchDataDetailsRequest;
 import com.thermax.cp.salesforce.itemprocessor.*;
 import com.thermax.cp.salesforce.itemreader.*;
 import com.thermax.cp.salesforce.itemwriter.*;
@@ -51,32 +52,42 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableBatchProcessing
 public class BatchUpdateConfig {
+
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
+
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
+
     @Autowired
-    private SfdcOrdersRequest sfdOrdersRequest;
+    private ErpOrderStatusRequest erpOrderStatusRequest;
+
     @Autowired
     private CSVWrite csvWrite;
+
     @Autowired
     private SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest;
+
     @Autowired
     private AssetsConnector assetsConnector;
+
     @Autowired
     private AccountsConnector accountsConnector;
+
     @Autowired
     private EnquiryConnector enquiryConnector;
+
     @Autowired
     private ContactsConnector contactsConnector;
-    private String frequency;
-    private String url;
 
     @Autowired
     private AsyncOrderStatusReadWriter asyncOrderStatusReadWriter;
 
     @Autowired
     private DeleteUserOperationFeignClient deleteUserOperationFeignClient;
+
+    private String frequency;
+    private String url;
 
     public JobParametersIncrementer jobParametersIncrementer() {
         return new RunIdIncrementer();
@@ -93,7 +104,7 @@ public class BatchUpdateConfig {
                 .<SFDCProductInfoDTO, SFDCProductInfoDTO>chunk(500)
                 .reader(productItemReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ProductItemProcessor())
-                .writer(new ProductWriter(csvWrite,enquiryConnector))
+                .writer(new ProductWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -103,7 +114,7 @@ public class BatchUpdateConfig {
                 .<SFDCAccountInfoDTO, SFDCAccountInfoDTO>chunk(500)
                 .reader(accountsItemReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new AccountsProcessor())
-                .writer(new AccountsDBWriter(csvWrite,accountsConnector))
+                .writer(new AccountsDBWriter(csvWrite, accountsConnector))
                 .build();
     }
 
@@ -152,7 +163,7 @@ public class BatchUpdateConfig {
                 .<SFDCOpportunityDTO, SFDCOpportunityDTO>chunk(500)
                 .reader(opportunityReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new OpportunityProcessor())
-                .writer(new OpportunityWriter(csvWrite,enquiryConnector))
+                .writer(new OpportunityWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -161,7 +172,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebooks")
                 .<SFDCPricebookDTO, SFDCPricebookDTO>chunk(500)
                 .reader(pricebookReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookWriter(csvWrite,enquiryConnector))
+                .writer(new PricebookWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -170,7 +181,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-pricebookentries")
                 .<SFDCPricebookEntryDTO, SFDCPricebookEntryDTO>chunk(500)
                 .reader(pricebookEntryReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new PricebookEntryWriter(csvWrite,enquiryConnector))
+                .writer(new PricebookEntryWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -189,7 +200,7 @@ public class BatchUpdateConfig {
                 .<SFDCComplaintsDTO, SFDCComplaintsDTO>chunk(500)
                 .reader(complaintsReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ComplaintsProcessor())
-                .writer(new ComplaintsWriter(csvWrite,enquiryConnector))
+                .writer(new ComplaintsWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -225,7 +236,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-opportunity-line-items")
                 .<SFDCOpportunityLineItemsDTO, SFDCOpportunityLineItemsDTO>chunk(500)
                 .reader(opportunityLineItemsReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new OpportunityLineItemsWriter(csvWrite,enquiryConnector))
+                .writer(new OpportunityLineItemsWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -252,7 +263,7 @@ public class BatchUpdateConfig {
         return stepBuilderFactory.get("load-asset-history")
                 .<SFDCAssetHistoryDTO, SFDCAssetHistoryDTO>chunk(500)
                 .reader(assetHistoryReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new AssetHistoryWriter(csvWrite,assetsConnector))
+                .writer(new AssetHistoryWriter(csvWrite, assetsConnector))
                 .build();
     }
 
@@ -267,11 +278,21 @@ public class BatchUpdateConfig {
     }
 
     @Bean
+    public Step loadErpOrderStatus() {
+        int batchSize = 1000;
+        return stepBuilderFactory.get("load-erp-order-status")
+                .<SFDCOrderHeadersDTO, SFDCOrderHeadersDTO>chunk(batchSize)
+                .reader(erpOrderStatusReader(erpOrderStatusRequest, frequency))
+                .writer(new ErpOrderStatusWriter(csvWrite, enquiryConnector))
+                .build();
+    }
+
+    @Bean
     public Step loadServiceLog() {
         return stepBuilderFactory.get("load-service-log")
                 .<SFDCServiceLogDTO, SFDCServiceLogDTO>chunk(500)
                 .reader(serviceLogReader(sfdcBatchDataDetailsRequest, frequency))
-                .writer(new ServiceLogWriter(csvWrite,assetsConnector))
+                .writer(new ServiceLogWriter(csvWrite, assetsConnector))
                 .build();
     }
 
@@ -281,7 +302,7 @@ public class BatchUpdateConfig {
                 .<ThermaxUsersDTO, ThermaxUsersDTO>chunk(500)
                 .reader(thermaxUsersReader(sfdcBatchDataDetailsRequest, frequency))
                 .processor(new ThermaxUserProcessor())
-                .writer(new ThermaxUsersWriter(csvWrite,enquiryConnector))
+                .writer(new ThermaxUsersWriter(csvWrite, enquiryConnector))
                 .build();
     }
 
@@ -435,6 +456,13 @@ public class BatchUpdateConfig {
     }
 
     @Bean
+    public Job erpOrderStatusJob(JobBuilderFactory jobBuilderFactory) {
+        return getJobBuilder("load-erp-order-status")
+                .start(loadErpOrderStatus())
+                .build();
+    }
+
+    @Bean
     @StepScope
     public ItemReader<SFDCProductInfoDTO> productItemReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
                                                             @Value("#{jobParameters[frequency]}") String frequency) {
@@ -579,5 +607,12 @@ public class BatchUpdateConfig {
     public ItemReader<ThermaxUsersDTO> thermaxUsersReader(SfdcBatchDataDetailsRequest sfdcBatchDataDetailsRequest,
                                                           @Value("#{jobParameters[frequency]}") String frequency) {
         return new ThermaxUsersReader(sfdcBatchDataDetailsRequest, frequency);
+    }
+
+    @StepScope
+    @Bean
+    public ItemReader<SFDCOrderHeadersDTO> erpOrderStatusReader(ErpOrderStatusRequest erpOrderStatusRequest,
+                                                                @Value("#{jobParameters[frequency]}") String frequency) {
+        return new ErpOrderStatusReader(erpOrderStatusRequest, frequency);
     }
 }

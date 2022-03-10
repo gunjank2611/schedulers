@@ -1,9 +1,7 @@
 package com.thermax.cp.salesforce.itemwriter;
 
 import com.thermax.cp.salesforce.AsyncOrderStatusReadWriter;
-import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
 import com.thermax.cp.salesforce.dto.orders.OrdersDTO;
-import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrdersDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
@@ -16,7 +14,6 @@ import org.springframework.batch.item.ItemWriter;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 @Log4j2
 public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
@@ -56,13 +53,6 @@ public class OrderWriter implements ItemWriter<SFDCOrdersDTO> {
                     log.info("Pushing data to respective microservice for consumption and DB persisting...");
                     enquiryConnector.sendOrdersBlobUrl(fileURLDTO);
                     log.info("Pushing data process completed!");
-                    List<OrderIdDTO> orderIdDTOS = orders.stream()
-                            .filter(ordersDTO -> ordersDTO.getERP_Order_Number__c() != null)
-                            .map(ordersDTO -> new OrderIdDTO(ordersDTO.getERP_Order_Number__c()))
-                            .collect(Collectors.toList());
-                    log.info("Fetching order status and edd for orders size: {}", orderIdDTOS.size());
-                    CompletableFuture<List<SFDCOrderHeadersDTO>> completableFutureOrderStatus = asyncOrderStatusReadWriter.fetchWriteOrderStatus(orderIdDTOS, ordersBlobUrl);
-                    log.info("{} order statuses fetch completed successfully!", completableFutureOrderStatus.get().size());
                 } else {
                     log.error("Error while getting orders Blob URL!");
                 }

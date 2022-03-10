@@ -1,12 +1,12 @@
 package com.thermax.cp.salesforce;
 
+import com.thermax.cp.salesforce.dto.orders.ErpOrderStatusHeaderListDTO;
 import com.thermax.cp.salesforce.dto.orders.OrderHeadersDTO;
-import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
+import com.thermax.cp.salesforce.dto.orders.PageNumberDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
-import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersListDTO;
 import com.thermax.cp.salesforce.dto.utils.FileURLDTO;
 import com.thermax.cp.salesforce.feign.connectors.EnquiryConnector;
-import com.thermax.cp.salesforce.feign.request.SfdcOrdersRequest;
+import com.thermax.cp.salesforce.feign.request.ErpOrderStatusRequest;
 import com.thermax.cp.salesforce.mapper.OrdersMapper;
 import com.thermax.cp.salesforce.utils.CSVWrite;
 import com.thermax.cp.salesforce.utils.Partition;
@@ -26,27 +26,31 @@ import java.util.concurrent.CompletableFuture;
 @Log4j2
 @Component
 public class AsyncOrderStatusReadWriter {
+
     public static Integer ORDER_STATUS_CHUNK_SIZE = 100;
     private final OrdersMapper ordersMapper = Mappers.getMapper(OrdersMapper.class);
+
     @Autowired
-    private SfdcOrdersRequest sfdOrdersRequest;
+    private ErpOrderStatusRequest sfdOrdersRequest;
+
     @Autowired
     private CSVWrite csvWrite;
+
     @Autowired
     private EnquiryConnector enquiryConnector;
 
     @Async
-    public CompletableFuture<List<SFDCOrderHeadersDTO>> fetchWriteOrderStatus(List<OrderIdDTO> orderIds, String ordersBlobUrl) {
+    public CompletableFuture<List<SFDCOrderHeadersDTO>> fetchWriteOrderStatus(List<PageNumberDTO> orderIds, String ordersBlobUrl) {
         if (!CollectionUtils.isEmpty(orderIds)) {
             log.info("Requesting order status of size: {}, for : {}", orderIds.size(), ordersBlobUrl);
             Integer count = 0;
             List<SFDCOrderHeadersDTO> orderStatusCompleteList = new ArrayList<>();
-            for (List<OrderIdDTO> orderIdDTOS : Partition.ofSize(orderIds, ORDER_STATUS_CHUNK_SIZE)) {
-                count = count + orderIdDTOS.size();
-                log.info("Requesting order status for next: {} records of total size: {}, processed so far: {}", orderIdDTOS.size(), orderIds.size(), count);
-                ResponseEntity<SFDCOrderHeadersListDTO> orderHeadersDTOList = null;
+            for (List<PageNumberDTO> pageNumberDTOS : Partition.ofSize(orderIds, ORDER_STATUS_CHUNK_SIZE)) {
+                count = count + pageNumberDTOS.size();
+                log.info("Requesting order status for next: {} records of total size: {}, processed so far: {}", pageNumberDTOS.size(), orderIds.size(), count);
+                ResponseEntity<ErpOrderStatusHeaderListDTO> orderHeadersDTOList = null;
                 try {
-                    orderHeadersDTOList = sfdOrdersRequest.fetchOrderStatus(orderIdDTOS);
+                    //orderHeadersDTOList = sfdOrdersRequest.fetchOrderStatus(pageNumberDTOS);
                 } catch (Exception e) {
                     log.error("Error while fetching order status! {}", e.getMessage());
                 }

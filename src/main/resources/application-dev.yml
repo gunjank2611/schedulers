@@ -120,8 +120,8 @@ feign:
       contacts-url: /api/um/auth/scheduler/user
       delete-operation-url: /api/um/auth/scheduler/user/deleteContacts
     order-status:
-      base-url: https://mobility.thermaxglobal.com/tmx_intg
-      get-status: /api/cp/get_order_status/
+      base-url: https://mobility.thermaxglobal.com/thermax_apps/edge
+      get-status: /get/order_status/
     salesforce-url: https://thermax--tmxdev.my.salesforce.com/services
     fileUploadUrl: tcpfileuploader
 
@@ -133,8 +133,8 @@ sfdc:
   password: Thermax@123
 sfdcorders:
   grant-type: password
-  username: Thermax.CPIntegrationTestUser
-  password: SaENw#@2MCJd
-  INSTANCE: TMXTESTINST
+  username: Thermax.CPIntegrationProdUser
+  password: SaENw#@2$MCJdxks
+  INSTANCE: TMXPRODINST
 
 

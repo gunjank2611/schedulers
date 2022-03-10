@@ -1,23 +1,20 @@
 package com.thermax.cp.salesforce.utils;
 
-import com.thermax.cp.salesforce.dto.orders.OrderIdDTO;
+import com.thermax.cp.salesforce.dto.orders.PageNumberDTO;
 import com.thermax.cp.salesforce.exception.InvalidInputException;
-
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.stereotype.Component;
-
-
 
 import java.util.StringTokenizer;
 
 @Component
 public class Validations {
 
-    public void validateOrdersInputFields(OrderIdDTO request) {
+    public void validateOrdersInputFields(PageNumberDTO request) {
   /*      String division = request.getDivision();
         String region = request.getRegion();*/
-        if(StringUtils.isEmpty(request.getOrder_id())) {
-            throw new InvalidInputException("Please send a valid orderId");
+        if (StringUtils.isEmpty(request.getPageNumber() + "")) {
+            throw new InvalidInputException("Please send a valid pageNumber");
         }
        /* else if(!EnumUtils.isValidEnum(EnumRegion.class, region)
                 && !request.getRegion().equalsIgnoreCase("empty")) {
@@ -30,6 +27,7 @@ public class Validations {
             throw new InvalidInputException("Please send a valid account name!");
         }*/
     }
+
     public static boolean validateCSVHeaders(String[] headerValues, String headerLine) {
         String[] columns = split(headerLine, "\\|");
         for (int i = 0; i < columns.length; i++) {
@@ -39,6 +37,7 @@ public class Validations {
         }
         return true;
     }
+
     public static String[] split(String str, String strSeparator) {
         if (str == null || strSeparator == null) {
             return null;

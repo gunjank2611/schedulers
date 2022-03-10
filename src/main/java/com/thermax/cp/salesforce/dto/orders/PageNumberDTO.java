@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderIdDTO {
-    @JsonProperty("order_id")
-    private String order_id;
+public class PageNumberDTO {
+    @JsonProperty("page_number")
+    private int pageNumber;
 }
