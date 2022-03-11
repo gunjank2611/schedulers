@@ -4,11 +4,13 @@ import com.thermax.cp.salesforce.dto.orders.ErpOrderStatusDTO;
 import com.thermax.cp.salesforce.dto.orders.PageNumberDTO;
 import com.thermax.cp.salesforce.dto.orders.SFDCOrderHeadersDTO;
 import com.thermax.cp.salesforce.feign.request.ErpOrderStatusRequest;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+@Log4j2
 public class ErpOrderStatusReader implements ItemReader<SFDCOrderHeadersDTO> {
 
     private final ErpOrderStatusRequest erpOrderStatusRequest;
@@ -26,7 +28,11 @@ public class ErpOrderStatusReader implements ItemReader<SFDCOrderHeadersDTO> {
     @Override
     public SFDCOrderHeadersDTO read() throws Exception {
 
+        log.info("Inside ErpOrderStatusReader -> read()..");
+
         if (!isOrderStatusInitialized) {
+
+            log.info("ErpOrderStatus is not initialized !!");
 
             long totalCount;
 
@@ -38,7 +44,7 @@ public class ErpOrderStatusReader implements ItemReader<SFDCOrderHeadersDTO> {
 
             if (erpOrderStatusHeaderResponseEntity.hasBody()) {
                 ErpOrderStatusDTO erpOrderStatusDTO = erpOrderStatusHeaderResponseEntity.getBody();
-                totalCount = erpOrderStatusDTO.getTotalCount(); // 1800
+                totalCount = erpOrderStatusDTO.getTotalCount();
                 totalCount = decrementTotalCount(totalCount, erpOrderStatusDTO.getOrdersList().size());
 
                 // Loop until there are more order statuses available..
@@ -55,6 +61,7 @@ public class ErpOrderStatusReader implements ItemReader<SFDCOrderHeadersDTO> {
                 totalRecords = erpOrderStatusDTO.getTotalCount();
             }
 
+            log.info("Total record(s) fetched from ERP Endpoint -> " + totalRecords);
             isOrderStatusInitialized = true;
         }
 

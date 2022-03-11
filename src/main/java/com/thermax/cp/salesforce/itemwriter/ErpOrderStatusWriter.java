@@ -26,7 +26,7 @@ public class ErpOrderStatusWriter implements ItemWriter<SFDCOrderHeadersDTO> {
     public void write(List<? extends SFDCOrderHeadersDTO> orderStatusCompleteList) throws Exception {
 
         if (!CollectionUtils.isEmpty(orderStatusCompleteList)) {
-            log.info("Processing order status of size: {} ", orderStatusCompleteList.size());
+            log.info("Processing ERP Order Status of size: {} ", orderStatusCompleteList.size());
             try {
                 final String[] headers = new String[]{"orderNumber", "headerStatus", "expectedDeliveryDate"};
                 final String fileName = "orderstatus.csv";
