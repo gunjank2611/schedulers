@@ -44,8 +44,8 @@ public interface QueryConstants {
             "THCMG_Bill_To_Location__r.THCMG_Pin_Code__c,THCMG_Bill_To_Location__r.THCMG_Address1__c,THCMG_Bill_To_Location__r.THCMG_Address2__c,THCMG_Bill_To_Location__r.THCMG_Address3__c,THCMG_Ship_To_Location__r.THCMG_Country__c," +
             "THCMG_Ship_To_Location__r.THCMG_State__c,THCMG_Ship_To_Location__r.THCMG_City__c,THCMG_Ship_To_Location__r.THCMG_Pin_Code__c,THCMG_Ship_To_Location__r.THCMG_Address1__c,THCMG_Ship_To_Location__r.THCMG_Address2__c,THCMG_Ship_To_Location__r.THCMG_Address3__c," +
             "THCMG_Cheque_Number__c,THCMG_Customer_PO__c,THCMG_ERP_Division__c,THCMG_ERP_Division__r.Name,THCMG_Payment_Term__c,THCMG_Payment_Term__r.Name,THCMG_Warehouse__c,THCMG_Warehouse__r.Name,THCMG_Transaction_Type__c,THCMG_Transaction_Type__r.Name,THCMG_FOB__c,THCMG_Freight_Terms__c,OwnerId," +
-            "Owner.Name,Owner.Email,Owner.MobilePhone,(select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode,ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c,TH_Asset__c+from+OpportunityLineItems),(Select+id,Asset__c+from OpportuntiyAsset__r+limit+1)" +
-            "+from+Opportunity+where+recordtype.Name+=+'Spare+%26+Services'+and+lastmodifiedDate+=+";
+            "Owner.Name,Owner.Email,Owner.MobilePhone,recordtype.Name,(Select+id,Asset__c+from OpportuntiyAsset__r+limit+1)" +
+            "+from+Opportunity+where+lastmodifiedDate+=+";
 
     String OPPORTUNITY_LINE_ITEMS_QUERY = "select+id,opportunityId,product2Id,TH_Product_Family__c,TH_Forecast_Category_Name__c,TH_ENV_Enviro_Quantity__c,ProductCode," +
             "ListPrice,UnitPrice,Quantity,THCMG_Product_Name__c,TH_CNH_Division__c+from+OpportunityLineItem+where+lastmodifiedDate+=";
