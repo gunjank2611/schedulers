@@ -30,6 +30,7 @@ public class OpportunityProcessor implements ItemProcessor<SFDCOpportunityDTO,SF
         {
             sfdcOpportunityDTO.setAssetId(sfdcOpportunityDTO.getOpportunityAsset().getRecords().get(0).getAssetId());
         }
+        sfdcOpportunityDTO.setRecordName(sfdcOpportunityDTO.getRecordType().getName());
         return sfdcOpportunityDTO;
     }
 }

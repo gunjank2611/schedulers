@@ -86,6 +86,9 @@ public class SFDCOpportunityDTO{
     private String mobilePhone;
     @JsonProperty("OpportuntiyAsset__r")
     private OpportunityAssetDTO opportunityAsset;
+    @JsonProperty("RecordType")
+    private RecordType recordType;
+    private String recordName;
     private String assetId;
 }
 
