@@ -2,7 +2,7 @@ spring:
   application:
     name: THERMAX-SFDC-INTERFACE
   datasource:
-    url: jdbc:postgresql://localhost:6432/thermaxcp?user=thermax@azpgsql-cin-thermax-qa&password=Password@12345&prepareThreshold=0
+    url: 'jdbc:postgresql://localhost:6432/#{dbName}#?user=#{dbUsername}#&password=#{dbPassword}#'
   jpa:
     show-sql: true
     hibernate:
@@ -110,17 +110,17 @@ feign:
       contacts-url: /api/um/auth/scheduler/user
       delete-operation-url: /api/um/auth/scheduler/user/deleteContacts
     order-status:
-      base-url: https://mobility.thermaxglobal.com/thermax_apps/edge
-      get-status: /get/order_status/
-    salesforce-url: https://thermax.my.salesforce.com/services
+      base-url: https://mobility.thermaxglobal.com/tmx_intg
+      get-status: /api/cp/tmx_erp/get_order_status/
+    salesforce-url: https://thermax--thermaxprt.my.salesforce.com/services
     fileUploadUrl: tcpfileuploader
 
 sfdc:
   grant-type: password
-  client-id: 3MVG9d8..z.hDcPKwCmbHWfOYwjXz41QyY7UK5w8d2cALQZE5wRax7QPFgIDa3T_.CAo5wVGIMvcicZBx7QtW
-  client-secret: 3DBC2AE6CEB57BBF6F87F60FDF01F424F6CBB21B232BDAFC08A3D7D8CEA622B0
-  username: nagarro_intadmin@thermaxprod.com
-  password: Delhi@1234
+  client-id: 3MVG9iLRabl2Tf4gmZh3d7bm77JlyKi3x4IjgyAE22wuOWtCsiWWET13n4clUooUHGE6dHpbLHTq5UUConvUV
+  client-secret: F6C220571CB9A04702705FFCDBC872B821A60FA81691BAB8838BCD1C0801C287
+  username: integrationuser@nagarro.com.tmxprt
+  password: Thermax@123
 sfdcorders:
   grant-type: password
   username: Thermax.CPIntegrationProdUser
