@@ -81,7 +81,7 @@ resilience4j:
 feign:
   client:
     enquiry:
-      base-url: http://localhost:8080
+      base-url: tcpenquirymanagement
       orders-url: /enquiryApi/api/v1/scheduler/orders
       order-items-url: /enquiryApi/api/v1/scheduler/orderItems
       order-status-url: /enquiryApi/api/v1/scheduler/orderStatus
@@ -95,7 +95,7 @@ feign:
       complaints-url: /enquiryApi/api/v1/scheduler/complaints
       products-url: /enquiryApi/api/v1/scheduler/products
     assets:
-      base-Url: http://localhost:8087
+      base-Url: tcpassets
       recommendations-url: /assetsApi/fileReader/recommendationFromSfdc
       assets-url: /assetsApi/fileReader/assetFromSfdc
       asset-history-url: /assetsApi/fileReader/assetHistoryFromSfdc
@@ -113,7 +113,7 @@ feign:
       base-url: https://mobility.thermaxglobal.com/tmx_intg
       get-status: /api/cp/tmx_erp/get_order_status/
     salesforce-url: https://thermax--thermaxprt.my.salesforce.com/services
-    fileUploadUrl: http://localhost:9191
+    fileUploadUrl: tcpfileuploader
 
 sfdc:
   grant-type: password
