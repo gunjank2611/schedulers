@@ -118,4 +118,9 @@ public class SFDCAssetDTO{
     private Object contact;
     @JsonProperty("TMAX_Product_Family_CP__c")
     private String tMAX_Product_Family_CP__c;
+    @JsonProperty("Customer_Address__c")
+    private String customer_Address__c;
+    @JsonProperty("THSC_State__c")
+    private String tHSC_State__c;
+
 }

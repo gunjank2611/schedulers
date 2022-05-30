@@ -40,7 +40,7 @@ public class AssetWriter implements ItemWriter<SFDCAssetDTO> {
         "tH_When_to_Engage_Customer_days__c","createdDate","lastModifiedDate","tMAX_TCA_User__c","caUsername","caUserMobile","caUserRoleName","caUserEmail",
         "serviceSpocName","serviceSpocMobile","serviceSpocUserRoleName","serviceSpocEmail","tMAX_TCA_User__c","tMAX_Service_SPOC_CP__c","tMAX_Spares_Sales_SPOC_CP__c",
         "spareSalesSpocName","spareSalesSpocMobile","spareSalesSpocUserRoleName","spareSalesSpocEmail","tMAX_Service_Sales_SPOC_CP__c","servicesSalesSpocName","serviceSalesSpocUserRoleName",
-        "serviceSalesSpocMobile","serviceSalesSpocEmail","contactId","contact","TMAX_Product_Family_CP__c"};
+        "serviceSalesSpocMobile","serviceSalesSpocEmail","contactId","contact","TMAX_Product_Family_CP__c","Customer_Address__c","THSC_State__c"};
         final String fileName="assets.csv";
         final String apiName="Assets";
         CompletableFuture<String> url = csvWrite.writeToCSV(assetDTOS,headers,fileName,apiName);
